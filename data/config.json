@@ -1,0 +1,30 @@
+{
+  "provisional": true,
+  "aviso": "Parámetros de la jornada (PROVISIONALES). Cambie la sal de firma antes de emitir pases reales y no la vuelva a cambiar después: los pases emitidos con otra sal se rechazarán.",
+  "evento": {
+    "nombre": "Jornada de Planeación 2027",
+    "oficina": "Oficina Asesora de Planeación y Desarrollo Institucional",
+    "siglaOficina": "OAPDI",
+    "institucion": "Escuela Tecnológica Instituto Técnico Central",
+    "siglaInstitucion": "ETITC",
+    "vigencia": 2027,
+    "correoContacto": "planeacion@itc.edu.co"
+  },
+  "dominioInstitucional": "@itc.edu.co",
+  "pase": {
+    "prefijo": "JP27",
+    "salFirma": "ETITC-OAPDI-JP27-cambiar-antes-de-la-jornada"
+  },
+  "umbrales": {
+    "maxAccionesPorDependencia": 15,
+    "diasAlertaRadicacion": 30,
+    "similitudNombresAcciones": 0.86,
+    "filasPorPagina": 12,
+    "segundosConfirmacionEscaner": 3
+  },
+  "plantilla": {
+    "filasEditables": 300,
+    "tiposNecesidad": ["Bien", "Servicio", "Talento humano", "Infraestructura"],
+    "trimestres": ["T1", "T2", "T3", "T4"]
+  }
+}

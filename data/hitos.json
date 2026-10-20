@@ -1,0 +1,33 @@
+{
+  "provisional": true,
+  "aviso": "Hitos de ejemplo (PROVISIONALES). Ajuste textos, años e impactos con la información oficial de la OAPDI. Para agregar un hito, copie un objeto del arreglo y cambie sus campos; el orden en pantalla es por año y luego por el campo 'orden'.",
+  "hitos": [
+    {
+      "id": "H01",
+      "anio": 2025,
+      "orden": 1,
+      "icono": "insignia",
+      "titulo": "Acreditación institucional de alta calidad",
+      "descripcion": "La ETITC obtiene el reconocimiento de alta calidad como institución, resultado de varios ciclos de autoevaluación y mejoramiento.",
+      "impacto": "Eleva la exigencia de evidencia de calidad: los planes 2027 deben sostener las condiciones que sustentaron la acreditación."
+    },
+    {
+      "id": "H02",
+      "anio": 2026,
+      "orden": 1,
+      "icono": "edificio",
+      "titulo": "Ampliación de cobertura con nuevas sedes",
+      "descripcion": "Adquisición y puesta en funcionamiento de nuevas sedes para ampliar la oferta académica fuera de la sede principal.",
+      "impacto": "Las dependencias planean ahora para varias sedes: talleres, bienestar, tecnología y talento humano deben llegar a todas."
+    },
+    {
+      "id": "H03",
+      "anio": 2026,
+      "orden": 2,
+      "icono": "alianza",
+      "titulo": "Alianzas estratégicas para el top of mind",
+      "descripcion": "Alianzas con el sector productivo, el sector público y otras instituciones que posicionan a la ETITC como referente de la formación técnica y tecnológica.",
+      "impacto": "Las acciones 2027 de extensión, comunicaciones e internacionalización deben medir el posicionamiento, no solo las actividades."
+    }
+  ]
+}

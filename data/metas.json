@@ -1,0 +1,62 @@
+{
+  "provisional": true,
+  "aviso": "Metas institucionales y líneas del PDI de EJEMPLO (PROVISIONALES). Reemplace con las metas 2027 aprobadas y las líneas reales del Plan de Desarrollo Institucional. Los 'id' se usan en la plantilla Excel y en la validación: no los repita.",
+  "metasInstitucionales": [
+    {
+      "id": "M1",
+      "nombre": "Calidad académica sostenida",
+      "descripcion": "Sostener las condiciones de la acreditación institucional de alta calidad y avanzar en la acreditación de programas.",
+      "indicador": "Programas acreditados o en proceso de acreditación",
+      "lineasPDI": [
+        { "id": "L1.1", "nombre": "Aseguramiento de la calidad y autoevaluación", "dependenciasResponsables": ["101", "120", "123"] },
+        { "id": "L1.2", "nombre": "Fortalecimiento curricular y docente", "dependenciasResponsables": ["120", "123", "121"] },
+        { "id": "L1.3", "nombre": "Trayectoria y registro estudiantil", "dependenciasResponsables": ["126", "120"] }
+      ]
+    },
+    {
+      "id": "M2",
+      "nombre": "Cobertura y permanencia con equidad",
+      "descripcion": "Consolidar la operación de las nuevas sedes y reducir la deserción con acompañamiento integral.",
+      "indicador": "Estudiantes matriculados y tasa de deserción",
+      "lineasPDI": [
+        { "id": "L2.1", "nombre": "Infraestructura física y tecnológica de sedes", "dependenciasResponsables": ["130", "125", "132"] },
+        { "id": "L2.2", "nombre": "Bienestar y permanencia estudiantil", "dependenciasResponsables": ["122", "120"] },
+        { "id": "L2.3", "nombre": "Educación media técnica articulada", "dependenciasResponsables": ["124", "125"] }
+      ]
+    },
+    {
+      "id": "M3",
+      "nombre": "Investigación, extensión y transferencia con impacto",
+      "descripcion": "Convertir la investigación aplicada y la extensión en soluciones para el sector productivo y la sociedad.",
+      "indicador": "Productos de transferencia y proyectos de extensión ejecutados",
+      "lineasPDI": [
+        { "id": "L3.1", "nombre": "Investigación aplicada e innovación", "dependenciasResponsables": ["140", "123", "125"] },
+        { "id": "L3.2", "nombre": "Extensión y proyección social", "dependenciasResponsables": ["141", "140"] },
+        { "id": "L3.3", "nombre": "Internacionalización y alianzas estratégicas", "dependenciasResponsables": ["100", "141"] }
+      ]
+    },
+    {
+      "id": "M4",
+      "nombre": "Gestión institucional eficiente y transparente",
+      "descripcion": "Modernizar la gestión administrativa, financiera, digital y del talento humano con control y mejora continua.",
+      "indicador": "Índice de desempeño institucional (FURAG)",
+      "lineasPDI": [
+        { "id": "L4.1", "nombre": "Transformación digital y seguridad de la información", "dependenciasResponsables": ["132", "131"] },
+        { "id": "L4.2", "nombre": "Gestión estratégica del talento humano", "dependenciasResponsables": ["133"] },
+        { "id": "L4.3", "nombre": "Gestión financiera y contractual", "dependenciasResponsables": ["130", "110"] },
+        { "id": "L4.4", "nombre": "Control interno, planeación y mejora continua", "dependenciasResponsables": ["102", "101"] },
+        { "id": "L4.5", "nombre": "Atención al ciudadano y gestión documental", "dependenciasResponsables": ["131", "110"] }
+      ]
+    },
+    {
+      "id": "M5",
+      "nombre": "Posicionamiento y top of mind",
+      "descripcion": "Posicionar a la ETITC como la primera opción en formación técnica y tecnológica en Bogotá y la región.",
+      "indicador": "Recordación de marca e inscritos por cupo",
+      "lineasPDI": [
+        { "id": "L5.1", "nombre": "Comunicaciones y marca institucional", "dependenciasResponsables": ["100"] },
+        { "id": "L5.2", "nombre": "Relacionamiento con egresados y sector productivo", "dependenciasResponsables": ["141", "140", "100"] }
+      ]
+    }
+  ]
+}

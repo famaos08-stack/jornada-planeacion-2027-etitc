@@ -1,0 +1,211 @@
+{
+  "provisional": true,
+  "aviso": "AGENDA PROVISIONAL de ejemplo. Reemplace fecha, sede, horarios, moduladores y dependencias convocadas por la agenda aprobada por la OAPDI.",
+  "fecha": "2026-11-19",
+  "sede": "Sede Calle 13 — Auditorio principal y salas de trabajo (PROVISIONAL)",
+  "zonaHoraria": "America/Bogota",
+  "bloques": [
+    {
+      "id": "B01",
+      "inicio": "07:30",
+      "fin": "08:00",
+      "titulo": "Registro de asistentes con pase QR",
+      "modulador": "Equipo OAPDI",
+      "cargo": "Oficina Asesora de Planeación y Desarrollo Institucional",
+      "modalidad": "plenaria",
+      "tema": "logistica",
+      "sala": "Ingreso al auditorio",
+      "entregable": "Asistencia registrada por dependencia",
+      "insumo": "Pase de acceso (QR) emitido en la pestaña Formulación y Pase",
+      "guion": [
+        "Lectura del pase QR en el modo escáner",
+        "Registro manual para quienes no tengan el pase en el celular",
+        "Entrega del material de la jornada"
+      ],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B02",
+      "inicio": "08:00",
+      "fin": "09:00",
+      "titulo": "Apertura: hitos 2025–2026 y metas institucionales 2027",
+      "modulador": "Hno. Ariosto Ardila Silva",
+      "cargo": "Rector",
+      "modalidad": "plenaria",
+      "tema": "metas",
+      "sala": "Auditorio principal",
+      "entregable": "Metas institucionales 2027 socializadas a todas las dependencias",
+      "insumo": "Ninguno: bloque de contexto",
+      "guion": [
+        "Balance de los hitos 2025–2026: acreditación institucional de alta calidad, nuevas sedes y alianzas estratégicas",
+        "Presentación de las metas institucionales 2027 y su relación con el Plan de Desarrollo Institucional",
+        "Mensaje del Rector sobre el criterio de evidencia macro para 2027"
+      ],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B03",
+      "inicio": "09:00",
+      "fin": "09:30",
+      "titulo": "La cadena lógica de la planeación y cómo vamos a reportar en 2027",
+      "modulador": "Fabián Mauricio Ospina Castañeda",
+      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
+      "modalidad": "plenaria",
+      "tema": "metas",
+      "sala": "Auditorio principal",
+      "entregable": "Regla de evidencia macro comprendida por los equipos",
+      "insumo": "Plantilla Excel descargada desde el aplicativo",
+      "guion": [
+        "Metas 2027 → plan de acción → plan de necesidades → plan de adquisiciones",
+        "Por qué una necesidad sin acción es inválida y una adquisición sin necesidad también",
+        "Del modelo 2026 (muchos productos pequeños) al modelo 2027 (pocos informes macro de peso)"
+      ],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B04",
+      "inicio": "09:30",
+      "fin": "10:45",
+      "titulo": "Mesa 1 — Plan de acción 2027",
+      "modulador": "Fabián Mauricio Ospina Castañeda",
+      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
+      "modalidad": "mesa",
+      "tema": "accion",
+      "sala": "Salas de trabajo por dependencia",
+      "entregable": "Hoja Acciones diligenciada: acciones con meta, línea PDI, indicador y evidencia macro",
+      "insumo": "Resultados 2026 de la dependencia y metas institucionales 2027",
+      "guion": [
+        "Cada dependencia elige a qué meta 2027 y a qué línea del PDI aporta",
+        "Formulación de acciones consolidadas (idealmente menos de 15 por dependencia)",
+        "Definición de indicador, unidad de medida y meta cuantitativa",
+        "Compromiso de evidencia macro por acción"
+      ],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B05",
+      "inicio": "10:45",
+      "fin": "11:00",
+      "titulo": "Receso",
+      "modulador": "",
+      "cargo": "",
+      "modalidad": "plenaria",
+      "tema": "receso",
+      "sala": "",
+      "entregable": "",
+      "insumo": "",
+      "guion": [],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B06",
+      "inicio": "11:00",
+      "fin": "12:15",
+      "titulo": "Mesa 2 — Plan de necesidades",
+      "modulador": "Fabián Mauricio Ospina Castañeda",
+      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
+      "modalidad": "mesa",
+      "tema": "necesidades",
+      "sala": "Salas de trabajo por dependencia",
+      "entregable": "Hoja Necesidades diligenciada: cada necesidad amarrada a un código de acción",
+      "insumo": "Hoja Acciones terminada en la Mesa 1",
+      "guion": [
+        "Por cada acción, ¿qué bienes, servicios, talento humano o infraestructura se requieren?",
+        "Cantidad, valor estimado y trimestre en que se requiere",
+        "Verificación cruzada: ninguna necesidad sin código de acción válido"
+      ],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B07",
+      "inicio": "12:15",
+      "fin": "13:30",
+      "titulo": "Almuerzo",
+      "modulador": "",
+      "cargo": "",
+      "modalidad": "plenaria",
+      "tema": "receso",
+      "sala": "",
+      "entregable": "",
+      "insumo": "",
+      "guion": [],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B08",
+      "inicio": "13:30",
+      "fin": "14:45",
+      "titulo": "Mesa 3 — Plan de adquisiciones y fechas de radicación",
+      "modulador": "Fabián Mauricio Ospina Castañeda",
+      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
+      "modalidad": "mesa",
+      "tema": "adquisiciones",
+      "sala": "Salas de trabajo por dependencia",
+      "entregable": "Hoja Adquisiciones diligenciada con modalidad y fecha límite de radicación de estudios previos",
+      "insumo": "Hoja Necesidades terminada en la Mesa 2",
+      "guion": [
+        "Asignar modalidad de contratación a cada necesidad que se compra",
+        "Calcular hacia atrás la fecha de radicación de estudios previos con el calculador",
+        "Identificar radicaciones que se cruzan en los mismos meses"
+      ],
+      "dependencias": ["todas"]
+    },
+    {
+      "id": "B09",
+      "inicio": "14:45",
+      "fin": "15:30",
+      "titulo": "Clínica de adquisiciones con Contratación",
+      "modulador": "Equipo de Contratación y Adquisiciones",
+      "cargo": "Vicerrectoría Administrativa y Financiera",
+      "modalidad": "mesa",
+      "tema": "adquisiciones",
+      "sala": "Sala de juntas VAF",
+      "entregable": "Modalidades revisadas para las compras de mayor cuantía",
+      "insumo": "Hoja Adquisiciones con las compras de mayor valor",
+      "guion": [
+        "Revisión de modalidades propuestas frente a topes y tiempos",
+        "Agrupación de compras repetidas entre dependencias",
+        "Alertas de radicación tardía"
+      ],
+      "dependencias": ["130", "125", "132", "121", "131"]
+    },
+    {
+      "id": "B10",
+      "inicio": "14:45",
+      "fin": "15:30",
+      "titulo": "Mesa de articulación misional",
+      "modulador": "Equipo de la Vicerrectoría Académica",
+      "cargo": "Vicerrectoría Académica",
+      "modalidad": "mesa",
+      "tema": "accion",
+      "sala": "Sala de consejo académico",
+      "entregable": "Acciones misionales sin duplicidad entre dependencias",
+      "insumo": "Hoja Acciones de cada dependencia misional",
+      "guion": [
+        "Cruce de acciones entre facultades, IBTI, investigación y extensión",
+        "Consolidación de acciones repetidas en una sola acción con varios responsables"
+      ],
+      "dependencias": ["120", "123", "124", "126", "140", "141", "122"]
+    },
+    {
+      "id": "B11",
+      "inicio": "15:30",
+      "fin": "16:30",
+      "titulo": "Cierre: consolidación, validación de la OAPDI y compromisos",
+      "modulador": "Jorge Herrera Ortíz",
+      "cargo": "Jefe de la Oficina Asesora de Planeación y Desarrollo Institucional",
+      "modalidad": "plenaria",
+      "tema": "cierre",
+      "sala": "Auditorio principal",
+      "entregable": "Acta de compromisos con fechas y Excel validado por dependencia",
+      "insumo": "Excel diligenciado y validado en el aplicativo (pase emitido)",
+      "guion": [
+        "Tablero consolidado de necesidades y adquisiciones en vivo",
+        "Validación de la OAPDI: dependencias pendientes y ajustes",
+        "Compromisos: entrega del Excel definitivo (fecha provisional: 27 de noviembre de 2026)",
+        "Compromisos: aprobación del Plan Anual de Adquisiciones (fecha provisional: 15 de diciembre de 2026)"
+      ],
+      "dependencias": ["todas"]
+    }
+  ]
+}

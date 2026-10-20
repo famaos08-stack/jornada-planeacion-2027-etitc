@@ -1,0 +1,95 @@
+/*
+ * tokens.css — Variables de diseño de la Jornada de Planeación 2027 (ETITC).
+ * Las variables de :root son las de la identidad visual obligatoria; no cambiar sus valores.
+ * Se agregan tokens derivados (estados, categorías de gráficas, modo oscuro) sin alterar los oficiales.
+ */
+
+:root {
+  /* — Identidad visual obligatoria — */
+  --bg: #f4f7f4;
+  --surface: #ffffff;
+  --surface-2: #eef4ef;
+  --ink: #13332a;
+  --text: #3d5950;
+  --muted: #6d847c;
+  --line: #d7e4dc;
+  --g9: #0b4d3b;
+  --g8: #0f6b4b;
+  --g7: #188b58;
+  --g6: #22a060;
+  --g5: #47b96f;
+  --lime: #8ad058;
+  --gold: #f0b545;
+  --danger: #c0392b;
+  --shadow: 0 20px 60px rgba(10, 51, 38, .08);
+  --shadow-sm: 0 12px 28px rgba(10, 51, 38, .07);
+  --rxl: 34px;
+  --rlg: 24px;
+  --rmd: 18px;
+  --container: 1280px;
+  --ease: 280ms cubic-bezier(.2, .7, .2, 1);
+
+  /* — Tokens derivados — */
+  /* Texto secundario con contraste AA: --muted (#6d847c) da 3,7:1 sobre --bg; se reserva para íconos y bordes */
+  --muted-texto: #587068;
+  /* Verde para texto sobre blanco con contraste AA (--g7 da 4,3:1) */
+  --verde-texto: var(--g8);
+  --font: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --rsm: 12px;
+  --pill: 999px;
+  --focus: 0 0 0 3px var(--surface), 0 0 0 6px var(--g6);
+  --glass: rgba(255, 255, 255, .78);
+  --wash-1: rgba(71, 185, 111, .16);
+  --wash-2: rgba(138, 208, 88, .14);
+  --wash-3: rgba(11, 77, 59, .10);
+  --hero: linear-gradient(135deg, var(--g9) 0%, var(--g8) 55%, var(--g7) 100%);
+  --amber: #8a5a00;          /* texto ámbar con contraste AA sobre fondos claros */
+  --amber-bg: #fff4dc;
+  --danger-bg: #fdecea;
+  --ok-bg: #e6f5ec;
+  --skeleton: linear-gradient(90deg, var(--surface-2) 0%, #f8fbf9 50%, var(--surface-2) 100%);
+
+  /* Paleta categórica validada (CVD) para gráficas: orden fijo, nunca se recicla */
+  --cat-1: #188b58;
+  --cat-2: #3f6fb0;
+  --cat-3: #c08a1e;
+  --cat-4: #b85a7a;
+
+  /* Tipos de proceso del mapa institucional */
+  --proc-estrategico: var(--cat-1);
+  --proc-misional: var(--cat-2);
+  --proc-apoyo: var(--cat-3);
+  --proc-evaluacion: var(--cat-4);
+
+  color-scheme: light;
+}
+
+/* Modo oscuro: pasos propios, no una inversión automática */
+:root[data-theme="dark"] {
+  --bg: #0b1814;
+  --surface: #11221d;
+  --surface-2: #172d26;
+  --ink: #eaf5ef;
+  --text: #c2d8cf;
+  --muted: #93aea4;
+  --muted-texto: #a3bcb2;
+  --verde-texto: var(--g5);
+  --line: #24413a;
+  --shadow: 0 20px 60px rgba(0, 0, 0, .38);
+  --shadow-sm: 0 12px 28px rgba(0, 0, 0, .3);
+  --glass: rgba(17, 34, 29, .78);
+  --wash-1: rgba(34, 160, 96, .16);
+  --wash-2: rgba(138, 208, 88, .07);
+  --wash-3: rgba(11, 77, 59, .35);
+  --amber: #f3c46a;
+  --amber-bg: #3a2c0f;
+  --danger: #ef7a6c;
+  --danger-bg: #3b1714;
+  --ok-bg: #12352a;
+  --skeleton: linear-gradient(90deg, var(--surface-2) 0%, #1f3a32 50%, var(--surface-2) 100%);
+  --cat-1: #2f9e63;
+  --cat-2: #5a86cc;
+  --cat-3: #b07f22;
+  --cat-4: #c46b8b;
+  color-scheme: dark;
+}

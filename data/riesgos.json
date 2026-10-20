@@ -1,0 +1,34 @@
+{
+  "provisional": true,
+  "aviso": "Inventario de riesgos de EJEMPLO (PROVISIONAL). Solo se usa si FEATURES.mapaRiesgos = true en src/config.js. Reemplace con el mapa de riesgos institucional vigente. Probabilidad e impacto van de 1 a 5.",
+  "escalas": {
+    "probabilidad": ["Rara vez", "Improbable", "Posible", "Probable", "Casi seguro"],
+    "impacto": ["Leve", "Menor", "Moderado", "Mayor", "Catastrófico"]
+  },
+  "procesos": [
+    { "id": "PE1", "nombre": "Direccionamiento estratégico", "tipoProceso": "estrategico", "dependencias": ["100", "101"] },
+    { "id": "PE2", "nombre": "Gestión de TIC", "tipoProceso": "estrategico", "dependencias": ["132"] },
+    { "id": "PE3", "nombre": "Gestión del talento humano", "tipoProceso": "estrategico", "dependencias": ["133"] },
+    { "id": "PM1", "nombre": "Docencia", "tipoProceso": "misional", "dependencias": ["120", "123", "124"] },
+    { "id": "PM2", "nombre": "Investigación", "tipoProceso": "misional", "dependencias": ["140"] },
+    { "id": "PM3", "nombre": "Extensión y proyección social", "tipoProceso": "misional", "dependencias": ["141"] },
+    { "id": "PA1", "nombre": "Gestión contractual", "tipoProceso": "apoyo", "dependencias": ["130", "110"] },
+    { "id": "PA2", "nombre": "Bienestar universitario", "tipoProceso": "apoyo", "dependencias": ["122"] },
+    { "id": "PA3", "nombre": "Gestión de recursos físicos", "tipoProceso": "apoyo", "dependencias": ["130", "125"] },
+    { "id": "PA4", "nombre": "Gestión documental", "tipoProceso": "apoyo", "dependencias": ["131"] },
+    { "id": "PV1", "nombre": "Evaluación y control", "tipoProceso": "evaluacion", "dependencias": ["102"] }
+  ],
+  "riesgos": [
+    { "id": "R01", "proceso": "PE1", "descripcion": "Formulación del plan de acción sin articulación con las metas institucionales", "causa": "Planeación por dependencia sin cadena lógica", "consecuencia": "Incumplimiento de metas y hallazgos de auditoría", "probabilidad": 3, "impacto": 4, "responsable": "Jefe OAPDI", "controles": [ { "descripcion": "Validación automática de la cadena lógica en el aplicativo de la jornada", "tipo": "Preventivo", "responsable": "OAPDI" } ] },
+    { "id": "R02", "proceso": "PA1", "descripcion": "Radicación tardía de estudios previos", "causa": "Desconocimiento de los tiempos por modalidad", "consecuencia": "Necesidades sin atender a tiempo y rezago presupuestal", "probabilidad": 4, "impacto": 4, "responsable": "Vicerrector Administrativo y Financiero", "controles": [ { "descripcion": "Calculador de fecha límite y alertas a 30 días", "tipo": "Preventivo", "responsable": "Contratación" } ] },
+    { "id": "R03", "proceso": "PE2", "descripcion": "Pérdida de disponibilidad de los sistemas académicos", "causa": "Obsolescencia de infraestructura y ataques informáticos", "consecuencia": "Interrupción de matrículas y clases", "probabilidad": 2, "impacto": 5, "responsable": "Coordinador GIT Informática", "controles": [ { "descripcion": "Plan de continuidad y copias de respaldo", "tipo": "Correctivo", "responsable": "Seguridad digital" } ] },
+    { "id": "R04", "proceso": "PM1", "descripcion": "Pérdida de condiciones de calidad de programas", "causa": "Rezago en planes de mejoramiento", "consecuencia": "Afectación de registros calificados y acreditación", "probabilidad": 2, "impacto": 5, "responsable": "Vicerrector Académico", "controles": [ { "descripcion": "Seguimiento semestral a planes de mejoramiento", "tipo": "Detectivo", "responsable": "Aseguramiento de la calidad" } ] },
+    { "id": "R05", "proceso": "PA2", "descripcion": "Aumento de la deserción en las nuevas sedes", "causa": "Cobertura insuficiente de servicios de bienestar", "consecuencia": "Incumplimiento de la meta de permanencia", "probabilidad": 3, "impacto": 3, "responsable": "Coordinador GIT Bienestar", "controles": [ { "descripcion": "Alertas tempranas de permanencia", "tipo": "Preventivo", "responsable": "Bienestar" } ] },
+    { "id": "R06", "proceso": "PE3", "descripcion": "Rotación de personal clave en procesos misionales", "causa": "Vinculación por contrato de prestación de servicios", "consecuencia": "Pérdida de conocimiento institucional", "probabilidad": 4, "impacto": 3, "responsable": "Coordinador GIT Talento Humano", "controles": [ { "descripcion": "Gestión del conocimiento y empalmes documentados", "tipo": "Preventivo", "responsable": "Talento Humano" } ] },
+    { "id": "R07", "proceso": "PA3", "descripcion": "Deterioro de talleres y laboratorios", "causa": "Mantenimiento preventivo insuficiente", "consecuencia": "Prácticas suspendidas y riesgo para estudiantes", "probabilidad": 3, "impacto": 4, "responsable": "Coordinador GIT Talleres y Laboratorios", "controles": [ { "descripcion": "Plan anual de mantenimiento", "tipo": "Preventivo", "responsable": "Recursos físicos" } ] },
+    { "id": "R08", "proceso": "PA4", "descripcion": "Pérdida de expedientes y archivos", "causa": "Gestión documental en papel sin digitalizar", "consecuencia": "Incumplimiento de la Ley de Archivos", "probabilidad": 2, "impacto": 3, "responsable": "Coordinador GIT Gestión Documental", "controles": [ { "descripcion": "Tablas de retención aplicadas y digitalización", "tipo": "Preventivo", "responsable": "Gestión documental" } ] },
+    { "id": "R09", "proceso": "PM2", "descripcion": "Baja productividad de los grupos de investigación", "causa": "Carga docente alta y recursos limitados", "consecuencia": "Pérdida de categoría de grupos", "probabilidad": 3, "impacto": 3, "responsable": "Vicerrectora de Investigación", "controles": [ { "descripcion": "Convocatorias internas con metas de producción", "tipo": "Preventivo", "responsable": "Investigación" } ] },
+    { "id": "R10", "proceso": "PV1", "descripcion": "Evidencias de cumplimiento dispersas y sin trazabilidad", "causa": "Reporte por lotes de productos menores", "consecuencia": "Seguimiento débil y hallazgos repetidos", "probabilidad": 4, "impacto": 2, "responsable": "Jefe de Control Interno", "controles": [ { "descripcion": "Reporte por informes macro de evidencia", "tipo": "Detectivo", "responsable": "Control Interno" } ] },
+    { "id": "R11", "proceso": "PM3", "descripcion": "Convenios de extensión sin ejecución financiera", "causa": "Débil seguimiento a convenios", "consecuencia": "Pérdida de recursos propios", "probabilidad": 2, "impacto": 2, "responsable": "Coordinador GIT Extensión", "controles": [ { "descripcion": "Comité de seguimiento de convenios", "tipo": "Detectivo", "responsable": "Extensión" } ] }
+  ]
+}

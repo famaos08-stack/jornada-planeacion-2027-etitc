@@ -1,0 +1,107 @@
+<!doctype html>
+<!--
+  index.html — Punto de entrada de la Jornada de Planeación 2027 (ETITC · OAPDI).
+  Sitio 100 % estático: funciona servido por HTTP (GitHub Pages) y abierto con doble clic (file://).
+  Por HTTP carga src/app.js como módulo ES6. En file:// los navegadores bloquean los módulos,
+  así que carga dist/app.bundle.js y data/datos.bundle.js (generados por tools/empaquetar.mjs).
+-->
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Jornada de Planeación 2027 — ETITC</title>
+  <meta name="description" content="Aplicativo de la Jornada de Planeación 2027 de la Escuela Tecnológica Instituto Técnico Central: agenda, formulación, pase de acceso, metas, plan de necesidades y plan de adquisiciones.">
+  <meta name="theme-color" content="#0b4d3b">
+  <link rel="icon" type="image/png" href="assets/logo-etitc-sello.png">
+
+  <!-- Tema antes de pintar, para evitar parpadeo -->
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('etitc-jp27:tema'); } catch (e) { /* sin almacenamiento */ }
+      if (!t) t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
+  <link rel="stylesheet" href="src/styles/tokens.css">
+  <link rel="stylesheet" href="src/styles/base.css">
+  <link rel="stylesheet" href="src/styles/components.css">
+  <link rel="stylesheet" href="src/styles/tabs.css">
+
+  <!-- Librerías externas: versión fija y exacta, con verificación de integridad. Si alguna no carga, la app degrada y avisa. -->
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js" integrity="sha384-c9d8RFSL+u3exBOJ4Yp3HUJXS4znl9f+z66d1y54ig+ea249SpqR+w1wyvXz/lk+" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.js" integrity="sha384-dug+JxfBvklEQdJ4AYuBBAIScUz0bVN73xpy273gcAwHjb3qI0fXmuYNaNfdyYJG" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js" integrity="sha384-ZZ1pncU3bQe8y31yfZdMFdSpttDoPmOZg2wguVK9almUodir1PghgT0eY7Mrty8H" crossorigin="anonymous"></script>
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#agenda" aria-label="Jornada de Planeación 2027 — inicio">
+        <img class="brand-logo" src="assets/logo-etitc-sello.png" alt="Escudo de la ETITC" width="46" height="46" data-logo-sello>
+        <span class="brand-text">
+          <span class="brand-title">Jornada de Planeación 2027</span>
+          <span class="brand-sub">Oficina Asesora de Planeación y Desarrollo Institucional</span>
+        </span>
+      </a>
+      <nav class="tabs" id="pestanas" aria-label="Secciones"></nav>
+      <div class="topbar-actions">
+        <a class="btn btn-primary btn-sm" href="#escaner" id="btn-escaner" aria-label="Modo escáner">
+          <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M7 12h10"/></svg>
+          <span class="btn-texto">Escáner</span>
+        </a>
+        <button type="button" class="btn btn-icon btn-sm" id="btn-tema" aria-label="Cambiar a modo oscuro" aria-pressed="false"></button>
+      </div>
+    </div>
+  </header>
+
+  <section class="progress-strip" id="franja-progreso" aria-label="Progreso institucional"></section>
+
+  <main id="contenido" tabindex="-1">
+    <div class="container" aria-busy="true" style="padding-top:32px">
+      <div class="skeleton skeleton-title"></div>
+      <div class="skeleton skeleton-card"></div>
+    </div>
+  </main>
+
+  <footer class="site-foot no-print">
+    <div class="container">
+      <div class="row-between">
+        <span>Escuela Tecnológica Instituto Técnico Central · Establecimiento Público de Educación Superior</span>
+        <span id="pie-datos">Oficina Asesora de Planeación y Desarrollo Institucional</span>
+      </div>
+    </div>
+  </footer>
+
+  <noscript>
+    <div class="container"><div class="notice notice-danger" style="margin:24px 0">Esta aplicación necesita JavaScript activo para funcionar.</div></div>
+  </noscript>
+
+  <!-- Arranque: módulo ES6 por HTTP; paquete clásico en file:// -->
+  <script>
+    (function () {
+      if (location.protocol === 'file:') {
+        document.write('<script src="data/datos.bundle.js"><\/script><script src="dist/app.bundle.js"><\/script>');
+      } else {
+        var s = document.createElement('script');
+        s.type = 'module';
+        s.src = 'src/app.js';
+        s.onerror = function () {
+          var m = document.getElementById('contenido');
+          if (m) m.innerHTML = '<div class="container"><div class="notice notice-danger" style="margin:32px 0"><strong>No se pudo iniciar la aplicación.</strong>&nbsp;Recargue la página. Si el problema continúa, verifique que la carpeta src/ esté publicada.</div></div>';
+        };
+        document.body.appendChild(s);
+      }
+    })();
+  </script>
+</body>
+</html>

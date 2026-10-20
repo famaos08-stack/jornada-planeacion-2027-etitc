@@ -1,0 +1,53 @@
+# pages.yml — Despliegue automático en GitHub Pages desde la rama main.
+# Regenera los paquetes para file:// (sin npm install), valida los JSON de /data y publica el sitio estático.
+name: Desplegar en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  desplegar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Preparar Node.js (solo para el empaquetador, sin dependencias)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Validar los archivos JSON de /data
+        run: |
+          for f in data/*.json; do
+            node -e "JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'))" "$f" || { echo "JSON inválido: $f"; exit 1; }
+          done
+
+      - name: Regenerar dist/app.bundle.js y data/datos.bundle.js
+        run: node tools/empaquetar.mjs
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir el sitio
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Publicar
+        id: despliegue
+        uses: actions/deploy-pages@v4
