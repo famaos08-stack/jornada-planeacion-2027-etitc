@@ -1,300 +1,108 @@
 /*
- * necesidades.js — Pestaña 4: tablero del plan de necesidades consolidado de todas las dependencias que cargaron.
- * Cifras, distribución por tipo y por trimestre, valor por dependencia agrupado por tipo de proceso,
- * tabla maestra con trazabilidad a la acción de origen, panel lateral de detalle y exportación a Excel.
- * Incluye cargue masivo de Excel para que la OAPDI consolide los archivos recibidos.
+ * necesidades.js — Pestaña 3: Plan de necesidades.
+ * Descarga de la plantilla «Plan de Necesidades 2027», cargue del plan formulado por el área, validación con las
+ * reglas de la columna «Alerta de consistencia» y cruce con las acciones del Plan de acción ya registrado.
+ * El registro deja la constancia (dependencia, responsable, correos y enlace) y avisa por correo.
  */
-import { estado, on as alEvento, dependencia, dependencias } from '../estado.js';
-import { esc, on } from '../ui/dom.js';
+import { estado, area as areaPorId, dependencia, registroVigente } from '../estado.js';
+import { esc } from '../ui/dom.js';
 import { icono } from '../ui/iconos.js';
-import { toast, toastError } from '../ui/toast.js';
-import { abrirPanel } from '../ui/modal.js';
-import { crearTabla } from '../ui/table.js';
-import { graficaBarras } from '../ui/graficas.js';
-import { tarjetaCifra, estadoVacio, activarAnimaciones, animarNumero, barrasHorizontales, cadenaLogica } from '../ui/cards.js';
-import { leerLibro, exportarExcel, xlsxDisponible } from '../lib/excel.js';
-import { validarFormulacion, leerDependenciaDeLibro, TIPOS_NECESIDAD } from '../lib/validacion.js';
-import { descargarBlob, obtenerLogo } from '../lib/export.js';
-import { moneda, entero } from '../lib/formato.js';
-import { fechaCorta } from '../lib/fechas.js';
-import { PALETA, TIPOS_PROCESO, TIPOS_PROCESO_PLURAL } from '../config.js';
+import { montarFlujo } from '../ui/cargue.js';
+import { validarNecesidades } from '../lib/validar-necesidades.js';
+import { entero, moneda, monedaCompacta } from '../lib/formato.js';
+import { fechaCorta, horaLegible } from '../lib/fechas.js';
 
-let raiz = null;
-let ctxApp = null;
-let tabla = null;
-let medida = 'valor';
-const nombreTipo = (id) => TIPOS_NECESIDAD.find((t) => t.id === id)?.nombre || 'Sin tipo';
-
-// Aplana las formulaciones en filas de necesidades con su trazabilidad.
-export function filasNecesidades() {
-  const metas = estado.datos.metas?.metasInstitucionales || [];
-  const lineas = metas.flatMap((m) => m.lineasPDI || []);
-  return estado.consolidado.formulaciones.flatMap((f) => {
-    const d = dependencia(f.dependencia);
-    const acciones = new Map((f.acciones || []).map((a) => [a.codigo, a]));
-    return (f.necesidades || []).map((n) => {
-      const accion = n.codigoAccion ? acciones.get(n.codigoAccion) : null;
-      return {
-        ...n,
-        dependencia: f.dependencia,
-        depSigla: d?.sigla || f.dependencia,
-        depNombre: d?.nombre || f.dependencia,
-        tipoProceso: d?.tipoProceso || '',
-        estadoFormulacion: f.estado,
-        archivo: f.archivo,
-        cargadoEn: f.cargadoEn,
-        accion,
-        meta: accion ? metas.find((m) => m.id === accion.metaId) : null,
-        linea: accion ? lineas.find((l) => l.id === accion.lineaId) : null,
-        adquisiciones: (f.adquisiciones || []).filter((a) => a.codigoNecesidad === n.codigo),
-        trimestreTxt: n.trimestre ? `T${n.trimestre}` : '—'
-      };
-    });
-  });
-}
-
-function trazabilidad(f) {
-  if (f.accion) return `<span class="traza-ok"><span class="mono">${esc(f.accion.codigo)}</span> ${esc(f.accion.nombre)}</span>`;
-  return `<span class="trace-missing">${icono('alerta', 'icon-sm')}sin acción asociada</span>`;
-}
-
-function abrirDetalle(f) {
-  const nodo = (num, titulo, cuerpo, ok = true) => `<li class="traza-nodo ${ok ? '' : 'is-roto'}"><span class="chain-num">${num}</span><div><span class="eyebrow">${esc(titulo)}</span>${cuerpo}</div></li>`;
-  const contenido = `
-    <div class="stack">
-      <div class="row" style="gap:6px">
-        <span class="badge proc-${esc(f.tipoProceso)}"><span class="proc-dot"></span>${esc(f.dependencia)} · ${esc(f.depNombre)}</span>
-        <span class="badge">${esc(nombreTipo(f.tipo))}</span>
-        <span class="badge">${esc(f.trimestreTxt)}</span>
-        <span class="badge ${f.estadoFormulacion === 'validada' ? 'badge-ok' : 'badge-danger'}">${f.estadoFormulacion === 'validada' ? 'Formulación validada' : 'Formulación con bloqueantes'}</span>
-      </div>
-      <dl class="dl">
-        <dt>Descripción</dt><dd>${esc(f.descripcion || '—')}</dd>
-        <dt>Cantidad</dt><dd>${f.cantidad === null || f.cantidad === undefined ? '—' : entero(f.cantidad)}</dd>
-        <dt>Valor estimado</dt><dd><strong>${moneda(f.valor || 0)}</strong></dd>
-        <dt>Justificación</dt><dd>${esc(f.justificacion || '—')}</dd>
-        <dt>Archivo</dt><dd>${esc(f.archivo)} · ${esc(fechaCorta(String(f.cargadoEn).slice(0, 10)))}</dd>
-      </dl>
-      <h3 style="margin-top:8px">Trazabilidad en la cadena lógica</h3>
-      <ol class="traza">
-        ${nodo(1, 'Meta 2027', f.meta ? `<strong>${esc(f.meta.id)} · ${esc(f.meta.nombre)}</strong>` : '<span class="muted">Sin meta identificada</span>', Boolean(f.meta))}
-        ${nodo(2, 'Línea del PDI', f.linea ? `<strong>${esc(f.linea.id)} · ${esc(f.linea.nombre)}</strong>` : '<span class="muted">Sin línea identificada</span>', Boolean(f.linea))}
-        ${nodo(3, 'Acción que la origina', f.accion
-          ? `<strong>${esc(f.accion.codigo)} · ${esc(f.accion.nombre)}</strong><p class="mb-0 muted">Indicador: ${esc(f.accion.indicador)} · Meta ${esc(f.accion.metaCuantitativaTexto)} ${esc(f.accion.unidad)} · Evidencia: ${esc(f.accion.evidencia || 'sin evidencia macro')}</p>`
-          : `<strong class="danger-text">Sin acción asociada</strong><p class="mb-0 muted">${f.codigoAccion ? `El código ${esc(f.codigoAccion)} no existe en la hoja Acciones.` : 'No se indicó el código de acción.'} Esta necesidad no es válida en el plan.</p>`, Boolean(f.accion))}
-        ${nodo(4, 'Necesidad', `<strong>${esc(f.codigo)} · ${esc(f.descripcion)}</strong>`)}
-        ${nodo(5, 'Adquisiciones', f.adquisiciones.length
-          ? `<ul class="nodo-acciones">${f.adquisiciones.map((a) => `<li>${esc(a.modalidadTexto || 'Sin modalidad')} · ${moneda(a.valor || 0)}${a.fechaRadicacion ? ` · radicar antes del ${esc(fechaCorta(a.fechaRadicacion))}` : ''}</li>`).join('')}</ul>`
-          : '<span class="muted">Aún no tiene adquisición asociada (puede resolverse sin compra).</span>', true)}
-      </ol>
-    </div>`;
-  abrirPanel({ titulo: `Necesidad ${f.codigo}`, subtitulo: `${f.depSigla} · ${moneda(f.valor || 0)}`, contenido });
-}
-
-function pintar() {
-  const filas = filasNecesidades();
-  const cont = raiz.querySelector('[data-tablero]');
-  if (!estado.consolidado.formulaciones.length) {
-    tabla = null;
-    cont.innerHTML = estadoVacio({
-      titulo: 'Aún no hay necesidades consolidadas',
-      texto: 'Este tablero se alimenta de los Excel validados en la pestaña <strong>Formulación y pase</strong>. Cuando una dependencia carga su archivo, sus necesidades aparecen aquí con la acción que las origina. La OAPDI también puede cargar de una vez los archivos recibidos por correo.',
-      iconoNombre: 'necesidades',
-      accion: `<a class="btn btn-primary" href="#formulacion">${icono('formulacion', 'icon-sm')}Ir a Formulación y pase</a><button type="button" class="btn" data-cargue-masivo>${icono('subir', 'icon-sm')}Cargar Excel de dependencias</button>`
-    }) + `<div class="vacio-cadena">${cadenaLogica({ activo: 'necesidades' })}</div>`;
-    activarAnimaciones(cont);
-    return;
-  }
-  const total = filas.length;
-  const valor = filas.reduce((s, f) => s + (f.valor || 0), 0);
-  const conAccion = filas.filter((f) => f.accion).length;
-  const depsReportaron = new Set(estado.consolidado.formulaciones.map((f) => f.dependencia)).size;
-  const totalDeps = dependencias().length;
-  if (!cont.querySelector('[data-cifras]')) {
-    cont.innerHTML = `
-      <div class="grid-4" data-cifras>
-        ${tarjetaCifra({ etiqueta: 'Necesidades registradas', valor: total, iconoNombre: 'necesidades', id: 'c-total' })}
-        ${tarjetaCifra({ etiqueta: 'Valor total consolidado', valor, formato: 'monedaCompacta', iconoNombre: 'dinero', id: 'c-valor', pie: `<span data-valor-exacto>${moneda(valor)}</span>` })}
-        ${tarjetaCifra({ etiqueta: 'Dependencias que reportaron', valor: depsReportaron, iconoNombre: 'edificio', id: 'c-deps', pie: `de ${totalDeps} del catálogo` })}
-        ${tarjetaCifra({ etiqueta: 'Con acción asociada', valor: total ? (conAccion / total) * 100 : 0, formato: 'porcentaje', iconoNombre: 'enlace', id: 'c-traza', pie: `<span data-sin-accion></span>` })}
-      </div>
-      <div class="row-between" style="margin:26px 0 12px">
-        <h2 class="mb-0">Distribución</h2>
-        <div class="segmentado" role="group" aria-label="Medida de las gráficas">
-          <button type="button" class="chip" data-medida="valor" aria-pressed="true">Valor</button>
-          <button type="button" class="chip" data-medida="cantidad" aria-pressed="false">Número de necesidades</button>
-        </div>
-      </div>
-      <div class="grid-3 tablero-graficas">
-        <div class="card reveal"><h3>Por tipo</h3><p class="muted" style="font-size:.84rem">Bien, servicio, talento humano e infraestructura.</p><div data-g-tipo></div></div>
-        <div class="card reveal"><h3>Por trimestre requerido</h3><p class="muted" style="font-size:.84rem">Cuándo se necesita cada cosa en 2027.</p><div data-g-trim></div></div>
-        <div class="card reveal"><h3>Por dependencia</h3><p class="muted" style="font-size:.84rem">Agrupadas por tipo de proceso del mapa institucional.</p><div data-g-dep class="dep-scroll"></div></div>
-      </div>
-      <div class="card reveal" style="margin-top:22px">
-        <div class="card-head"><div><h2>Tabla maestra</h2><p>Haga clic en una fila para ver su trazabilidad completa.</p></div></div>
-        <div data-tabla></div>
-      </div>`;
-    on(cont, 'click', '[data-medida]', (ev, b) => {
-      medida = b.dataset.medida;
-      cont.querySelectorAll('[data-medida]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      pintarGraficas(filasNecesidades());
-    });
-    activarAnimaciones(cont);
-  } else {
-    animarNumero(cont.querySelector('#c-total .stat-value'), total);
-    animarNumero(cont.querySelector('#c-valor .stat-value'), valor);
-    animarNumero(cont.querySelector('#c-deps .stat-value'), depsReportaron);
-    animarNumero(cont.querySelector('#c-traza .stat-value'), total ? (conAccion / total) * 100 : 0);
-    cont.querySelector('[data-valor-exacto]').textContent = moneda(valor);
-  }
-  cont.querySelector('#c-traza').classList.toggle('is-alert', conAccion < total);
-  cont.querySelector('[data-sin-accion]').innerHTML = conAccion < total ? `<span class="danger-text">${total - conAccion} sin acción asociada</span>` : 'Toda necesidad nace de una acción';
-  pintarGraficas(filas);
-  pintarTabla(filas);
-}
-
-function pintarGraficas(filas) {
-  const cont = raiz.querySelector('[data-tablero]');
-  const agregado = (lista) => (medida === 'valor' ? lista.reduce((s, f) => s + (f.valor || 0), 0) : lista.length);
-  const formato = medida === 'valor' ? 'moneda' : 'entero';
-  const cat = PALETA.categorica();
-  graficaBarras(cont.querySelector('[data-g-tipo]'), {
-    etiquetas: TIPOS_NECESIDAD.map((t) => t.nombre),
-    series: [{ nombre: medida === 'valor' ? 'Valor' : 'Necesidades', datos: TIPOS_NECESIDAD.map((t) => agregado(filas.filter((f) => f.tipo === t.id))), colores: cat }],
-    formato, horizontal: true, alto: 230, titulo: 'Necesidades por tipo'
-  });
-  graficaBarras(cont.querySelector('[data-g-trim]'), {
-    etiquetas: ['T1', 'T2', 'T3', 'T4'],
-    series: [{ nombre: medida === 'valor' ? 'Valor' : 'Necesidades', datos: [1, 2, 3, 4].map((t) => agregado(filas.filter((f) => f.trimestre === t))) }],
-    formato, alto: 230, titulo: 'Necesidades por trimestre'
-  });
-  const grupos = ['estrategico', 'misional', 'apoyo', 'evaluacion'].map((tp) => {
-    const items = dependencias().filter((d) => d.tipoProceso === tp)
-      .map((d) => ({ etiqueta: `${d.codigo} · ${d.sigla}`, valor: agregado(filas.filter((f) => String(f.dependencia) === String(d.codigo))), clase: `proc-${tp}`, proc: true }))
-      .filter((i) => i.valor > 0).sort((a, b) => b.valor - a.valor);
-    return { tp, items };
-  }).filter((g) => g.items.length);
-  cont.querySelector('[data-g-dep]').innerHTML = grupos.length
-    ? grupos.map((g) => `<div class="grupo-proc"><span class="grupo-proc-tit proc-${g.tp}"><span class="proc-dot"></span>${esc(TIPOS_PROCESO_PLURAL[g.tp])}</span>${barrasHorizontales(g.items, { formato: medida === 'valor' ? 'monedaCompacta' : 'entero' })}</div>`).join('')
-    : '<p class="muted">Sin datos.</p>';
-}
-
-function pintarTabla(filas) {
-  const cont = raiz.querySelector('[data-tabla]');
-  if (tabla) { tabla.actualizar(filas); return; }
-  const depsConDatos = Array.from(new Set(filas.map((f) => f.dependencia))).sort();
-  tabla = crearTabla(cont, {
-    etiqueta: 'Necesidades consolidadas',
-    filas,
-    placeholder: 'Buscar por descripción, código, acción o dependencia…',
-    porPagina: estado.datos.config?.umbrales?.filasPorPagina || 12,
-    filtros: [
-      { clave: 'dependencia', etiqueta: 'Dependencia', opciones: dependencias().map((d) => ({ valor: d.codigo, texto: `${d.codigo} · ${d.sigla}${depsConDatos.includes(d.codigo) ? '' : ' (sin datos)'}` })) },
-      { clave: 'tipo', etiqueta: 'Tipo', opciones: TIPOS_NECESIDAD.map((t) => ({ valor: t.id, texto: t.nombre })) },
-      { clave: 'trimestre', etiqueta: 'Trimestre', opciones: [1, 2, 3, 4].map((t) => ({ valor: String(t), texto: `T${t}` })) }
-    ],
-    accionesHtml: `<button type="button" class="btn" data-exportar ${xlsxDisponible() ? '' : 'disabled'}>${icono('excel', 'icon-sm')}Exportar filtrado</button>`,
-    columnas: [
-      { clave: 'dependencia', titulo: 'Dependencia', valor: (f) => `${f.dependencia} ${f.depSigla}`, render: (f) => `<span class="dep-cel proc-${esc(f.tipoProceso)}"><span class="proc-dot"></span><span><strong>${esc(f.depSigla)}</strong><small>${esc(f.dependencia)}</small></span></span>` },
-      { clave: 'codigo', titulo: 'Código', render: (f) => `<span class="mono">${esc(f.codigo || '—')}</span>` },
-      { clave: 'descripcion', titulo: 'Descripción', clase: 'col-ancha' },
-      { clave: 'tipo', titulo: 'Tipo', valor: (f) => nombreTipo(f.tipo) },
-      { clave: 'trimestre', titulo: 'Trim.', valor: (f) => f.trimestreTxt },
-      { clave: 'valor', titulo: 'Valor estimado', tipo: 'moneda', render: (f) => (f.valor ? moneda(f.valor) : '<span class="danger-text">$ 0</span>') },
-      { clave: 'traza', titulo: 'Acción que la origina', valor: (f) => (f.accion ? `${f.accion.codigo} ${f.accion.nombre}` : 'sin acción asociada'), render: trazabilidad, clase: 'col-ancha' }
-    ],
-    alClicFila: abrirDetalle,
-    pieTotales: (lista) => `<tr><td colspan="5">Total filtrado (${entero(lista.length)})</td><td class="num">${moneda(lista.reduce((s, f) => s + (f.valor || 0), 0))}</td><td></td></tr>`
-  });
-  cont.querySelector('[data-exportar]').addEventListener('click', exportarFiltrado);
-}
-
-async function exportarFiltrado() {
-  try {
-    const lista = tabla.filtradas();
-    if (!lista.length) { toast({ tipo: 'warn', titulo: 'Nada para exportar', mensaje: 'El filtro actual no tiene registros.' }); return; }
-    const logo = await obtenerLogo();
-    const r = exportarExcel({
-      nombreArchivo: `JP2027_Necesidades_consolidado_${new Date().toISOString().slice(0, 10)}.xlsx`,
-      logo: logo.bytes,
-      hojas: [{
-        nombre: 'Necesidades', titulo: 'Plan de necesidades 2027 — consolidado', subtitulo: `${entero(lista.length)} necesidades · ${moneda(lista.reduce((s, f) => s + (f.valor || 0), 0))}`,
-        columnas: [
-          { titulo: 'Código dependencia', ancho: 12 }, { titulo: 'Dependencia', ancho: 40 }, { titulo: 'Tipo de proceso', ancho: 16 },
-          { titulo: 'Código de necesidad', ancho: 14 }, { titulo: 'Descripción', ancho: 50 }, { titulo: 'Tipo', ancho: 16 }, { titulo: 'Cantidad', ancho: 10, tipo: 'numero' },
-          { titulo: 'Valor estimado', ancho: 18, tipo: 'moneda' }, { titulo: 'Trimestre requerido', ancho: 12 }, { titulo: 'Código de acción', ancho: 14 },
-          { titulo: 'Acción que la origina', ancho: 44 }, { titulo: 'Meta 2027', ancho: 30 }, { titulo: 'Línea PDI', ancho: 36 }, { titulo: 'Trazabilidad', ancho: 22 }, { titulo: 'Justificación', ancho: 50 }, { titulo: 'Estado de la formulación', ancho: 20 }
-        ],
-        filas: lista.map((f) => [f.dependencia, f.depNombre, TIPOS_PROCESO[f.tipoProceso] || '', f.codigo, f.descripcion, nombreTipo(f.tipo), f.cantidad, f.valor || 0, f.trimestreTxt, f.codigoAccion,
-          f.accion ? f.accion.nombre : '', f.meta ? `${f.meta.id} — ${f.meta.nombre}` : '', f.linea ? `${f.linea.id} — ${f.linea.nombre}` : '',
-          f.accion ? 'Con acción asociada' : 'SIN ACCIÓN ASOCIADA', f.justificacion, f.estadoFormulacion === 'validada' ? 'Validada' : 'Con bloqueantes'])
-      }]
-    });
-    descargarBlob(r.blob, r.nombre);
-    toast({ tipo: 'ok', titulo: 'Consolidado exportado', mensaje: `${lista.length} filas en ${r.nombre}` });
-  } catch (e) { toastError('No se pudo exportar', e, e.message); }
-}
-
-// Cargue masivo para la OAPDI: lee varios Excel, identifica la dependencia en la hoja Instructivo y los valida.
-async function cargueMasivo(archivos) {
-  let ok = 0; const fallos = [];
-  for (const archivo of archivos) {
-    try {
-      const libro = await leerLibro(archivo);
-      const cod = leerDependenciaDeLibro(libro) || (/(\d{3})/.exec(archivo.name) || [])[1];
-      if (!cod || !dependencia(cod)) { fallos.push(`${archivo.name}: no indica la dependencia (celda «Dependencia que formula» del Instructivo).`); continue; }
-      const r = validarFormulacion(libro, { metas: estado.datos.metas.metasInstitucionales, modalidades: estado.datos.modalidades.modalidades, calendario: estado.indices.calendario, umbrales: estado.datos.config?.umbrales, dependencia: cod });
-      await ctxApp.almacen.guardarFormulacion({
-        dependencia: cod, archivo: archivo.name, cargadoEn: new Date().toISOString(),
-        persona: { nombre: 'Cargue masivo OAPDI', correo: '', cargo: '' },
-        estado: r.resumen.bloqueantes ? 'con-bloqueantes' : 'validada',
-        hallazgos: r.hallazgos, resumen: r.resumen, acciones: r.acciones, necesidades: r.necesidades, adquisiciones: r.adquisiciones
-      });
-      ok += 1;
-    } catch (e) { fallos.push(`${archivo.name}: ${e.message}`); }
-  }
-  await ctxApp.refrescarConsolidado();
-  if (ok) toast({ tipo: 'ok', titulo: `${ok} ${ok === 1 ? 'archivo consolidado' : 'archivos consolidados'}`, mensaje: 'Las formulaciones con bloqueantes quedan marcadas como «cargadas» pero no «validadas».' });
-  if (fallos.length) toast({ tipo: 'warn', titulo: `${fallos.length} ${fallos.length === 1 ? 'archivo no se pudo cargar' : 'archivos no se pudieron cargar'}`, mensaje: fallos.join(' · '), duracion: 14000 });
-}
+let flujo = null;
 
 function montar(panel, ctx) {
-  raiz = panel;
-  ctxApp = ctx;
-  panel.innerHTML = `<div class="container page">
-    <header class="page-head reveal">
-      <div>
-        <span class="eyebrow">${icono('necesidades', 'icon-sm')}Plan de necesidades</span>
-        <h1>Necesidades consolidadas de la ETITC</h1>
-        <p class="lead">Lo que cada dependencia necesita para cumplir sus acciones 2027, con su trazabilidad hasta la meta.</p>
-      </div>
-      <div class="btn-group">
-        <button type="button" class="btn" data-cargue-masivo ${xlsxDisponible() ? '' : 'disabled'}>${icono('subir', 'icon-sm')}Cargar Excel de dependencias</button>
-        <input type="file" multiple accept=".xlsx,.xls" hidden data-input-masivo>
-      </div>
-    </header>
-    <div data-tablero></div>
-  </div>`;
-  const input = panel.querySelector('[data-input-masivo]');
-  on(panel, 'click', '[data-cargue-masivo]', () => {
-    if (!xlsxDisponible()) { toast({ tipo: 'warn', titulo: 'Excel no disponible', mensaje: 'La librería SheetJS no cargó.' }); return; }
-    input.click();
+  const cfgApp = estado.datos.config;
+  flujo = montarFlujo(panel, ctx, {
+    tipo: 'necesidades',
+    icono: 'necesidades',
+    eyebrow: 'Plan de necesidades 2027',
+    titulo: 'Registre lo que su área necesita contratar',
+    lead: 'Cada bien, obra o servicio se amarra a una acción de su Plan de acción y, por ella, a una meta del PDI. Con este plan el GIT de Contratación arma el <strong>Plan Anual de Adquisiciones</strong>.',
+    plantillas: cfgApp.plantillas?.necesidades || [],
+    nombreArchivo: 'el Plan de Necesidades 2027',
+    nombreCorto: 'Plan de necesidades',
+    nombreCarpeta: 'Plan de necesidades',
+    tituloFinal: 'Constancia',
+    textoRegistrar: 'Registrar Plan de necesidades',
+    mensajeExito: '¡Plan de necesidades registrado!',
+    ayuda: [
+      'Una necesidad por fila y un objeto por necesidad, en la hoja <strong>Formulación PDN 2027</strong>.',
+      'Elija la <strong>acción del Plan de acción 2027</strong> a la que sirve: si no existe, primero formúlela en la plantilla.',
+      'Código <strong>UNSPSC de 8 dígitos</strong>, valores en pesos solo con números y el valor 2027 sin superar el total.',
+      'El mes de ofertas no puede ser anterior al mes de inicio; si se paga en varias vigencias, marque vigencias futuras.',
+      'Responsable con correo institucional sin tildes, y la columna <strong>Alerta de consistencia</strong> en OK.'
+    ],
+    avisoCargue(i) {
+      const pa = registroVigente('accion', i.areaId);
+      return pa
+        ? `<div class="notice">${icono('enlace')}<div>Se cruzará con las <strong>${entero(pa.acciones?.length || 0)} acciones</strong> del Plan de acción que su área registró el ${esc(fechaCorta(pa.fecha.slice(0, 10)))}.</div></div>`
+        : `<div class="notice">${icono('info')}<div><strong>Su área aún no registra el Plan de acción en este dispositivo.</strong> Puede cargar las necesidades; el cruce con sus acciones propias se hará cuando la OAP consolide.
+          <div class="btn-group" style="margin-top:8px"><a class="btn btn-sm" href="#accion">Ir al Plan de acción</a></div></div></div>`;
+    },
+    validar(wb, ident) {
+      const a = areaPorId(ident.areaId);
+      const pa = registroVigente('accion', a.id);
+      return validarNecesidades(wb, { areaId: a.id, areaEtiqueta: a.etiqueta, accionesFormuladas: pa?.acciones?.length ? pa.acciones : null });
+    },
+    cifras: (r) => [
+      { etiqueta: 'Necesidades', valor: entero(r.necesidades || 0) },
+      { etiqueta: 'En OK', valor: entero(r.ok || 0) },
+      { etiqueta: 'Con errores', valor: entero(r.conErrores || 0), alerta: (r.conErrores || 0) > 0 },
+      { etiqueta: 'Valor total', valor: monedaCompacta(r.valorTotal || 0) }
+    ],
+    estadoHero(i, registro) {
+      if (!i) return '';
+      const a = areaPorId(i.areaId);
+      return registro
+        ? `<div class="hero-chips"><span class="hero-chip is-ok">${icono('checkCirculo', 'icon-sm')}${esc(a?.nombre || '')}: registrado el ${esc(fechaCorta(registro.fecha.slice(0, 10)))}</span></div>`
+        : `<div class="hero-chips"><span class="hero-chip is-pend">${icono('reloj', 'icon-sm')}${esc(a?.nombre || '')}: pendiente de registro</span></div>`;
+    },
+    pintarFinal(cont, { registro, ctx: c }) {
+      const r = registro.resumen || {};
+      const modalidades = Object.entries(r.porModalidad || {}).sort((x, y) => y[1] - x[1]);
+      cont.innerHTML = `<article class="constancia reveal">
+        <header class="constancia-head">
+          <span class="constancia-sello">${icono('checkCirculo', 'icon-lg')}</span>
+          <div><span class="eyebrow">Constancia de registro</span><h3 class="mb-0">Plan de necesidades 2027</h3></div>
+        </header>
+        <dl class="dl-mini">
+          <div><dt>Registro</dt><dd class="mono">${esc(registro.id)}</dd></div>
+          <div><dt>Fecha</dt><dd>${esc(fechaCorta(registro.fecha.slice(0, 10)))}, ${esc(horaLegible(new Date(registro.fecha)))}</dd></div>
+          <div><dt>Área</dt><dd>${esc(registro.area.id)} · ${esc(registro.area.nombre)}</dd></div>
+          <div><dt>Dependencia</dt><dd>${esc(registro.dependencia.codigo)} · ${esc(registro.dependencia.nombre || dependencia(registro.dependencia.codigo)?.nombre || '')}</dd></div>
+          <div><dt>Responsable</dt><dd>${esc(registro.responsable.nombre)} · ${esc(registro.responsable.correo)}</dd></div>
+          ${registro.correosEquipo?.length ? `<div><dt>Equipo</dt><dd>${esc(registro.correosEquipo.join(', '))}</dd></div>` : ''}
+          <div><dt>Archivo</dt><dd>${registro.enlace ? `<a href="${esc(registro.enlace)}" target="_blank" rel="noopener">${esc(registro.archivo)}</a>` : esc(registro.archivo)}</dd></div>
+        </dl>
+        <div class="cifras-mini">
+          <div class="cifra-mini"><strong>${entero(r.ok || 0)}</strong><span>Necesidades</span></div>
+          <div class="cifra-mini"><strong>${monedaCompacta(r.valorTotal || 0)}</strong><span>Valor total</span></div>
+          <div class="cifra-mini"><strong>${monedaCompacta(r.valor2027 || 0)}</strong><span>Valor 2027</span></div>
+          <div class="cifra-mini"><strong>${entero(r.vigenciasFuturas || 0)}</strong><span>Vigencias futuras</span></div>
+        </div>
+        ${modalidades.length ? `<div><span class="field-hint">Valor por modalidad estimada</span><ul class="modalidades-mini">${modalidades.map(([k, v]) => `<li><span>${esc(k)}</span><strong>${esc(monedaCompacta(v))}</strong></li>`).join('')}</ul></div>` : ''}
+        ${registro.advertencias ? `<p class="field-hint mb-0">${icono('alerta', 'icon-sm')} ${entero(registro.advertencias)} advertencias quedaron registradas para revisión con la OAP. Valor total exacto: ${esc(moneda(r.valorTotal || 0))}.</p>` : ''}
+      </article>
+      <div class="card card-tight siguiente">
+        <span class="siguiente-ico">${icono('adquisiciones')}</span>
+        <div><strong>Siguiente: Plan de adquisiciones</strong><p class="mb-0 muted">Tiempos y temas contractuales que explicará el GIT de Contratación.</p></div>
+        <button type="button" class="btn btn-primary btn-sm" data-ir-pestana>Ir ${icono('flecha', 'icon-sm')}</button>
+      </div>`;
+      cont.querySelector('[data-ir-pestana]').addEventListener('click', () => c.ir('adquisiciones'));
+    }
   });
-  input.addEventListener('change', async () => {
-    const lista = Array.from(input.files); input.value = '';
-    if (lista.length) await cargueMasivo(lista);
-  });
-  pintar();
-  alEvento('consolidado', () => { if (raiz) pintar(); });
-  alEvento('tema', () => { if (raiz && !raiz.hidden && estado.consolidado.formulaciones.length) pintarGraficas(filasNecesidades()); });
-  alEvento('librerias', () => { if (raiz && estado.consolidado.formulaciones.length) pintarGraficas(filasNecesidades()); });
 }
 
 export const pestanaNecesidades = {
   id: 'necesidades',
   titulo: 'Plan de necesidades',
-  tituloCorto: 'Necesidades',
+  tituloCorto: 'Plan de necesidades',
+  tituloMovil: 'Necesidades',
   icono: 'necesidades',
   montar,
-  alMostrar() { if (estado.consolidado.formulaciones.length) pintarGraficas(filasNecesidades()); }
+  alMostrar() { flujo?.alMostrar(); }
 };

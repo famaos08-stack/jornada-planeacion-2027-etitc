@@ -1,19 +1,9 @@
 /*
- * cards.js — Tarjetas de cifra, estados vacíos, cadena lógica, aparición de tarjetas y números que se animan.
+ * cards.js — Estados vacíos, cadena lógica, aparición de tarjetas, números que se animan y barras horizontales.
  */
 import { esc, prefiereMenosMovimiento } from './dom.js';
 import { icono } from './iconos.js';
 import { formatear } from '../lib/formato.js';
-
-// Tarjeta de cifra con número animado. formato: 'entero' | 'moneda' | 'monedaCompacta' | 'porcentaje'
-export function tarjetaCifra({ etiqueta, valor = 0, formato = 'entero', pie = '', iconoNombre = 'tendencia', alerta = false, id = '' }) {
-  return `<div class="stat reveal${alerta ? ' is-alert' : ''}" ${id ? `id="${esc(id)}"` : ''}>
-    <span class="stat-icon">${icono(iconoNombre)}</span>
-    <span class="stat-label">${esc(etiqueta)}</span>
-    <span class="stat-value" data-contar="${Number(valor) || 0}" data-formato="${formato}">${formatear(0, formato)}</span>
-    ${pie ? `<span class="stat-foot">${pie}</span>` : ''}
-  </div>`;
-}
 
 // Estado vacío diseñado: nunca una tabla en blanco.
 export function estadoVacio({ titulo, texto, iconoNombre = 'capas', accion = '' }) {

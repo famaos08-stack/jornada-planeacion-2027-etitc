@@ -171,3 +171,15 @@ export function caminoContratacion(calendario, modalidad, fechaOperacionISO) {
   });
   return { radicacion, totalHabiles: total, etapas: detalle, operacion: fechaOperacionISO };
 }
+
+// «18, 19 y 20 de noviembre de 2026» a partir de una lista de fechas ISO (mismo mes) o un rango en otro caso.
+export function rangoFechasTexto(fechasISO) {
+  const f = (fechasISO || []).filter(Boolean).sort();
+  if (!f.length) return '';
+  if (f.length === 1) return fechaLarga(f[0], { conDia: false });
+  const mismoMes = f.every((x) => x.slice(0, 7) === f[0].slice(0, 7));
+  if (!mismoMes) return `${fechaLarga(f[0], { conDia: false })} al ${fechaLarga(f[f.length - 1], { conDia: false })}`;
+  const dias = f.map((x) => Number(x.slice(8)));
+  const d = deISO(f[0]);
+  return `${dias.slice(0, -1).join(', ')} y ${dias[dias.length - 1]} de ${MESES[d.getMonth()]} de ${d.getFullYear()}`;
+}

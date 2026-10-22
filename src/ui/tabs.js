@@ -5,13 +5,13 @@
 import { esc } from './dom.js';
 import { icono } from './iconos.js';
 
-// definiciones: [{ id, titulo, tituloCorto, icono }]
+// definiciones: [{ id, titulo, tituloCorto, tituloMovil, icono }]. En celular se muestra tituloMovil en la barra inferior.
 export function crearPestanas(contenedor, definiciones, alSeleccionar) {
   contenedor.setAttribute('role', 'tablist');
   contenedor.setAttribute('aria-label', 'Secciones de la jornada');
   contenedor.innerHTML = definiciones.map((d) => `
     <button type="button" class="tab" role="tab" id="tab-${esc(d.id)}" aria-controls="panel-${esc(d.id)}" aria-selected="false" tabindex="-1" data-tab="${esc(d.id)}">
-      ${icono(d.icono, 'icon-sm')}<span class="tab-label">${esc(d.tituloCorto || d.titulo)}</span>
+      <span class="tab-ico">${icono(d.icono, 'icon-sm')}</span><span class="tab-label">${esc(d.tituloCorto || d.titulo)}</span><span class="tab-label-movil" aria-hidden="true">${esc(d.tituloMovil || d.tituloCorto || d.titulo)}</span>
     </button>`).join('');
 
   const botones = () => Array.from(contenedor.querySelectorAll('[role="tab"]'));

@@ -1,30 +1,78 @@
 {
-  "provisional": true,
-  "aviso": "Parámetros de la jornada (PROVISIONALES). Cambie la sal de firma antes de emitir pases reales y no la vuelva a cambiar después: los pases emitidos con otra sal se rechazarán.",
+  "aviso": "Parámetros de la jornada. Cambie la sal de firma antes de emitir pases reales y no la vuelva a cambiar después: los pases emitidos con otra sal se rechazarán.",
   "evento": {
-    "nombre": "Jornada de Planeación 2027",
-    "oficina": "Oficina Asesora de Planeación y Desarrollo Institucional",
-    "siglaOficina": "OAPDI",
+    "nombre": "Jornada de Planeación Institucional 2027",
+    "nombreCorto": "Jornada de Planeación 2027",
+    "lema": "Logros que nos transforman, decisiones que construyen futuro.",
+    "oficina": "Oficina Asesora de Planeación",
+    "siglaOficina": "OAP",
     "institucion": "Escuela Tecnológica Instituto Técnico Central",
     "siglaInstitucion": "ETITC",
     "vigencia": 2027,
-    "correoContacto": "planeacion@itc.edu.co"
+    "correoContacto": "planeacion@itc.edu.co",
+    "sitioWeb": "https://www.itc.edu.co"
   },
   "dominioInstitucional": "@itc.edu.co",
   "pase": {
     "prefijo": "JP27",
-    "salFirma": "ETITC-OAPDI-JP27-cambiar-antes-de-la-jornada"
+    "salFirma": "ETITC-OAP-JP27-cambiar-antes-de-la-jornada"
+  },
+  "reglasPase": {
+    "_comentario": "exigirTodasLasMetas=true: el pase solo se emite si todas las metas asignadas al área quedaron formuladas y en OK. Con false basta una acción formulada en OK y ninguna fila con errores.",
+    "exigirTodasLasMetas": true
+  },
+  "plantillas": {
+    "accion": [
+      {
+        "id": "plan-accion",
+        "titulo": "Plan de acción 2027",
+        "rol": "Consulta",
+        "descripcion": "Propuesta de la Oficina Asesora de Planeación: las 45 metas del PDI con su ajuste frente a 2026, la meta 2027, las 158 acciones propuestas y la asignación por área.",
+        "archivo": "assets/plantillas/Plan_de_accion_2027.xlsx",
+        "nombreDescarga": "Plan_de_accion_2027.xlsx"
+      },
+      {
+        "id": "formulacion",
+        "titulo": "Plantilla de Formulación 2027",
+        "rol": "Diligenciar",
+        "descripcion": "El libro que su área diligencia: busca su área, revisa sus metas y formula en las columnas amarillas de cada eje.",
+        "archivo": "assets/plantillas/Plantilla_de_Formulacion_2027.xlsx",
+        "nombreDescarga": "Plantilla_de_Formulacion_2027.xlsx"
+      }
+    ],
+    "necesidades": [
+      {
+        "id": "necesidades",
+        "titulo": "Plan de Necesidades 2027",
+        "rol": "Diligenciar",
+        "descripcion": "Un bien, obra o servicio por fila, vinculado a una acción del Plan de Acción 2027 y a una meta del PDI. Incluye la guía UNSPSC y el plan 2026 de referencia.",
+        "archivo": "assets/plantillas/Plan_de_Necesidades_2027.xlsx",
+        "nombreDescarga": "Plan_de_Necesidades_2027.xlsx"
+      }
+    ]
+  },
+  "politicaDatos": {
+    "texto": "Autorizo a la ETITC a tratar los datos de este registro (nombre, cargo, correo institucional y área) para gestionar la Jornada de Planeación Institucional 2027, conforme a la Ley 1581 de 2012.",
+    "url": "",
+    "_comentario": "[PENDIENTE] Ponga en url el enlace a la Política de Tratamiento de Datos Personales de la ETITC. Si queda vacío, el enlace no se muestra."
   },
   "umbrales": {
-    "maxAccionesPorDependencia": 15,
     "diasAlertaRadicacion": 30,
-    "similitudNombresAcciones": 0.86,
-    "filasPorPagina": 12,
-    "segundosConfirmacionEscaner": 3
+    "segundosConfirmacionEscaner": 3,
+    "tamanoMaximoArchivoMB": 25
   },
-  "plantilla": {
-    "filasEditables": 300,
-    "tiposNecesidad": ["Bien", "Servicio", "Talento humano", "Infraestructura"],
-    "trimestres": ["T1", "T2", "T3", "T4"]
+  "microsoft": {
+    "_comentario": "Conector Microsoft 365. Mientras activo=false la aplicación funciona en modo local (registro en este navegador, sin correo automático). Ver docs/Guia_instalacion_Microsoft365.",
+    "activo": false,
+    "tenantId": "",
+    "clientId": "",
+    "sitio": "itc.sharepoint.com:/sites/PlaneacionInstitucional",
+    "biblioteca": "Documentos",
+    "carpetaRaiz": "Jornada de Planeacion 2027",
+    "listaRegistro": "JP27_Registro",
+    "listaAsistencia": "JP27_Asistencia",
+    "rutaDirectorio": "Jornada de Planeacion 2027/Configuracion/directorio.json",
+    "correoCopia": "planeacion@itc.edu.co",
+    "enviarCorreo": true
   }
 }

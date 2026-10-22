@@ -1,12 +1,13 @@
 {
   "provisional": true,
-  "_comentario": "TIEMPOS PROVISIONALES. Son valores plausibles de referencia (Ley 80 de 1993, Ley 1150 de 2007, Decreto 1082 de 2015) y DEBEN reemplazarse por los tiempos formalizados en el Manual de Contratación de la ETITC. diasHabilesTotales se recalcula como la suma de las etapas; si no coinciden, el aplicativo usa la suma y lo advierte en consola.",
-  "uvt": { "anio": 2027, "valor": 52374, "nota": "Valor UVT PROVISIONAL: actualizar con la resolución de la DIAN para 2027." },
+  "_comentario": "TIEMPOS PROVISIONALES. Son valores de referencia (Ley 80 de 1993, Ley 1150 de 2007, Ley 1474 de 2011 y Decreto 1082 de 2015) y DEBEN reemplazarse por los tiempos formalizados por el GIT de Contratación y Adquisiciones de la ETITC. Los nombres de las modalidades son idénticos a la lista L_MOD de la Plantilla del Plan de Necesidades 2027. diasHabilesTotales se recalcula como la suma de las etapas.",
+  "uvt": { "anio": 2027, "valor": null, "nota": "[PENDIENTE DE VERIFICAR] Valor UVT 2027 según resolución de la DIAN." },
   "modalidades": [
     {
       "id": "directa",
       "nombre": "Contratación directa",
-      "topeUVT": null,
+      "cuando": "Solo en las causales del artículo 2, numeral 4, de la Ley 1150 de 2007: prestación de servicios profesionales y de apoyo a la gestión, contratos interadministrativos, urgencia manifiesta, inexistencia de pluralidad de oferentes, entre otras.",
+      "criterio": "Causal legal, no el valor",
       "diasHabilesTotales": 15,
       "etapas": [
         { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 4 },
@@ -20,7 +21,8 @@
     {
       "id": "minima",
       "nombre": "Mínima cuantía",
-      "topeUVT": 1500,
+      "cuando": "Cuando el valor no supera el 10 % de la menor cuantía de la entidad, sin importar el objeto (artículo 94 de la Ley 1474 de 2011).",
+      "criterio": "Valor ≤ 10 % de la menor cuantía",
       "diasHabilesTotales": 22,
       "etapas": [
         { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 5 },
@@ -35,7 +37,8 @@
     {
       "id": "abreviada",
       "nombre": "Selección abreviada de menor cuantía",
-      "topeUVT": 15000,
+      "cuando": "Cuando el valor está entre la mínima y la menor cuantía de la entidad. El tope de menor cuantía depende del presupuesto anual de la ETITC expresado en salarios mínimos (artículo 2 de la Ley 1150 de 2007).",
+      "criterio": "Valor hasta el tope de menor cuantía",
       "diasHabilesTotales": 45,
       "etapas": [
         { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 7 },
@@ -52,9 +55,63 @@
       ]
     },
     {
+      "id": "subasta",
+      "nombre": "Selección abreviada – subasta inversa",
+      "cuando": "Bienes y servicios de características técnicas uniformes y de común utilización, en los que el precio es el único factor de selección.",
+      "criterio": "Bienes uniformes; gana el menor precio",
+      "diasHabilesTotales": 37,
+      "etapas": [
+        { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 7 },
+        { "nombre": "Aviso de convocatoria y proyecto de pliego", "diasHabiles": 5 },
+        { "nombre": "Observaciones y respuestas", "diasHabiles": 3 },
+        { "nombre": "Acto de apertura y pliego definitivo", "diasHabiles": 2 },
+        { "nombre": "Plazo para presentar ofertas", "diasHabiles": 6 },
+        { "nombre": "Verificación de requisitos habilitantes", "diasHabiles": 3 },
+        { "nombre": "Subasta y adjudicación", "diasHabiles": 4 },
+        { "nombre": "Contrato, registro presupuestal y garantías", "diasHabiles": 5 },
+        { "nombre": "Acta de inicio", "diasHabiles": 2 }
+      ]
+    },
+    {
+      "id": "acuerdo",
+      "nombre": "Selección abreviada – acuerdo marco de precios (Tienda Virtual del Estado Colombiano)",
+      "cuando": "Cuando existe un acuerdo marco de precios vigente en la Tienda Virtual del Estado Colombiano para el bien o servicio. Para las entidades del orden nacional su uso es obligatorio si el acuerdo existe.",
+      "criterio": "Existe acuerdo marco vigente",
+      "diasHabilesTotales": 21,
+      "etapas": [
+        { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 5 },
+        { "nombre": "Solicitud de cotización en la Tienda Virtual", "diasHabiles": 3 },
+        { "nombre": "Plazo de cotización de los proveedores", "diasHabiles": 5 },
+        { "nombre": "Evaluación y selección", "diasHabiles": 2 },
+        { "nombre": "Orden de compra", "diasHabiles": 2 },
+        { "nombre": "Registro presupuestal y garantías", "diasHabiles": 3 },
+        { "nombre": "Acta de inicio", "diasHabiles": 1 }
+      ]
+    },
+    {
+      "id": "concurso",
+      "nombre": "Concurso de méritos",
+      "cuando": "Consultorías: estudios, diseños, asesorías técnicas e interventoría. Se selecciona por calidad y experiencia, no por precio.",
+      "criterio": "Consultoría o interventoría",
+      "diasHabilesTotales": 50,
+      "etapas": [
+        { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 8 },
+        { "nombre": "Aviso y proyecto de pliego", "diasHabiles": 5 },
+        { "nombre": "Observaciones y respuestas", "diasHabiles": 3 },
+        { "nombre": "Acto de apertura y pliego definitivo", "diasHabiles": 2 },
+        { "nombre": "Plazo para presentar ofertas", "diasHabiles": 8 },
+        { "nombre": "Evaluación técnica de propuestas", "diasHabiles": 7 },
+        { "nombre": "Traslado del informe", "diasHabiles": 3 },
+        { "nombre": "Verificación económica y adjudicación", "diasHabiles": 4 },
+        { "nombre": "Contrato, registro presupuestal y garantías", "diasHabiles": 6 },
+        { "nombre": "Acta de inicio", "diasHabiles": 4 }
+      ]
+    },
+    {
       "id": "licitacion",
       "nombre": "Licitación pública",
-      "topeUVT": null,
+      "cuando": "Regla general: cuando el valor supera la menor cuantía y no aplica otra modalidad. Es la modalidad para obra pública de mayor valor.",
+      "criterio": "Valor mayor a la menor cuantía",
       "diasHabilesTotales": 70,
       "etapas": [
         { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 10 },
@@ -68,24 +125,6 @@
         { "nombre": "Audiencia de adjudicación", "diasHabiles": 3 },
         { "nombre": "Contrato, registro presupuestal y garantías", "diasHabiles": 8 },
         { "nombre": "Acta de inicio", "diasHabiles": 5 }
-      ]
-    },
-    {
-      "id": "concurso",
-      "nombre": "Concurso de méritos",
-      "topeUVT": null,
-      "diasHabilesTotales": 50,
-      "etapas": [
-        { "nombre": "Radicación y revisión de estudios previos", "diasHabiles": 8 },
-        { "nombre": "Aviso y proyecto de pliego", "diasHabiles": 5 },
-        { "nombre": "Observaciones y respuestas", "diasHabiles": 3 },
-        { "nombre": "Acto de apertura y pliego definitivo", "diasHabiles": 2 },
-        { "nombre": "Plazo para presentar ofertas", "diasHabiles": 8 },
-        { "nombre": "Evaluación técnica de propuestas", "diasHabiles": 7 },
-        { "nombre": "Traslado del informe", "diasHabiles": 3 },
-        { "nombre": "Verificación económica y adjudicación", "diasHabiles": 4 },
-        { "nombre": "Contrato, registro presupuestal y garantías", "diasHabiles": 6 },
-        { "nombre": "Acta de inicio", "diasHabiles": 4 }
       ]
     }
   ]

@@ -1,35 +1,32 @@
 /*
- * app.js — Arranque, enrutamiento de pestañas y estado global de la aplicación.
+ * app.js — Arranque, enrutamiento de pestañas y conexión con Microsoft 365.
  *  1. Carga los datos de /data (con respaldo empaquetado en file://).
- *  2. Lee el consolidado guardado (formulaciones, pases, asistencia) desde el almacén configurado.
- *  3. Construye la navegación (pestañas según FEATURES), la franja de progreso y el enrutador por hash.
- * El estado compartido vive en estado.js; aquí solo se orquesta.
+ *  2. Si el conector Microsoft 365 está configurado, procesa el inicio de sesión y lee el directorio privado.
+ *  3. Lee el respaldo local (registros, pases, asistencia) y construye la navegación por hash.
+ * Cuatro pestañas (Calendario, Plan de acción, Plan de necesidades, Plan de adquisiciones) y la vista Escáner.
  */
-import { FEATURES, PERSISTENCIA } from './config.js';
+import { FEATURES } from './config.js';
 import { almacen } from './storage.js';
-import { estado, fijarDatos, fijarConsolidado, on, emitir, dependencias } from './estado.js';
+import { estado, fijarDatos, fijarConsolidado, on, emitir, indexarDirectorio } from './estado.js';
 import { cargarDatos, cargarDesdeArchivos } from './lib/datos.js';
 import { esperarLibrerias, avisarLibreriasFaltantes } from './lib/libs.js';
 import { descargarTexto, obtenerLogo } from './lib/export.js';
+import * as ms from './lib/microsoft.js';
 import { crearPestanas } from './ui/tabs.js';
 import { toast, toastError } from './ui/toast.js';
-import { confirmar } from './ui/modal.js';
 import { skeletonPestana } from './ui/skeleton.js';
 import { icono } from './ui/iconos.js';
 import { esc, qs } from './ui/dom.js';
-import { entero } from './lib/formato.js';
-import { fechaCorta } from './lib/fechas.js';
+import { iniciales } from './lib/formato.js';
 import { activarAnimaciones } from './ui/cards.js';
-import { pestanaAgenda } from './tabs/agenda.js';
-import { pestanaFormulacion } from './tabs/formulacion.js';
-import { pestanaMetas } from './tabs/metas.js';
+import { pestanaCalendario } from './tabs/calendario.js';
+import { pestanaAccion } from './tabs/accion.js';
 import { pestanaNecesidades } from './tabs/necesidades.js';
 import { pestanaAdquisiciones } from './tabs/adquisiciones.js';
 import { pestanaRiesgos } from './tabs/riesgos.js';
 import { vistaEscaner } from './tabs/escaner.js';
 
-// Registro de pestañas. El mapa de riesgos solo entra si la bandera está encendida.
-const PESTANAS = [pestanaAgenda, pestanaFormulacion, pestanaMetas, pestanaNecesidades, pestanaAdquisiciones]
+const PESTANAS = [pestanaCalendario, pestanaAccion, pestanaNecesidades, pestanaAdquisiciones]
   .concat(FEATURES.mapaRiesgos ? [pestanaRiesgos] : []);
 const VISTAS = [...PESTANAS, vistaEscaner];
 const montadas = new Set();
@@ -42,8 +39,8 @@ const ctx = {
   async refrescarConsolidado() {
     try { fijarConsolidado(await almacen.leerConsolidado()); } catch (e) { toastError('No se pudo leer la información guardada', e); }
   },
-  pestanasActivas: PESTANAS.map((p) => p.id),
-  riesgosActivo: FEATURES.mapaRiesgos
+  riesgosActivo: FEATURES.mapaRiesgos,
+  emitirIdentificacion: () => emitir('identificacion')
 };
 
 // ───────── Tema claro / oscuro ─────────
@@ -65,62 +62,124 @@ function iniciarTema() {
   });
 }
 
-// ───────── Franja de progreso institucional ─────────
-function pintarFranja() {
-  const franja = qs('#franja-progreso');
-  const total = dependencias().length || 1;
-  const { formulaciones, pases } = estado.consolidado;
-  const cargadas = new Set(formulaciones.map((f) => f.dependencia)).size;
-  const validadas = new Set(formulaciones.filter((f) => f.estado === 'validada').map((f) => f.dependencia)).size;
-  const depsConPase = new Set(pases.map((p) => String(p.d))).size;
-  const pct = (n) => `${Math.min(100, Math.round((n / total) * 100))}%`;
-  if (!franja.dataset.listo) {
-    franja.innerHTML = `<div class="container progress-inner">
-      <div class="pmeter"><div class="pmeter-head"><span class="pmeter-label">Formulación cargada</span><span class="pmeter-value" data-m="cargadas"></span></div><div class="pbar deep"><span data-b="cargadas"></span></div></div>
-      <div class="pmeter"><div class="pmeter-head"><span class="pmeter-label">Formulación validada</span><span class="pmeter-value" data-m="validadas"></span></div><div class="pbar"><span data-b="validadas"></span></div></div>
-      <div class="pmeter"><div class="pmeter-head"><span class="pmeter-label">Pases emitidos</span><span class="pmeter-value" data-m="pases"></span></div><div class="pbar gold"><span data-b="pases"></span></div></div>
-      <div class="progress-actions">
-        <button type="button" class="btn btn-sm" data-accion="respaldo" title="Descarga todo lo guardado en este navegador">${icono('guardar', 'icon-sm')}Exportar respaldo</button>
-        <button type="button" class="btn btn-sm btn-ghost" data-accion="importar" title="Combina un respaldo .json con lo guardado">${icono('subir', 'icon-sm')}Importar</button>
-        <input type="file" accept=".json,application/json" hidden data-importar>
-      </div>
-    </div>`;
-    franja.dataset.listo = '1';
-    franja.addEventListener('click', (ev) => {
-      const b = ev.target.closest('[data-accion]');
-      if (!b) return;
-      if (b.dataset.accion === 'respaldo') exportarRespaldo();
-      if (b.dataset.accion === 'importar') franja.querySelector('[data-importar]').click();
-    });
-    franja.querySelector('[data-importar]').addEventListener('change', async (ev) => {
-      const f = ev.target.files[0];
-      ev.target.value = '';
-      if (!f) return;
+// ───────── Microsoft 365 ─────────
+async function iniciarMicrosoft() {
+  const cfg = estado.datos.config?.microsoft;
+  if (!ms.configurado(cfg)) return;
+  estado.microsoft.activo = true;
+  try {
+    const cuenta = await ms.iniciar(cfg);
+    estado.microsoft.cuenta = cuenta;
+    if (cuenta) {
+      try { estado.microsoft.perfil = await ms.perfil(); } catch (e) { console.warn(e); }
       try {
-        await almacen.importarRespaldo(JSON.parse(await f.text()));
-        await ctx.refrescarConsolidado();
-        toast({ tipo: 'ok', titulo: 'Respaldo importado', mensaje: 'Se combinó con la información de este navegador.' });
-      } catch (e) { toastError('No se pudo importar el respaldo', e, e.message); }
-    });
+        const dir = await ms.leerDirectorio();
+        if (dir && Array.isArray(dir.personas)) {
+          estado.datos.directorio = dir;
+          indexarDirectorio(dir);
+          estado.origenDatos.directorio = 'sharepoint';
+        }
+      } catch (e) { console.warn('No se leyó el directorio desde SharePoint', e); }
+      try {
+        const volver = sessionStorage.getItem('etitc-jp27:volver');
+        if (volver) { sessionStorage.removeItem('etitc-jp27:volver'); if (volver !== location.hash) history.replaceState(null, '', volver); }
+      } catch { /* opcional */ }
+    }
+  } catch (e) {
+    estado.microsoft.error = e.message;
+    toastError('No se pudo conectar con Microsoft 365', e, `${e.message} La aplicación sigue en modo local.`);
   }
-  const fijar = (k, n, extra) => {
-    franja.querySelector(`[data-m="${k}"]`).innerHTML = `${entero(n)}<small> / ${total}${extra || ''}</small>`;
-    franja.querySelector(`[data-b="${k}"]`).style.width = pct(k === 'pases' ? depsConPase : n);
-  };
-  fijar('cargadas', cargadas);
-  fijar('validadas', validadas);
-  franja.querySelector('[data-m="pases"]').innerHTML = `${entero(pases.length)}<small> · ${depsConPase}/${total}<span class="solo-ancho"> dependencias</span></small>`;
-  franja.querySelector('[data-b="pases"]').style.width = pct(depsConPase);
-  franja.querySelector('[data-b="cargadas"]').parentElement.setAttribute('aria-label', `${cargadas} de ${total} dependencias con formulación cargada`);
+  pintarSesion();
+  emitir('sesion', estado.microsoft);
 }
 
-async function exportarRespaldo() {
-  try {
-    const r = await almacen.exportarRespaldo();
-    descargarTexto(JSON.stringify(r, null, 2), `JP2027_respaldo_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`, 'application/json');
-    await almacen.guardarMeta({ ultimoRespaldo: new Date().toISOString() });
-    toast({ tipo: 'ok', titulo: 'Respaldo descargado', mensaje: 'Guárdelo en la carpeta compartida de la OAPDI.' });
-  } catch (e) { toastError('No se pudo exportar el respaldo', e); }
+function pintarSesion() {
+  const caja = qs('#sesion-microsoft');
+  if (!estado.microsoft.activo) { caja.hidden = true; return; }
+  caja.hidden = false;
+  const c = estado.microsoft.cuenta;
+  const p = estado.microsoft.perfil;
+  if (!c) {
+    caja.innerHTML = `<button type="button" class="btn btn-sm" data-ms="entrar">${icono('persona', 'icon-sm')}<span class="btn-texto">Ingresar</span></button>`;
+  } else {
+    const nombre = p?.displayName || c.name || c.username;
+    caja.innerHTML = `<button type="button" class="avatar-btn" data-ms="menu" aria-haspopup="true" aria-expanded="false" title="${esc(nombre)} · ${esc(c.username)}">
+      <span class="avatar avatar-xs" aria-hidden="true">${esc(iniciales(nombre))}</span><span class="sr-only">Sesión de ${esc(nombre)}</span></button>
+      <div class="menu-ms" hidden><strong>${esc(nombre)}</strong><span>${esc(c.username)}</span>
+      <button type="button" class="btn btn-sm btn-ghost" data-ms="salir">${icono('cerrar', 'icon-sm')}Cerrar sesión</button></div>`;
+  }
+}
+
+function enlazarSesion() {
+  const caja = qs('#sesion-microsoft');
+  caja.addEventListener('click', async (ev) => {
+    const b = ev.target.closest('[data-ms]');
+    if (!b) return;
+    try {
+      if (b.dataset.ms === 'entrar') { await ms.iniciarSesion(); estado.microsoft.cuenta = ms.cuentaActiva(); pintarSesion(); emitir('sesion', estado.microsoft); }
+      if (b.dataset.ms === 'menu') {
+        const m = caja.querySelector('.menu-ms');
+        m.hidden = !m.hidden;
+        b.setAttribute('aria-expanded', String(!m.hidden));
+      }
+      if (b.dataset.ms === 'salir') { await ms.cerrarSesion(); estado.microsoft.cuenta = null; pintarSesion(); emitir('sesion', estado.microsoft); }
+    } catch (e) { toastError('No se pudo completar el inicio de sesión', e, e.message); }
+  });
+  document.addEventListener('click', (ev) => {
+    const m = caja.querySelector('.menu-ms');
+    if (m && !m.hidden && !caja.contains(ev.target)) { m.hidden = true; caja.querySelector('[data-ms="menu"]')?.setAttribute('aria-expanded', 'false'); }
+  });
+}
+
+// Disponible para las pestañas que necesitan pedir el inicio de sesión
+ctx.iniciarSesionMicrosoft = async () => { await ms.iniciarSesion(); estado.microsoft.cuenta = ms.cuentaActiva(); if (estado.microsoft.cuenta) { try { estado.microsoft.perfil = await ms.perfil(); } catch { /* opcional */ } } pintarSesion(); emitir('sesion', estado.microsoft); };
+
+// ───────── Respaldo local (pie de página) ─────────
+function pintarPie(origen, fechaEmpaquetado) {
+  const pie = qs('#pie-acciones');
+  const enDisco = Object.values(origen).includes('empaquetado');
+  pie.innerHTML = `
+    <button type="button" class="btn btn-sm btn-ghost" data-pie="respaldo">${icono('guardar', 'icon-sm')}Exportar respaldo</button>
+    <button type="button" class="btn btn-sm btn-ghost" data-pie="importar">${icono('subir', 'icon-sm')}Importar respaldo</button>
+    <input type="file" accept=".json,application/json" hidden data-pie-importar>
+    ${enDisco ? `<button type="button" class="btn btn-sm btn-ghost" data-pie="carpeta">${icono('carpeta', 'icon-sm')}Cargar carpeta data</button><input type="file" webkitdirectory multiple hidden data-pie-carpeta>` : ''}`;
+  pie.addEventListener('click', async (ev) => {
+    const b = ev.target.closest('[data-pie]');
+    if (!b) return;
+    if (b.dataset.pie === 'respaldo') {
+      try {
+        const r = await almacen.exportarRespaldo();
+        descargarTexto(JSON.stringify(r, null, 2), `JP2027_respaldo_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`, 'application/json');
+        await almacen.guardarMeta({ ultimoRespaldo: new Date().toISOString() });
+        toast({ tipo: 'ok', titulo: 'Respaldo descargado', mensaje: 'Contiene los registros, pases y asistencia guardados en este navegador.' });
+      } catch (e) { toastError('No se pudo exportar el respaldo', e); }
+    }
+    if (b.dataset.pie === 'importar') pie.querySelector('[data-pie-importar]').click();
+    if (b.dataset.pie === 'carpeta') pie.querySelector('[data-pie-carpeta]').click();
+  });
+  pie.querySelector('[data-pie-importar]').addEventListener('change', async (ev) => {
+    const f = ev.target.files[0];
+    ev.target.value = '';
+    if (!f) return;
+    try {
+      await almacen.importarRespaldo(JSON.parse(await f.text()));
+      await ctx.refrescarConsolidado();
+      toast({ tipo: 'ok', titulo: 'Respaldo importado', mensaje: 'Se combinó con la información de este navegador.' });
+    } catch (e) { toastError('No se pudo importar el respaldo', e, e.message); }
+  });
+  const carpeta = pie.querySelector('[data-pie-carpeta]');
+  if (carpeta) carpeta.addEventListener('change', async () => {
+    try {
+      const { datos, leidos } = await cargarDesdeArchivos(carpeta.files, estado.datos);
+      if (!leidos.length) { toast({ tipo: 'warn', titulo: 'No se encontraron archivos de datos', mensaje: 'Elija la carpeta data del proyecto.' }); return; }
+      fijarDatos(datos);
+      toast({ tipo: 'ok', titulo: 'Datos actualizados', mensaje: `Se leyeron ${leidos.length} archivos. Recargando…` });
+      setTimeout(() => location.reload(), 900);
+    } catch (e) { toastError('No se pudieron leer los archivos', e, e.message); }
+  });
+  if (enDisco) {
+    toast({ tipo: 'info', titulo: 'Abierto desde el disco', mensaje: `Se usa la copia empaquetada de los datos${fechaEmpaquetado ? ` (${fechaEmpaquetado.slice(0, 10)})` : ''}. Para la jornada publique el sitio en GitHub Pages.`, duracion: 9000 });
+  }
 }
 
 // ───────── Enrutamiento ─────────
@@ -177,35 +236,6 @@ async function mostrar(id) {
   window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
 }
 
-// ───────── Avisos de entorno ─────────
-function avisosEntorno(origen, fechaEmpaquetado) {
-  const empaquetados = Object.entries(origen).filter(([, o]) => o === 'empaquetado').map(([k]) => k);
-  if (empaquetados.length) {
-    toast({
-      tipo: 'info',
-      titulo: 'Abierto desde el disco',
-      mensaje: `El navegador no permite leer /data con doble clic; se usa la copia empaquetada${fechaEmpaquetado ? ` del ${fechaCorta(fechaEmpaquetado.slice(0, 10))}` : ''}. Si actualizó los JSON, use «Cargar carpeta data» en el pie de página o sirva el sitio por HTTP.`,
-      duracion: 11000
-    });
-    const pie = qs('#pie-datos');
-    pie.innerHTML = `<button type="button" class="btn btn-sm btn-ghost">${icono('carpeta', 'icon-sm')}Cargar carpeta data</button><input type="file" webkitdirectory multiple hidden accept=".json">`;
-    const input = pie.querySelector('input');
-    pie.querySelector('button').addEventListener('click', () => input.click());
-    input.addEventListener('change', async () => {
-      try {
-        const { datos, leidos } = await cargarDesdeArchivos(input.files, estado.datos);
-        if (!leidos.length) { toast({ tipo: 'warn', titulo: 'No se encontraron archivos de datos', mensaje: 'Elija la carpeta data del proyecto.' }); return; }
-        fijarDatos(datos, estado.origenDatos);
-        toast({ tipo: 'ok', titulo: 'Datos actualizados', mensaje: `Se leyeron ${leidos.length} archivos. Recargando las pestañas…` });
-        setTimeout(() => location.reload(), 900);
-      } catch (e) { toastError('No se pudieron leer los archivos', e, e.message); }
-    });
-  }
-  if (PERSISTENCIA.modo === 'local' && !almacen.persistente) {
-    toast({ tipo: 'warn', titulo: 'Sin almacenamiento local', mensaje: 'Este navegador no permite guardar datos (modo privado). Exporte la información antes de cerrar.', duracion: 12000 });
-  }
-}
-
 function errorFatal(e) {
   console.error(e);
   qs('#contenido').innerHTML = `<div class="container" style="padding:40px 0">
@@ -227,35 +257,31 @@ async function iniciar() {
   window.addEventListener('unhandledrejection', (ev) => toastError('Una operación no terminó bien', ev.reason));
 
   iniciarTema();
-  // Altura real de la barra superior (cambia con el ancho): la usan los elementos fijos al desplazar
   const medirBarra = () => document.documentElement.style.setProperty('--alto-barra', `${qs('.topbar').offsetHeight}px`);
   medirBarra();
   window.addEventListener('resize', medirBarra);
   navegacion = crearPestanas(qs('#pestanas'), PESTANAS, (id) => ctx.ir(id));
+  enlazarSesion();
 
   let carga;
   try { carga = await cargarDatos(); } catch (e) { errorFatal(e); return; }
   fijarDatos(carga.datos, carga.origen);
   carga.problemas.forEach((p) => toast({ tipo: 'warn', titulo: `No se leyó ${p.ruta}`, mensaje: 'Esa sección se mostrará vacía. Revise que el archivo exista y sea JSON válido.' }));
-
-  // En file:// el logo de la barra se sirve desde la copia empaquetada para que las capturas no se bloqueen
   obtenerLogo().catch(() => null);
 
   try { fijarConsolidado(await almacen.leerConsolidado()); } catch (e) { toastError('No se pudo leer la información guardada', e, e.message); }
-  on('consolidado', pintarFranja);
-  on('datos', pintarFranja);
-  pintarFranja();
+  await iniciarMicrosoft();
 
   qs('#contenido').innerHTML = '';
   window.addEventListener('hashchange', () => mostrar(idDesdeHash()));
   await mostrar(idDesdeHash());
-  avisosEntorno(carga.origen, carga.fechaEmpaquetado);
+  pintarPie(carga.origen, carga.fechaEmpaquetado);
+  if (!almacen.persistente) toast({ tipo: 'warn', titulo: 'Sin almacenamiento local', mensaje: 'Este navegador no permite guardar datos (modo privado). Exporte la información antes de cerrar.', duracion: 12000 });
 
   await esperarLibrerias();
   avisarLibreriasFaltantes();
   emitir('librerias');
 
-  // Advertencia al cerrar si hay asistencia sin exportar
   window.addEventListener('beforeunload', (ev) => {
     const { asistencia, meta } = estado.consolidado;
     if (asistencia.length > (meta?.asistenciaExportada || 0)) { ev.preventDefault(); ev.returnValue = ''; }
@@ -264,3 +290,5 @@ async function iniciar() {
 
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', iniciar);
 else iniciar();
+
+export { on };

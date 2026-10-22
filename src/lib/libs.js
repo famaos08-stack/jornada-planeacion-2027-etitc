@@ -5,11 +5,10 @@
 import { toast } from '../ui/toast.js';
 
 export const LIBRERIAS = {
-  xlsx: { nombre: 'SheetJS (Excel)', presente: () => Boolean(window.XLSX && window.XLSX.utils), afecta: 'plantilla, cargue y exportación a Excel' },
+  xlsx: { nombre: 'SheetJS (Excel)', presente: () => Boolean(window.XLSX && window.XLSX.utils), afecta: 'validación de las plantillas cargadas y exportación a Excel' },
   qrcode: { nombre: 'qrcode', presente: () => Boolean(window.QRCode && window.QRCode.toDataURL), afecta: 'generación del QR del pase' },
   escaner: { nombre: 'html5-qrcode', presente: () => Boolean(window.Html5Qrcode), afecta: 'lectura de QR con cámara (queda el registro manual)' },
-  chart: { nombre: 'Chart.js', presente: () => Boolean(window.Chart), afecta: 'gráficas (se muestran como tablas)' },
-  jspdf: { nombre: 'jsPDF', presente: () => Boolean(window.jspdf && window.jspdf.jsPDF), afecta: 'exportación a PDF' },
+  jspdf: { nombre: 'jsPDF', presente: () => Boolean(window.jspdf && window.jspdf.jsPDF), afecta: 'descarga del cronograma y del pase en PDF' },
   html2canvas: { nombre: 'html2canvas', presente: () => Boolean(window.html2canvas), afecta: 'descarga del pase como imagen' }
 };
 

@@ -1,5 +1,5 @@
 /*
- * components.css — Componentes reutilizables: barra superior, pestañas píldora, franja de progreso,
+ * components.css — Componentes reutilizables: barra superior, pestañas (píldora / barra inferior en celular), sesión,
  * botones, tarjetas, cifras, insignias, formularios, zona de cargue, pasos, tablas, panel lateral,
  * modal, toasts, skeletons, estados vacíos, líneas de tiempo, cadena lógica y gráficas.
  */
@@ -36,7 +36,7 @@
 .brand-sub { color: var(--muted-texto); font-size: .74rem; font-weight: 500; max-width: 270px; }
 .topbar-actions { display: flex; align-items: center; gap: 8px; }
 
-/* ───────── Pestañas tipo píldora ───────── */
+/* ───────── Pestañas: píldora en escritorio, barra inferior tipo aplicación en celular ───────── */
 .tabs {
   display: flex;
   justify-content: center;
@@ -65,6 +65,8 @@
   white-space: nowrap;
   transition: background-color var(--ease), color var(--ease), transform var(--ease), box-shadow var(--ease);
 }
+.tab-ico { display: inline-grid; place-items: center; }
+.tab-label-movil { display: none; }
 .tab:hover { background: var(--surface); color: var(--ink); }
 .tab[aria-selected="true"] {
   background: var(--g7);
@@ -84,64 +86,74 @@
   place-items: center;
 }
 
-@media (max-width: 1460px) {
+@media (max-width: 1180px) and (min-width: 761px) {
   .topbar-inner { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "brand actions" "tabs tabs"; padding-bottom: 10px; row-gap: 8px; }
   .brand { grid-area: brand; }
   .topbar-actions { grid-area: actions; justify-self: end; }
-  .tabs { grid-area: tabs; justify-self: stretch; justify-content: flex-start; }
-}
-@media (max-width: 640px) {
-  .brand-sub { display: none; }
-  .brand-title { font-size: .92rem; overflow: hidden; text-overflow: ellipsis; }
-  .brand-logo { width: 40px; height: 40px; }
-  .topbar-inner { min-height: 60px; column-gap: 10px; }
-  #btn-escaner .btn-texto { display: none; }
-  #btn-escaner { width: 40px; padding: 0; }
-  .tab { padding: 8px 12px; }
-  .tab .tab-label-long { display: none; }
+  .tabs { grid-area: tabs; justify-self: center; }
 }
 
-/* ───────── Franja de progreso institucional ───────── */
-.progress-strip {
-  border-bottom: 1px solid var(--line);
-  background: color-mix(in srgb, var(--surface) 70%, transparent);
+/* Celular: la barra de pestañas se fija abajo, al alcance del pulgar */
+@media (max-width: 760px) {
+  /* Sin backdrop-filter en la barra: crearía un bloque contenedor y la barra inferior no quedaría fija abajo */
+  .topbar { backdrop-filter: none; -webkit-backdrop-filter: none; background: color-mix(in srgb, var(--surface) 94%, transparent); }
+  .topbar-inner { grid-template-columns: minmax(0, 1fr) auto; min-height: 60px; column-gap: 10px; }
+  .brand-sub { display: none; }
+  .brand-title { font-size: .95rem; overflow: hidden; text-overflow: ellipsis; }
+  .brand-logo { width: 40px; height: 40px; border-radius: 12px; }
+  #btn-escaner .btn-texto, .sesion-ms .btn-texto { display: none; }
+  #btn-escaner, .sesion-ms .btn { width: 40px; padding: 0; }
+  .tabs {
+    position: fixed;
+    z-index: 60;
+    left: 10px; right: 10px;
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 2px;
+    padding: 6px;
+    border-radius: 24px;
+    background: var(--glass);
+    backdrop-filter: saturate(160%) blur(18px);
+    -webkit-backdrop-filter: saturate(160%) blur(18px);
+    box-shadow: 0 14px 40px rgba(10, 51, 38, .2);
+  }
+  .tab {
+    flex-direction: column;
+    gap: 2px;
+    padding: 7px 2px 6px;
+    min-height: 54px;
+    border-radius: 18px;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: -.01em;
+    justify-content: center;
+  }
+  .tab .icon-sm { width: 22px; height: 22px; }
+  .tab-label { display: none; }
+  .tab-label-movil { display: block; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+  .tab[aria-selected="true"] { box-shadow: 0 6px 14px rgba(24, 139, 88, .3); }
+  body { padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)); }
+  .toast-region { bottom: calc(92px + env(safe-area-inset-bottom, 0px)) !important; }
+  body.modo-escaner .tabs { display: none; }
+  body.modo-escaner { padding-bottom: 0; }
+  body.modo-escaner .toast-region { bottom: 16px !important; }
 }
-.progress-inner {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
-  gap: 22px;
-  align-items: center;
-  padding: 12px 0;
+
+/* Sesión de Microsoft 365 */
+.sesion-ms { position: relative; }
+.avatar-btn { border: 0; background: transparent; padding: 0; border-radius: 14px; }
+.avatar-xs { width: 36px; height: 36px; border-radius: 12px; font-size: .78rem; }
+.menu-ms {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 70;
+  display: grid; gap: 4px; min-width: 240px;
+  padding: 14px; border-radius: var(--rmd);
+  background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow);
+  font-size: .84rem;
 }
-.pmeter { display: grid; gap: 6px; min-width: 0; }
-.pmeter-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: .8rem; }
-.pmeter-label { color: var(--muted-texto); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pmeter-value { color: var(--ink); font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.pmeter-value small { color: var(--muted-texto); font-weight: 600; }
-.pbar { height: 8px; border-radius: var(--pill); background: var(--surface-2); overflow: hidden; border: 1px solid var(--line); }
-.pbar > span {
-  display: block; height: 100%;
-  width: 0;
-  border-radius: inherit;
-  background: linear-gradient(90deg, var(--g7), var(--g5));
-  transition: width 900ms cubic-bezier(.2, .7, .2, 1);
-}
-.pbar.gold > span { background: linear-gradient(90deg, #d39a26, var(--gold)); }
-.pbar.deep > span { background: linear-gradient(90deg, var(--g9), var(--g7)); }
-@media (max-width: 900px) {
-  .progress-inner { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-  .progress-inner > .progress-actions { grid-column: 1 / -1; justify-content: flex-start; }
-}
-@media (max-width: 560px) {
-  .progress-inner { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; padding: 8px 0; }
-  .pmeter-head { display: grid; gap: 0; }
-  .pmeter-label { font-size: .7rem; }
-  .pmeter-value { font-size: .86rem; }
-  .pmeter-value small { font-size: .68rem; }
-  .pmeter-value small .solo-ancho { display: none; }
-  .progress-actions .btn { min-height: 32px; padding: 4px 12px; font-size: .78rem; }
-}
-.progress-actions { display: flex; gap: 8px; justify-content: flex-end; }
+.menu-ms span { color: var(--muted-texto); word-break: break-all; }
+.menu-ms .btn { justify-self: start; margin-top: 6px; }
 
 /* ───────── Botones ───────── */
 .btn {

@@ -1,211 +1,96 @@
 {
-  "provisional": true,
-  "aviso": "AGENDA PROVISIONAL de ejemplo. Reemplace fecha, sede, horarios, moduladores y dependencias convocadas por la agenda aprobada por la OAPDI.",
-  "fecha": "2026-11-19",
-  "sede": "Sede Calle 13 — Auditorio principal y salas de trabajo (PROVISIONAL)",
+  "provisional": false,
+  "fuente": "Presentación «Jornada de Planeación Institucional 2027» de la Oficina Asesora de Planeación (diapositivas 2 a 6).",
+  "nota": "Responsables propuestos. Las fechas previas y posteriores a la jornada son propuestas.",
+  "titulo": "Jornada de Planeación Institucional 2027",
+  "lema": "Logros que nos transforman, decisiones que construyen futuro.",
+  "sede": "Por confirmar",
   "zonaHoraria": "America/Bogota",
-  "bloques": [
+  "dias": [
     {
-      "id": "B01",
-      "inicio": "07:30",
-      "fin": "08:00",
-      "titulo": "Registro de asistentes con pase QR",
-      "modulador": "Equipo OAPDI",
-      "cargo": "Oficina Asesora de Planeación y Desarrollo Institucional",
-      "modalidad": "plenaria",
-      "tema": "logistica",
-      "sala": "Ingreso al auditorio",
-      "entregable": "Asistencia registrada por dependencia",
-      "insumo": "Pase de acceso (QR) emitido en la pestaña Formulación y Pase",
-      "guion": [
-        "Lectura del pase QR en el modo escáner",
-        "Registro manual para quienes no tengan el pase en el celular",
-        "Entrega del material de la jornada"
-      ],
-      "dependencias": ["todas"]
+      "id": "d1",
+      "numero": 1,
+      "fecha": "2026-11-18",
+      "titulo": "Balance y visión de futuro",
+      "resultado": "",
+      "bloques": [
+        { "id": "d1-01", "inicio": "08:00", "fin": "08:30", "tipo": "llegada", "titulo": "Café de bienvenida", "detalle": "", "responsable": "Equipo organizador", "apoyo": "" },
+        { "id": "d1-02", "inicio": "08:30", "fin": "09:45", "tipo": "sesion", "titulo": "Grandes apuestas del PDI", "detalle": "Aportes a las grandes apuestas del Plan de Desarrollo Institucional.", "responsable": "Hermano Rector", "apoyo": "" },
+        { "id": "d1-03", "inicio": "09:45", "fin": "10:15", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
+        { "id": "d1-04", "inicio": "10:15", "fin": "12:00", "tipo": "sesion", "titulo": "Logros y transformaciones 2025–2026", "detalle": "Balance de los logros y transformaciones institucionales de las vigencias 2025 y 2026.", "responsable": "Líderes de proceso + OAP", "apoyo": "" },
+        { "id": "d1-05", "inicio": "12:00", "fin": "13:30", "tipo": "receso", "titulo": "Almuerzo", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
+        { "id": "d1-06", "inicio": "13:30", "fin": "14:30", "tipo": "sesion", "titulo": "Tendencias y proyección como universidad", "detalle": "Tendencias tecnológicas, visión y misión, excelencia académica y sostenibilidad financiera.", "responsable": "Rectoría + áreas designadas", "apoyo": "" },
+        { "id": "d1-07", "inicio": "14:30", "fin": "15:00", "tipo": "sesion", "titulo": "Cadena de valor e indicadores de impacto", "detalle": "Cadena de valor e indicadores de impacto.", "responsable": "Líderes de proceso + OAP", "apoyo": "" },
+        { "id": "d1-08", "inicio": "15:00", "fin": "15:30", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
+        { "id": "d1-09", "inicio": "15:30", "fin": "17:00", "tipo": "taller", "titulo": "Taller: cargue del análisis de contexto", "detalle": "Taller de cargue del análisis de contexto en la plataforma.", "responsable": "Líderes de proceso + OAP", "apoyo": "" }
+      ]
     },
     {
-      "id": "B02",
-      "inicio": "08:00",
-      "fin": "09:00",
-      "titulo": "Apertura: hitos 2025–2026 y metas institucionales 2027",
-      "modulador": "Hno. Ariosto Ardila Silva",
-      "cargo": "Rector",
-      "modalidad": "plenaria",
-      "tema": "metas",
-      "sala": "Auditorio principal",
-      "entregable": "Metas institucionales 2027 socializadas a todas las dependencias",
-      "insumo": "Ninguno: bloque de contexto",
-      "guion": [
-        "Balance de los hitos 2025–2026: acreditación institucional de alta calidad, nuevas sedes y alianzas estratégicas",
-        "Presentación de las metas institucionales 2027 y su relación con el Plan de Desarrollo Institucional",
-        "Mensaje del Rector sobre el criterio de evidencia macro para 2027"
-      ],
-      "dependencias": ["todas"]
+      "id": "d2",
+      "numero": 2,
+      "fecha": "2026-11-19",
+      "titulo": "Construcción del Plan de Acción 2027",
+      "resultado": "Acciones, necesidades, indicadores y metas estructurados; posibles responsables identificados.",
+      "bloques": [
+        { "id": "d2-01", "inicio": "08:00", "fin": "10:00", "tipo": "sesion", "titulo": "Análisis de causas y acciones", "detalle": "Análisis de causas y acciones de respuesta al contexto.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Orientación metodológica" },
+        { "id": "d2-02", "inicio": "10:00", "fin": "10:30", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
+        { "id": "d2-03", "inicio": "10:30", "fin": "12:00", "tipo": "taller", "titulo": "Cargue de acciones y necesidades 2027 · Parte 1", "detalle": "Cargue de acciones y necesidades 2027, primera parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
+        { "id": "d2-04", "inicio": "12:00", "fin": "13:30", "tipo": "receso", "titulo": "Almuerzo", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
+        { "id": "d2-05", "inicio": "13:30", "fin": "14:15", "tipo": "taller", "titulo": "Cargue de acciones y necesidades 2027 · Parte 2", "detalle": "Cargue de acciones y necesidades 2027, segunda parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
+        { "id": "d2-06", "inicio": "14:15", "fin": "15:30", "tipo": "sesion", "titulo": "Indicadores y metas 2027", "detalle": "Indicadores, metas, fuentes y periodicidad.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Orientación técnica" },
+        { "id": "d2-07", "inicio": "15:30", "fin": "16:00", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
+        { "id": "d2-08", "inicio": "16:00", "fin": "17:00", "tipo": "taller", "titulo": "Posibles responsables", "detalle": "Posibles responsables y áreas de apoyo mediante Mentimeter.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Taller con Mentimeter" }
+      ]
     },
     {
-      "id": "B03",
-      "inicio": "09:00",
-      "fin": "09:30",
-      "titulo": "La cadena lógica de la planeación y cómo vamos a reportar en 2027",
-      "modulador": "Fabián Mauricio Ospina Castañeda",
-      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
-      "modalidad": "plenaria",
-      "tema": "metas",
-      "sala": "Auditorio principal",
-      "entregable": "Regla de evidencia macro comprendida por los equipos",
-      "insumo": "Plantilla Excel descargada desde el aplicativo",
-      "guion": [
-        "Metas 2027 → plan de acción → plan de necesidades → plan de adquisiciones",
-        "Por qué una necesidad sin acción es inválida y una adquisición sin necesidad también",
-        "Del modelo 2026 (muchos productos pequeños) al modelo 2027 (pocos informes macro de peso)"
-      ],
-      "dependencias": ["todas"]
-    },
-    {
-      "id": "B04",
-      "inicio": "09:30",
-      "fin": "10:45",
-      "titulo": "Mesa 1 — Plan de acción 2027",
-      "modulador": "Fabián Mauricio Ospina Castañeda",
-      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
-      "modalidad": "mesa",
-      "tema": "accion",
-      "sala": "Salas de trabajo por dependencia",
-      "entregable": "Hoja Acciones diligenciada: acciones con meta, línea PDI, indicador y evidencia macro",
-      "insumo": "Resultados 2026 de la dependencia y metas institucionales 2027",
-      "guion": [
-        "Cada dependencia elige a qué meta 2027 y a qué línea del PDI aporta",
-        "Formulación de acciones consolidadas (idealmente menos de 15 por dependencia)",
-        "Definición de indicador, unidad de medida y meta cuantitativa",
-        "Compromiso de evidencia macro por acción"
-      ],
-      "dependencias": ["todas"]
-    },
-    {
-      "id": "B05",
-      "inicio": "10:45",
-      "fin": "11:00",
-      "titulo": "Receso",
-      "modulador": "",
-      "cargo": "",
-      "modalidad": "plenaria",
-      "tema": "receso",
-      "sala": "",
-      "entregable": "",
-      "insumo": "",
-      "guion": [],
-      "dependencias": ["todas"]
-    },
-    {
-      "id": "B06",
-      "inicio": "11:00",
-      "fin": "12:15",
-      "titulo": "Mesa 2 — Plan de necesidades",
-      "modulador": "Fabián Mauricio Ospina Castañeda",
-      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
-      "modalidad": "mesa",
-      "tema": "necesidades",
-      "sala": "Salas de trabajo por dependencia",
-      "entregable": "Hoja Necesidades diligenciada: cada necesidad amarrada a un código de acción",
-      "insumo": "Hoja Acciones terminada en la Mesa 1",
-      "guion": [
-        "Por cada acción, ¿qué bienes, servicios, talento humano o infraestructura se requieren?",
-        "Cantidad, valor estimado y trimestre en que se requiere",
-        "Verificación cruzada: ninguna necesidad sin código de acción válido"
-      ],
-      "dependencias": ["todas"]
-    },
-    {
-      "id": "B07",
-      "inicio": "12:15",
-      "fin": "13:30",
-      "titulo": "Almuerzo",
-      "modulador": "",
-      "cargo": "",
-      "modalidad": "plenaria",
-      "tema": "receso",
-      "sala": "",
-      "entregable": "",
-      "insumo": "",
-      "guion": [],
-      "dependencias": ["todas"]
-    },
-    {
-      "id": "B08",
-      "inicio": "13:30",
-      "fin": "14:45",
-      "titulo": "Mesa 3 — Plan de adquisiciones y fechas de radicación",
-      "modulador": "Fabián Mauricio Ospina Castañeda",
-      "cargo": "Apoyo Profesional a la Planeación — OAPDI",
-      "modalidad": "mesa",
-      "tema": "adquisiciones",
-      "sala": "Salas de trabajo por dependencia",
-      "entregable": "Hoja Adquisiciones diligenciada con modalidad y fecha límite de radicación de estudios previos",
-      "insumo": "Hoja Necesidades terminada en la Mesa 2",
-      "guion": [
-        "Asignar modalidad de contratación a cada necesidad que se compra",
-        "Calcular hacia atrás la fecha de radicación de estudios previos con el calculador",
-        "Identificar radicaciones que se cruzan en los mismos meses"
-      ],
-      "dependencias": ["todas"]
-    },
-    {
-      "id": "B09",
-      "inicio": "14:45",
-      "fin": "15:30",
-      "titulo": "Clínica de adquisiciones con Contratación",
-      "modulador": "Equipo de Contratación y Adquisiciones",
-      "cargo": "Vicerrectoría Administrativa y Financiera",
-      "modalidad": "mesa",
-      "tema": "adquisiciones",
-      "sala": "Sala de juntas VAF",
-      "entregable": "Modalidades revisadas para las compras de mayor cuantía",
-      "insumo": "Hoja Adquisiciones con las compras de mayor valor",
-      "guion": [
-        "Revisión de modalidades propuestas frente a topes y tiempos",
-        "Agrupación de compras repetidas entre dependencias",
-        "Alertas de radicación tardía"
-      ],
-      "dependencias": ["130", "125", "132", "121", "131"]
-    },
-    {
-      "id": "B10",
-      "inicio": "14:45",
-      "fin": "15:30",
-      "titulo": "Mesa de articulación misional",
-      "modulador": "Equipo de la Vicerrectoría Académica",
-      "cargo": "Vicerrectoría Académica",
-      "modalidad": "mesa",
-      "tema": "accion",
-      "sala": "Sala de consejo académico",
-      "entregable": "Acciones misionales sin duplicidad entre dependencias",
-      "insumo": "Hoja Acciones de cada dependencia misional",
-      "guion": [
-        "Cruce de acciones entre facultades, IBTI, investigación y extensión",
-        "Consolidación de acciones repetidas en una sola acción con varios responsables"
-      ],
-      "dependencias": ["120", "123", "124", "126", "140", "141", "122"]
-    },
-    {
-      "id": "B11",
-      "inicio": "15:30",
-      "fin": "16:30",
-      "titulo": "Cierre: consolidación, validación de la OAPDI y compromisos",
-      "modulador": "Jorge Herrera Ortíz",
-      "cargo": "Jefe de la Oficina Asesora de Planeación y Desarrollo Institucional",
-      "modalidad": "plenaria",
-      "tema": "cierre",
-      "sala": "Auditorio principal",
-      "entregable": "Acta de compromisos con fechas y Excel validado por dependencia",
-      "insumo": "Excel diligenciado y validado en el aplicativo (pase emitido)",
-      "guion": [
-        "Tablero consolidado de necesidades y adquisiciones en vivo",
-        "Validación de la OAPDI: dependencias pendientes y ajustes",
-        "Compromisos: entrega del Excel definitivo (fecha provisional: 27 de noviembre de 2026)",
-        "Compromisos: aprobación del Plan Anual de Adquisiciones (fecha provisional: 15 de diciembre de 2026)"
-      ],
-      "dependencias": ["todas"]
+      "id": "d3",
+      "numero": 3,
+      "fecha": "2026-11-20",
+      "titulo": "Productos, necesidades y gestión de riesgos",
+      "resultado": "Posibles responsables identificados, productos y necesidades registrados y matriz de riesgos trabajada.",
+      "bloques": [
+        { "id": "d3-01", "inicio": "08:00", "fin": "09:00", "tipo": "taller", "titulo": "Posibles responsables", "detalle": "Identificación de posibles responsables y áreas de apoyo.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Mentimeter" },
+        { "id": "d3-02", "inicio": "09:00", "fin": "10:00", "tipo": "taller", "titulo": "Definición y cargue de productos · Parte 1", "detalle": "Definición y cargue de productos, primera parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
+        { "id": "d3-03", "inicio": "10:00", "fin": "10:30", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
+        { "id": "d3-04", "inicio": "10:30", "fin": "11:30", "tipo": "taller", "titulo": "Definición y cargue de productos · Parte 2", "detalle": "Definición y cargue de productos, segunda parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
+        { "id": "d3-05", "inicio": "11:30", "fin": "12:30", "tipo": "taller", "titulo": "Detalle y cargue de necesidades", "detalle": "Detalle y cargue de necesidades.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Revisión de necesidades" },
+        { "id": "d3-06", "inicio": "12:30", "fin": "14:00", "tipo": "taller", "titulo": "Taller: matriz de riesgos", "detalle": "Taller de construcción de la matriz de riesgos.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Orientación metodológica" }
+      ]
     }
-  ]
+  ],
+  "ruta": {
+    "titulo": "Ruta de planeación institucional 2027",
+    "resultado": "Plan de Acción 2027 consolidado y documentado para validación institucional.",
+    "nota": "OAP: Oficina Asesora de Planeación · Fechas previas y posteriores propuestas.",
+    "fases": [
+      {
+        "id": "antes",
+        "titulo": "Antes",
+        "hitos": [
+          { "actividad": "Alinear objetivo, agenda y metodología", "desde": "2026-10-23", "hasta": "2026-10-23", "responsable": "Rectoría + OAP" },
+          { "actividad": "Enviar Excel de acciones, necesidades y fichas de indicadores", "desde": "2026-10-23", "hasta": "2026-10-30", "responsable": "OAP" },
+          { "actividad": "Entregar insumos y balance de logros 2025–2026", "desde": "2026-10-30", "hasta": "2026-11-06", "responsable": "Líderes de proceso" },
+          { "actividad": "Revisar insumos, accesos y logística", "desde": "2026-11-06", "hasta": "2026-11-13", "responsable": "OAP + apoyo técnico" }
+        ]
+      },
+      {
+        "id": "durante",
+        "titulo": "Durante",
+        "hitos": [
+          { "actividad": "Balance, visión de futuro y análisis de contexto", "desde": "2026-11-18", "hasta": "2026-11-18", "responsable": "Rectoría + líderes + OAP" },
+          { "actividad": "Causas, acciones, necesidades, indicadores y responsables", "desde": "2026-11-19", "hasta": "2026-11-19", "responsable": "Líderes + OAP" },
+          { "actividad": "Responsables, productos, necesidades y matriz de riesgos", "desde": "2026-11-20", "hasta": "2026-11-20", "responsable": "Líderes + OAP" }
+        ]
+      },
+      {
+        "id": "despues",
+        "titulo": "Después",
+        "hitos": [
+          { "actividad": "Enviar retroalimentación a cada área", "desde": "2026-11-20", "hasta": "2026-11-27", "responsable": "OAP" },
+          { "actividad": "Ajustar y consolidar el Plan de Acción 2027", "desde": "2026-11-27", "hasta": "2026-12-04", "responsable": "Líderes + OAP" },
+          { "actividad": "Elaborar acta de planeación y constitución del Plan de Acción 2027", "desde": "2026-11-27", "hasta": "2026-12-04", "responsable": "OAP" }
+        ]
+      }
+    ]
+  }
 }

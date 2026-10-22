@@ -6,23 +6,23 @@
  */
 import { ARCHIVOS_DATOS } from '../config.js';
 
-const OBLIGATORIOS = ['directorio', 'dependencias'];
+const OBLIGATORIOS = ['dependencias', 'areas', 'config'];
 
 // Estructura mínima esperada por clave; se usa para detectar archivos mal formados.
 const VALIDADORES = {
   config: (d) => d && typeof d === 'object',
   directorio: (d) => Array.isArray(d?.personas),
   dependencias: (d) => Array.isArray(d?.dependencias),
-  agenda: (d) => Array.isArray(d?.bloques),
-  metas: (d) => Array.isArray(d?.metasInstitucionales),
-  hitos: (d) => Array.isArray(d?.hitos),
+  areas: (d) => Array.isArray(d?.areas),
+  agenda: (d) => Array.isArray(d?.dias),
   modalidades: (d) => Array.isArray(d?.modalidades),
+  contratacion: (d) => Array.isArray(d?.etapas),
   festivos: (d) => Array.isArray(d?.festivos),
   riesgos: (d) => Array.isArray(d?.riesgos)
 };
 
 const VACIOS = {
-  config: {}, agenda: { fecha: '', sede: '', bloques: [] }, metas: { metasInstitucionales: [] }, hitos: { hitos: [] },
+  config: {}, agenda: { dias: [], ruta: { fases: [] } }, contratacion: { etapas: [], normativa: [], reglas: [], errores2026: [], camposClave: [] },
   modalidades: { modalidades: [] }, festivos: { festivos: [] }, riesgos: { riesgos: [], procesos: [], escalas: {} }
 };
 

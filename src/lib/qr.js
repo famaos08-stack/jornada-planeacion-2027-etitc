@@ -19,8 +19,9 @@ function cyrb53(texto, semilla = 0) {
   return 4294967296 * (2097151 & h2) + (h1 >>> 0);
 }
 
+// El área funcional (a) entra en la firma cuando está presente; los pases sin área siguen siendo válidos.
 export function firmar(pase, sal) {
-  const cadena = [pase.id, pase.n, pase.c, pase.d, pase.e, pase.ts].join('|');
+  const cadena = [pase.id, pase.n, pase.c, pase.d, pase.e, pase.ts].join('|') + (pase.a ? `|${pase.a}` : '');
   const a = cyrb53(`${sal}|${cadena}`, 27).toString(36);
   const b = cyrb53(`${cadena}|${sal}`, 2027).toString(36);
   return `${a}${b}`.toUpperCase().slice(0, 12);
@@ -36,15 +37,15 @@ export function generarIdPase(codigoDependencia, prefijo = 'JP27') {
   return `${prefijo}-${codigoDependencia}-${aleatorio(5)}`;
 }
 
-// Crea el contenido del pase: {"id","n","c","d","e","ts","h"}
-export function crearPase({ nombre, cargo, dependencia, correo, prefijo, sal }) {
-  const pase = { id: generarIdPase(dependencia, prefijo), n: nombre, c: cargo, d: dependencia, e: correo, ts: Date.now(), h: '' };
+// Crea el contenido del pase: {"id","n","c","d","a","e","ts","h"} (a = área funcional, por ejemplo A05)
+export function crearPase({ nombre, cargo, dependencia, area = '', correo, prefijo, sal }) {
+  const pase = { id: generarIdPase(dependencia, prefijo), n: nombre, c: cargo, d: dependencia, ...(area ? { a: area } : {}), e: correo, ts: Date.now(), h: '' };
   pase.h = firmar(pase, sal);
   return pase;
 }
 
 export function contenidoQR(pase) {
-  return JSON.stringify({ id: pase.id, n: pase.n, c: pase.c, d: pase.d, e: pase.e, ts: pase.ts, h: pase.h });
+  return JSON.stringify({ id: pase.id, n: pase.n, c: pase.c, d: pase.d, ...(pase.a ? { a: pase.a } : {}), e: pase.e, ts: pase.ts, h: pase.h });
 }
 
 // Verifica el texto leído por la cámara. Devuelve { valido, motivo, pase }.
