@@ -1,7 +1,7 @@
 {
   "provisional": false,
-  "fuente": "Presentación «Jornada de Planeación Institucional 2027» de la Oficina Asesora de Planeación (diapositivas 2 a 6).",
-  "nota": "Responsables propuestos. Las fechas previas y posteriores a la jornada son propuestas.",
+  "fuente": "Agenda de la Jornada de Planeación ajustada en el comité de la Oficina Asesora de Planeación del 22 de octubre de 2026 (Acta No. 1).",
+  "nota": "Agenda sujeta a ajustes de la Oficina Asesora de Planeación.",
   "titulo": "Jornada de Planeación Institucional 2027",
   "lema": "Logros que nos transforman, decisiones que construyen futuro.",
   "sede": "Por confirmar",
@@ -12,17 +12,181 @@
       "numero": 1,
       "fecha": "2026-11-18",
       "titulo": "Balance y visión de futuro",
-      "resultado": "",
+      "resultado": "Balance compartido de la gestión 2025 y 2026, apuestas del PDI claras y análisis de contexto iniciado.",
       "bloques": [
-        { "id": "d1-01", "inicio": "08:00", "fin": "08:30", "tipo": "llegada", "titulo": "Café de bienvenida", "detalle": "", "responsable": "Equipo organizador", "apoyo": "" },
-        { "id": "d1-02", "inicio": "08:30", "fin": "09:45", "tipo": "sesion", "titulo": "Grandes apuestas del PDI", "detalle": "Aportes a las grandes apuestas del Plan de Desarrollo Institucional.", "responsable": "Hermano Rector", "apoyo": "" },
-        { "id": "d1-03", "inicio": "09:45", "fin": "10:15", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
-        { "id": "d1-04", "inicio": "10:15", "fin": "12:00", "tipo": "sesion", "titulo": "Logros y transformaciones 2025–2026", "detalle": "Balance de los logros y transformaciones institucionales de las vigencias 2025 y 2026.", "responsable": "Líderes de proceso + OAP", "apoyo": "" },
-        { "id": "d1-05", "inicio": "12:00", "fin": "13:30", "tipo": "receso", "titulo": "Almuerzo", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
-        { "id": "d1-06", "inicio": "13:30", "fin": "14:30", "tipo": "sesion", "titulo": "Tendencias y proyección como universidad", "detalle": "Tendencias tecnológicas, visión y misión, excelencia académica y sostenibilidad financiera.", "responsable": "Rectoría + áreas designadas", "apoyo": "" },
-        { "id": "d1-07", "inicio": "14:30", "fin": "15:00", "tipo": "sesion", "titulo": "Cadena de valor e indicadores de impacto", "detalle": "Cadena de valor e indicadores de impacto.", "responsable": "Líderes de proceso + OAP", "apoyo": "" },
-        { "id": "d1-08", "inicio": "15:00", "fin": "15:30", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
-        { "id": "d1-09", "inicio": "15:30", "fin": "17:00", "tipo": "taller", "titulo": "Taller: cargue del análisis de contexto", "detalle": "Taller de cargue del análisis de contexto en la plataforma.", "responsable": "Líderes de proceso + OAP", "apoyo": "" }
+        {
+          "id": "d1-01",
+          "inicio": "08:00",
+          "fin": "08:30",
+          "tipo": "llegada",
+          "titulo": "Registro de asistencia y café",
+          "detalle": "Ingreso con el pase QR. De fondo se proyecta el video institucional de ambientación con música.",
+          "responsables": [
+            "Fabián Ospina"
+          ],
+          "responsable": "Fabián Ospina",
+          "apoyo": "",
+          "insumo": "Video institucional de ambientación con música"
+        },
+        {
+          "id": "d1-02",
+          "inicio": "08:30",
+          "fin": "08:40",
+          "tipo": "sesion",
+          "titulo": "Apertura del evento",
+          "detalle": "Bienvenida y propósito de la jornada.",
+          "responsables": [
+            "Jorge Herrera"
+          ],
+          "responsable": "Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-03",
+          "inicio": "08:40",
+          "fin": "09:00",
+          "tipo": "sesion",
+          "titulo": "Intervención del Hermano Rector Ariosto Ardila",
+          "detalle": "Mensaje del Rector a la comunidad que planea la vigencia 2027.",
+          "responsables": [
+            "Ariosto Ardila"
+          ],
+          "responsable": "Ariosto Ardila",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-04",
+          "inicio": "09:00",
+          "fin": "10:00",
+          "tipo": "sesion",
+          "titulo": "Logros y transformaciones 2025 y 2026: ¿cómo estamos?",
+          "detalle": "Balance de los logros y transformaciones institucionales de las vigencias 2025 y 2026.",
+          "responsables": [
+            "Jorge Herrera",
+            "Fabián Ospina"
+          ],
+          "responsable": "Jorge Herrera, Fabián Ospina",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-05",
+          "inicio": "10:00",
+          "fin": "10:20",
+          "tipo": "receso",
+          "titulo": "Receso",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-06",
+          "inicio": "10:20",
+          "fin": "11:30",
+          "tipo": "sesion",
+          "titulo": "Grandes apuestas del PDI",
+          "detalle": "Las apuestas del Plan de Desarrollo Institucional 2025 a 2032 que orientan la vigencia 2027.",
+          "responsables": [
+            "Ariosto Ardila"
+          ],
+          "responsable": "Ariosto Ardila",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-07",
+          "inicio": "11:30",
+          "fin": "12:30",
+          "tipo": "sesion",
+          "titulo": "Tendencias y proyección como universidad",
+          "detalle": "Tendencias tecnológicas, visión y misión, excelencia académica y sostenibilidad financiera.",
+          "responsables": [
+            "Ariosto Ardila"
+          ],
+          "responsable": "Ariosto Ardila",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-08",
+          "inicio": "12:30",
+          "fin": "14:00",
+          "tipo": "receso",
+          "titulo": "Almuerzo",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-09",
+          "inicio": "14:00",
+          "fin": "14:30",
+          "tipo": "sesion",
+          "titulo": "Cadena de valor e indicadores de impacto",
+          "detalle": "Cómo se genera y cómo se demuestra el impacto, según la Guía Metodológica para la Evaluación de Impacto Institucional.",
+          "responsables": [
+            "Claudia Aponte"
+          ],
+          "responsable": "Claudia Aponte",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-10",
+          "inicio": "14:30",
+          "fin": "15:30",
+          "tipo": "taller",
+          "titulo": "Taller: análisis de contexto, parte 1",
+          "detalle": "Variables del entorno interno y externo de cada proceso.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-11",
+          "inicio": "15:30",
+          "fin": "15:50",
+          "tipo": "receso",
+          "titulo": "Receso",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-12",
+          "inicio": "15:50",
+          "fin": "17:00",
+          "tipo": "taller",
+          "titulo": "Taller: análisis de contexto, parte 2",
+          "detalle": "Valoración de variables y conclusiones por proceso.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        }
       ]
     },
     {
@@ -32,14 +196,146 @@
       "titulo": "Construcción del Plan de Acción 2027",
       "resultado": "Acciones, necesidades, indicadores y metas estructurados; posibles responsables identificados.",
       "bloques": [
-        { "id": "d2-01", "inicio": "08:00", "fin": "10:00", "tipo": "sesion", "titulo": "Análisis de causas y acciones", "detalle": "Análisis de causas y acciones de respuesta al contexto.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Orientación metodológica" },
-        { "id": "d2-02", "inicio": "10:00", "fin": "10:30", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
-        { "id": "d2-03", "inicio": "10:30", "fin": "12:00", "tipo": "taller", "titulo": "Cargue de acciones y necesidades 2027 · Parte 1", "detalle": "Cargue de acciones y necesidades 2027, primera parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
-        { "id": "d2-04", "inicio": "12:00", "fin": "13:30", "tipo": "receso", "titulo": "Almuerzo", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
-        { "id": "d2-05", "inicio": "13:30", "fin": "14:15", "tipo": "taller", "titulo": "Cargue de acciones y necesidades 2027 · Parte 2", "detalle": "Cargue de acciones y necesidades 2027, segunda parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
-        { "id": "d2-06", "inicio": "14:15", "fin": "15:30", "tipo": "sesion", "titulo": "Indicadores y metas 2027", "detalle": "Indicadores, metas, fuentes y periodicidad.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Orientación técnica" },
-        { "id": "d2-07", "inicio": "15:30", "fin": "16:00", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
-        { "id": "d2-08", "inicio": "16:00", "fin": "17:00", "tipo": "taller", "titulo": "Posibles responsables", "detalle": "Posibles responsables y áreas de apoyo mediante Mentimeter.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Taller con Mentimeter" }
+        {
+          "id": "d2-01",
+          "inicio": "08:00",
+          "fin": "08:30",
+          "tipo": "llegada",
+          "titulo": "Registro de asistencia y café",
+          "detalle": "Ingreso con el pase QR. De fondo se proyecta el video institucional de ambientación con música.",
+          "responsables": [
+            "Fabián Ospina"
+          ],
+          "responsable": "Fabián Ospina",
+          "apoyo": "",
+          "insumo": "Video institucional de ambientación con música"
+        },
+        {
+          "id": "d2-02",
+          "inicio": "08:30",
+          "fin": "10:00",
+          "tipo": "taller",
+          "titulo": "Taller: análisis de contexto, parte 3",
+          "detalle": "Cierre del análisis de contexto y priorización.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d2-03",
+          "inicio": "10:00",
+          "fin": "10:30",
+          "tipo": "receso",
+          "titulo": "Receso",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d2-04",
+          "inicio": "10:30",
+          "fin": "12:30",
+          "tipo": "taller",
+          "titulo": "Taller: acciones PDI y Plan de Necesidades 2027, parte 1",
+          "detalle": "Formulación de acciones por meta y de las necesidades que cada acción requiere.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d2-05",
+          "inicio": "12:30",
+          "fin": "14:00",
+          "tipo": "receso",
+          "titulo": "Almuerzo",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d2-06",
+          "inicio": "14:00",
+          "fin": "14:45",
+          "tipo": "taller",
+          "titulo": "Taller: acciones PDI y Plan de Necesidades 2027, parte 2",
+          "detalle": "Revisión de la formulación y del cargue en el SUIE.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d2-07",
+          "inicio": "14:45",
+          "fin": "15:15",
+          "tipo": "sesion",
+          "titulo": "Plan de Adquisiciones",
+          "detalle": "Del Plan de Necesidades al Plan Anual de Adquisiciones: tiempos, modalidades y temas contractuales.",
+          "responsables": [
+            "María Fernanda Camargo"
+          ],
+          "responsable": "María Fernanda Camargo",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d2-08",
+          "inicio": "15:15",
+          "fin": "15:35",
+          "tipo": "receso",
+          "titulo": "Receso",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d2-09",
+          "inicio": "15:35",
+          "fin": "17:00",
+          "tipo": "taller",
+          "titulo": "Taller: indicadores 2027 y responsables de productos (KPI)",
+          "detalle": "Indicadores de seguimiento, metas 2027 y responsables de cada producto.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        }
       ]
     },
     {
@@ -49,12 +345,112 @@
       "titulo": "Productos, necesidades y gestión de riesgos",
       "resultado": "Posibles responsables identificados, productos y necesidades registrados y matriz de riesgos trabajada.",
       "bloques": [
-        { "id": "d3-01", "inicio": "08:00", "fin": "09:00", "tipo": "taller", "titulo": "Posibles responsables", "detalle": "Identificación de posibles responsables y áreas de apoyo.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Mentimeter" },
-        { "id": "d3-02", "inicio": "09:00", "fin": "10:00", "tipo": "taller", "titulo": "Definición y cargue de productos · Parte 1", "detalle": "Definición y cargue de productos, primera parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
-        { "id": "d3-03", "inicio": "10:00", "fin": "10:30", "tipo": "receso", "titulo": "Receso", "detalle": "", "responsable": "Todos los participantes", "apoyo": "" },
-        { "id": "d3-04", "inicio": "10:30", "fin": "11:30", "tipo": "taller", "titulo": "Definición y cargue de productos · Parte 2", "detalle": "Definición y cargue de productos, segunda parte.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Acompañamiento al cargue" },
-        { "id": "d3-05", "inicio": "11:30", "fin": "12:30", "tipo": "taller", "titulo": "Detalle y cargue de necesidades", "detalle": "Detalle y cargue de necesidades.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Revisión de necesidades" },
-        { "id": "d3-06", "inicio": "12:30", "fin": "14:00", "tipo": "taller", "titulo": "Taller: matriz de riesgos", "detalle": "Taller de construcción de la matriz de riesgos.", "responsable": "Líderes de proceso y sus equipos", "apoyo": "Orientación metodológica" }
+        {
+          "id": "d3-01",
+          "inicio": "08:00",
+          "fin": "08:30",
+          "tipo": "llegada",
+          "titulo": "Registro de asistencia y café",
+          "detalle": "Ingreso con el pase QR. De fondo se proyecta el video institucional de ambientación con música.",
+          "responsables": [
+            "Fabián Ospina"
+          ],
+          "responsable": "Fabián Ospina",
+          "apoyo": "",
+          "insumo": "Video institucional de ambientación con música"
+        },
+        {
+          "id": "d3-02",
+          "inicio": "08:30",
+          "fin": "10:00",
+          "tipo": "taller",
+          "titulo": "Taller: indicadores 2027 y responsables de productos (KPI), parte 2",
+          "detalle": "Validación de indicadores y responsables por área.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-03",
+          "inicio": "10:00",
+          "fin": "10:30",
+          "tipo": "receso",
+          "titulo": "Receso",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-04",
+          "inicio": "10:30",
+          "fin": "11:30",
+          "tipo": "taller",
+          "titulo": "Taller: acciones PDI y Plan de Necesidades 2027, parte 3",
+          "detalle": "Ajustes finales a acciones y necesidades.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-05",
+          "inicio": "11:30",
+          "fin": "12:30",
+          "tipo": "taller",
+          "titulo": "Taller: matriz de riesgos, parte 1",
+          "detalle": "Identificación de riesgos de las acciones 2027. Metodología y plantillas a cargo de sus responsables.",
+          "responsables": [
+            "Stefany Parra",
+            "Antonia Santiago"
+          ],
+          "responsable": "Stefany Parra, Antonia Santiago",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-06",
+          "inicio": "12:30",
+          "fin": "14:00",
+          "tipo": "receso",
+          "titulo": "Almuerzo",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-07",
+          "inicio": "14:00",
+          "fin": "15:00",
+          "tipo": "taller",
+          "titulo": "Taller: matriz de riesgos, parte 2",
+          "detalle": "Valoración y controles. Metodología y plantillas a cargo de sus responsables.",
+          "responsables": [
+            "Stefany Parra",
+            "Antonia Santiago"
+          ],
+          "responsable": "Stefany Parra, Antonia Santiago",
+          "apoyo": "",
+          "insumo": ""
+        }
       ]
     }
   ],
@@ -67,30 +463,100 @@
         "id": "antes",
         "titulo": "Antes",
         "hitos": [
-          { "actividad": "Alinear objetivo, agenda y metodología", "desde": "2026-10-23", "hasta": "2026-10-23", "responsable": "Rectoría + OAP" },
-          { "actividad": "Enviar Excel de acciones, necesidades y fichas de indicadores", "desde": "2026-10-23", "hasta": "2026-10-30", "responsable": "OAP" },
-          { "actividad": "Entregar insumos y balance de logros 2025–2026", "desde": "2026-10-30", "hasta": "2026-11-06", "responsable": "Líderes de proceso" },
-          { "actividad": "Revisar insumos, accesos y logística", "desde": "2026-11-06", "hasta": "2026-11-13", "responsable": "OAP + apoyo técnico" }
+          {
+            "actividad": "Alinear objetivo, agenda y metodología",
+            "desde": "2026-10-23",
+            "hasta": "2026-10-23",
+            "responsable": "Rectoría + OAP"
+          },
+          {
+            "actividad": "Enviar Excel de acciones, necesidades y fichas de indicadores",
+            "desde": "2026-10-23",
+            "hasta": "2026-10-30",
+            "responsable": "OAP"
+          },
+          {
+            "actividad": "Entregar insumos y balance de logros 2025–2026",
+            "desde": "2026-10-30",
+            "hasta": "2026-11-06",
+            "responsable": "Líderes de proceso"
+          },
+          {
+            "actividad": "Revisar insumos, accesos y logística",
+            "desde": "2026-11-06",
+            "hasta": "2026-11-13",
+            "responsable": "OAP + apoyo técnico"
+          },
+          {
+            "actividad": "Descargar la Plantilla Plan de Acción 2027 en el aplicativo, formularla y cargarla en el SUIE",
+            "desde": "2026-10-28",
+            "hasta": "2026-11-13",
+            "responsable": "Líderes de proceso y áreas"
+          }
         ]
       },
       {
         "id": "durante",
         "titulo": "Durante",
         "hitos": [
-          { "actividad": "Balance, visión de futuro y análisis de contexto", "desde": "2026-11-18", "hasta": "2026-11-18", "responsable": "Rectoría + líderes + OAP" },
-          { "actividad": "Causas, acciones, necesidades, indicadores y responsables", "desde": "2026-11-19", "hasta": "2026-11-19", "responsable": "Líderes + OAP" },
-          { "actividad": "Responsables, productos, necesidades y matriz de riesgos", "desde": "2026-11-20", "hasta": "2026-11-20", "responsable": "Líderes + OAP" }
+          {
+            "actividad": "Balance, visión de futuro y análisis de contexto",
+            "desde": "2026-11-18",
+            "hasta": "2026-11-18",
+            "responsable": "Rectoría + líderes + OAP"
+          },
+          {
+            "actividad": "Causas, acciones, necesidades, indicadores y responsables",
+            "desde": "2026-11-19",
+            "hasta": "2026-11-19",
+            "responsable": "Líderes + OAP"
+          },
+          {
+            "actividad": "Responsables, productos, necesidades y matriz de riesgos",
+            "desde": "2026-11-20",
+            "hasta": "2026-11-20",
+            "responsable": "Líderes + OAP"
+          }
         ]
       },
       {
         "id": "despues",
         "titulo": "Después",
         "hitos": [
-          { "actividad": "Enviar retroalimentación a cada área", "desde": "2026-11-20", "hasta": "2026-11-27", "responsable": "OAP" },
-          { "actividad": "Ajustar y consolidar el Plan de Acción 2027", "desde": "2026-11-27", "hasta": "2026-12-04", "responsable": "Líderes + OAP" },
-          { "actividad": "Elaborar acta de planeación y constitución del Plan de Acción 2027", "desde": "2026-11-27", "hasta": "2026-12-04", "responsable": "OAP" }
+          {
+            "actividad": "Enviar retroalimentación a cada área",
+            "desde": "2026-11-20",
+            "hasta": "2026-11-27",
+            "responsable": "OAP"
+          },
+          {
+            "actividad": "Ajustar y consolidar el Plan de Acción 2027",
+            "desde": "2026-11-27",
+            "hasta": "2026-12-04",
+            "responsable": "Líderes + OAP"
+          },
+          {
+            "actividad": "Elaborar acta de planeación y constitución del Plan de Acción 2027",
+            "desde": "2026-11-27",
+            "hasta": "2026-12-04",
+            "responsable": "OAP"
+          }
         ]
       }
     ]
-  }
+  },
+  "agrupaciones": [
+    {
+      "dia": "d1",
+      "ids": [
+        "d1-04",
+        "d1-05",
+        "d1-06",
+        "d1-07"
+      ],
+      "id": "d1-g1",
+      "titulo": "Balance y visión: logros y transformaciones, grandes apuestas del PDI y tendencias",
+      "detalle": "Un solo bloque de 9:00 a 12:30 con tres momentos: cómo estamos (logros y transformaciones 2025 y 2026), las grandes apuestas del PDI y las tendencias y la proyección de la ETITC como universidad. Incluye un receso de 10:00 a 10:20."
+    }
+  ]
 }

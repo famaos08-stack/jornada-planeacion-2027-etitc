@@ -151,13 +151,16 @@ export async function cronogramaAPdf({ agenda, evento, nombre = 'Cronograma_Jorn
     doc.text(fechaLarga(dia.fecha), M + 31, y + 11);
     y += 18;
     (dia.bloques || []).forEach((b) => {
-      const receso = b.tipo === 'receso' || b.tipo === 'llegada';
+      const receso = b.tipo === 'receso';
       const ancho = W - 2 * M - 64;
       doc.setFont('helvetica', 'bold'); doc.setFontSize(receso ? 9 : 10);
       const titulo = doc.splitTextToSize(b.titulo, ancho);
       doc.setFont('helvetica', 'normal'); doc.setFontSize(8.3);
       const detalle = !receso && b.detalle && b.detalle !== b.titulo ? doc.splitTextToSize(b.detalle, ancho) : [];
-      const alto = Math.max(9, 3 + titulo.length * 4.3 + detalle.length * 3.7 + 2.5);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(7.8);
+      const respTxt = b.responsables && b.responsables.length ? b.responsables.join(', ') : (b.responsable || '');
+      const respLineas = receso || !respTxt ? [] : doc.splitTextToSize(respTxt, 32);
+      const alto = Math.max(9, 3 + titulo.length * 4.3 + detalle.length * 3.7 + 2.5, 3 + respLineas.length * 3.4 + 2);
       saltoSi(alto + 2);
       if (receso) { doc.setFillColor(248, 250, 248); doc.rect(M, y - 1, W - 2 * M, alto, 'F'); }
       doc.setFillColor(...(receso ? linea : b.tipo === 'taller' ? lima : verde7)); doc.rect(M, y - 1, 1.3, alto, 'F');
@@ -170,7 +173,7 @@ export async function cronogramaAPdf({ agenda, evento, nombre = 'Cronograma_Jorn
       if (detalle.length) { doc.setFont('helvetica', 'normal'); doc.setFontSize(8.3); doc.setTextColor(61, 89, 80); doc.text(detalle, M + 30, y + 3.4 + titulo.length * 4.3); }
       if (!receso) {
         doc.setFontSize(7.8); doc.setTextColor(...gris); doc.setFont('helvetica', 'bold');
-        const resp = doc.splitTextToSize(b.responsable || '', 32);
+        const resp = respLineas;
         doc.text(resp, W - M - 32, y + 3.4);
         if (b.apoyo) { doc.setFont('helvetica', 'normal'); doc.text(doc.splitTextToSize(`OAP: ${b.apoyo}`, 32), W - M - 32, y + 3.4 + resp.length * 3.4); }
       }

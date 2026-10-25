@@ -17,62 +17,46 @@
     "prefijo": "JP27",
     "salFirma": "ETITC-OAP-JP27-cambiar-antes-de-la-jornada"
   },
-  "reglasPase": {
-    "_comentario": "exigirTodasLasMetas=true: el pase solo se emite si todas las metas asignadas al área quedaron formuladas y en OK. Con false basta una acción formulada en OK y ninguna fila con errores.",
-    "exigirTodasLasMetas": true
-  },
-  "plantillas": {
-    "accion": [
-      {
-        "id": "plan-accion",
-        "titulo": "Plan de acción 2027",
-        "rol": "Consulta",
-        "descripcion": "Propuesta de la Oficina Asesora de Planeación: las 45 metas del PDI con su ajuste frente a 2026, la meta 2027, las 158 acciones propuestas y la asignación por área.",
-        "archivo": "assets/plantillas/Plan_de_accion_2027.xlsx",
-        "nombreDescarga": "Plan_de_accion_2027.xlsx"
-      },
-      {
-        "id": "formulacion",
-        "titulo": "Plantilla de Formulación 2027",
-        "rol": "Diligenciar",
-        "descripcion": "El libro que su área diligencia: busca su área, revisa sus metas y formula en las columnas amarillas de cada eje.",
-        "archivo": "assets/plantillas/Plantilla_de_Formulacion_2027.xlsx",
-        "nombreDescarga": "Plantilla_de_Formulacion_2027.xlsx"
-      }
-    ],
-    "necesidades": [
-      {
-        "id": "necesidades",
-        "titulo": "Plan de Necesidades 2027",
-        "rol": "Diligenciar",
-        "descripcion": "Un bien, obra o servicio por fila, vinculado a una acción del Plan de Acción 2027 y a una meta del PDI. Incluye la guía UNSPSC y el plan 2026 de referencia.",
-        "archivo": "assets/plantillas/Plan_de_Necesidades_2027.xlsx",
-        "nombreDescarga": "Plan_de_Necesidades_2027.xlsx"
-      }
-    ]
-  },
   "politicaDatos": {
-    "texto": "Autorizo a la ETITC a tratar los datos de este registro (nombre, cargo, correo institucional y área) para gestionar la Jornada de Planeación Institucional 2027, conforme a la Ley 1581 de 2012.",
+    "texto": "Autorizo a la ETITC a tratar los datos de este registro (nombre, cargo, correo institucional y dependencia) para gestionar la Jornada de Planeación Institucional 2027, conforme a la Ley 1581 de 2012.",
     "url": "",
     "_comentario": "[PENDIENTE] Ponga en url el enlace a la Política de Tratamiento de Datos Personales de la ETITC. Si queda vacío, el enlace no se muestra."
   },
   "umbrales": {
-    "diasAlertaRadicacion": 30,
-    "segundosConfirmacionEscaner": 3,
-    "tamanoMaximoArchivoMB": 25
+    "segundosConfirmacionEscaner": 3
   },
-  "microsoft": {
-    "_comentario": "Conector Microsoft 365. Mientras activo=false la aplicación funciona en modo local (registro en este navegador, sin correo automático). Ver docs/Guia_instalacion_Microsoft365.",
-    "activo": false,
-    "tenantId": "",
-    "clientId": "",
-    "sitio": "itc.sharepoint.com:/sites/PlaneacionInstitucional",
-    "biblioteca": "Documentos",
-    "carpetaRaiz": "Jornada de Planeacion 2027",
-    "listaRegistro": "JP27_Registro",
-    "listaAsistencia": "JP27_Asistencia",
-    "rutaDirectorio": "Jornada de Planeacion 2027/Configuracion/directorio.json",
-    "correoCopia": "planeacion@itc.edu.co",
+  "descargas": {
+    "plantilla": {
+      "titulo": "Plantilla Plan de Acción 2027",
+      "descripcion": "Un solo libro de Excel con el instructivo, la propuesta del Plan de Acción 2027, las acciones y actividades por meta, la formulación por ejes, el buscador por área, la hoja de importación al SUIE y el Plan de Necesidades.",
+      "archivo": "assets/plantillas/Plantilla_Plan_de_Accion_2027.xlsx",
+      "nombreDescarga": "Plantilla_Plan_de_Accion_2027.xlsx"
+    },
+    "manualEjemplos": {
+      "titulo": "Manual de ejemplos de formulación",
+      "descripcion": "Por cada eje del PDI, tres acciones bien formuladas y tres que no lo están, con la explicación paso a paso. Incluye ejemplos de necesidades y la guía de Colombia Compra Eficiente.",
+      "archivo": "assets/documentos/Manual_de_ejemplos_formulacion_2027.pdf",
+      "nombreDescarga": "Manual_de_ejemplos_formulacion_2027.pdf"
+    },
+    "instructivo": {
+      "titulo": "Instructivo de formulación",
+      "descripcion": "Cómo está construida la plantilla, hoja por hoja, con énfasis en la hoja de importación al SUIE.",
+      "archivo": "assets/documentos/Instructivo_formulacion_2027.pdf",
+      "nombreDescarga": "Instructivo_formulacion_2027.pdf"
+    },
+    "manualUso": {
+      "titulo": "Manual de uso del aplicativo",
+      "descripcion": "Paso a paso del aplicativo con pantallazos.",
+      "archivo": "assets/documentos/Manual_de_uso_aplicativo_JP2027.pdf",
+      "nombreDescarga": "Manual_de_uso_aplicativo_JP2027.pdf"
+    }
+  },
+  "clasificadorUNSPSC": "https://operaciones.colombiacompra.gov.co/clasificador-de-bienes-y-servicios",
+  "registro": {
+    "_comentario": "URL de la aplicación web de Google Apps Script (ver docs/REGISTRO_EN_LINEA.md). Vacía: el aplicativo guarda en el dispositivo y envía cuando se configure.",
+    "url": "",
+    "token": "JP27-ETITC",
     "enviarCorreo": true
-  }
+  },
+  "credito": "Desarrollo y ajustes: Fabián Ospina, profesional de Plan de Acción, Oficina Asesora de Planeación."
 }

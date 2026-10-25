@@ -1,34 +1,33 @@
 /*
- * app.js — Arranque, enrutamiento de pestañas y conexión con Microsoft 365.
+ * app.js — Arranque y enrutamiento de pestañas.
  *  1. Carga los datos de /data (con respaldo empaquetado en file://).
- *  2. Si el conector Microsoft 365 está configurado, procesa el inicio de sesión y lee el directorio privado.
- *  3. Lee el respaldo local (registros, pases, asistencia) y construye la navegación por hash.
- * Cuatro pestañas (Calendario, Plan de acción, Plan de necesidades, Plan de adquisiciones) y la vista Escáner.
+ *  2. Lee el respaldo local (descargas, pases y lecturas) y reintenta los envíos pendientes al registro en línea.
+ *  3. Construye la navegación por hash: tres pestañas (Agenda, Plan de acción, Plan de necesidades),
+ *     el lector de pases (#escaner) y el panel de la Oficina Asesora de Planeación (#admin).
  */
 import { FEATURES } from './config.js';
 import { almacen } from './storage.js';
-import { estado, fijarDatos, fijarConsolidado, on, emitir, indexarDirectorio } from './estado.js';
+import { estado, fijarDatos, fijarConsolidado, on, emitir } from './estado.js';
 import { cargarDatos, cargarDesdeArchivos } from './lib/datos.js';
 import { esperarLibrerias, avisarLibreriasFaltantes } from './lib/libs.js';
 import { descargarTexto, obtenerLogo } from './lib/export.js';
-import * as ms from './lib/microsoft.js';
+import { vaciarCola } from './lib/remoto.js';
 import { crearPestanas } from './ui/tabs.js';
 import { toast, toastError } from './ui/toast.js';
 import { skeletonPestana } from './ui/skeleton.js';
 import { icono } from './ui/iconos.js';
 import { esc, qs } from './ui/dom.js';
-import { iniciales } from './lib/formato.js';
 import { activarAnimaciones } from './ui/cards.js';
 import { pestanaCalendario } from './tabs/calendario.js';
 import { pestanaAccion } from './tabs/accion.js';
 import { pestanaNecesidades } from './tabs/necesidades.js';
-import { pestanaAdquisiciones } from './tabs/adquisiciones.js';
 import { pestanaRiesgos } from './tabs/riesgos.js';
 import { vistaEscaner } from './tabs/escaner.js';
+import { vistaAdmin } from './tabs/admin.js';
 
-const PESTANAS = [pestanaCalendario, pestanaAccion, pestanaNecesidades, pestanaAdquisiciones]
+const PESTANAS = [pestanaCalendario, pestanaAccion, pestanaNecesidades]
   .concat(FEATURES.mapaRiesgos ? [pestanaRiesgos] : []);
-const VISTAS = [...PESTANAS, vistaEscaner];
+const VISTAS = [...PESTANAS, vistaEscaner, vistaAdmin];
 const montadas = new Set();
 let actual = null;
 let navegacion = null;
@@ -62,78 +61,6 @@ function iniciarTema() {
   });
 }
 
-// ───────── Microsoft 365 ─────────
-async function iniciarMicrosoft() {
-  const cfg = estado.datos.config?.microsoft;
-  if (!ms.configurado(cfg)) return;
-  estado.microsoft.activo = true;
-  try {
-    const cuenta = await ms.iniciar(cfg);
-    estado.microsoft.cuenta = cuenta;
-    if (cuenta) {
-      try { estado.microsoft.perfil = await ms.perfil(); } catch (e) { console.warn(e); }
-      try {
-        const dir = await ms.leerDirectorio();
-        if (dir && Array.isArray(dir.personas)) {
-          estado.datos.directorio = dir;
-          indexarDirectorio(dir);
-          estado.origenDatos.directorio = 'sharepoint';
-        }
-      } catch (e) { console.warn('No se leyó el directorio desde SharePoint', e); }
-      try {
-        const volver = sessionStorage.getItem('etitc-jp27:volver');
-        if (volver) { sessionStorage.removeItem('etitc-jp27:volver'); if (volver !== location.hash) history.replaceState(null, '', volver); }
-      } catch { /* opcional */ }
-    }
-  } catch (e) {
-    estado.microsoft.error = e.message;
-    toastError('No se pudo conectar con Microsoft 365', e, `${e.message} La aplicación sigue en modo local.`);
-  }
-  pintarSesion();
-  emitir('sesion', estado.microsoft);
-}
-
-function pintarSesion() {
-  const caja = qs('#sesion-microsoft');
-  if (!estado.microsoft.activo) { caja.hidden = true; return; }
-  caja.hidden = false;
-  const c = estado.microsoft.cuenta;
-  const p = estado.microsoft.perfil;
-  if (!c) {
-    caja.innerHTML = `<button type="button" class="btn btn-sm" data-ms="entrar">${icono('persona', 'icon-sm')}<span class="btn-texto">Ingresar</span></button>`;
-  } else {
-    const nombre = p?.displayName || c.name || c.username;
-    caja.innerHTML = `<button type="button" class="avatar-btn" data-ms="menu" aria-haspopup="true" aria-expanded="false" title="${esc(nombre)} · ${esc(c.username)}">
-      <span class="avatar avatar-xs" aria-hidden="true">${esc(iniciales(nombre))}</span><span class="sr-only">Sesión de ${esc(nombre)}</span></button>
-      <div class="menu-ms" hidden><strong>${esc(nombre)}</strong><span>${esc(c.username)}</span>
-      <button type="button" class="btn btn-sm btn-ghost" data-ms="salir">${icono('cerrar', 'icon-sm')}Cerrar sesión</button></div>`;
-  }
-}
-
-function enlazarSesion() {
-  const caja = qs('#sesion-microsoft');
-  caja.addEventListener('click', async (ev) => {
-    const b = ev.target.closest('[data-ms]');
-    if (!b) return;
-    try {
-      if (b.dataset.ms === 'entrar') { await ms.iniciarSesion(); estado.microsoft.cuenta = ms.cuentaActiva(); pintarSesion(); emitir('sesion', estado.microsoft); }
-      if (b.dataset.ms === 'menu') {
-        const m = caja.querySelector('.menu-ms');
-        m.hidden = !m.hidden;
-        b.setAttribute('aria-expanded', String(!m.hidden));
-      }
-      if (b.dataset.ms === 'salir') { await ms.cerrarSesion(); estado.microsoft.cuenta = null; pintarSesion(); emitir('sesion', estado.microsoft); }
-    } catch (e) { toastError('No se pudo completar el inicio de sesión', e, e.message); }
-  });
-  document.addEventListener('click', (ev) => {
-    const m = caja.querySelector('.menu-ms');
-    if (m && !m.hidden && !caja.contains(ev.target)) { m.hidden = true; caja.querySelector('[data-ms="menu"]')?.setAttribute('aria-expanded', 'false'); }
-  });
-}
-
-// Disponible para las pestañas que necesitan pedir el inicio de sesión
-ctx.iniciarSesionMicrosoft = async () => { await ms.iniciarSesion(); estado.microsoft.cuenta = ms.cuentaActiva(); if (estado.microsoft.cuenta) { try { estado.microsoft.perfil = await ms.perfil(); } catch { /* opcional */ } } pintarSesion(); emitir('sesion', estado.microsoft); };
-
 // ───────── Respaldo local (pie de página) ─────────
 function pintarPie(origen, fechaEmpaquetado) {
   const pie = qs('#pie-acciones');
@@ -142,6 +69,7 @@ function pintarPie(origen, fechaEmpaquetado) {
     <button type="button" class="btn btn-sm btn-ghost" data-pie="respaldo">${icono('guardar', 'icon-sm')}Exportar respaldo</button>
     <button type="button" class="btn btn-sm btn-ghost" data-pie="importar">${icono('subir', 'icon-sm')}Importar respaldo</button>
     <input type="file" accept=".json,application/json" hidden data-pie-importar>
+    <a class="btn btn-sm btn-ghost" href="#admin">${icono('baseDatos', 'icon-sm')}Panel OAP</a>
     ${enDisco ? `<button type="button" class="btn btn-sm btn-ghost" data-pie="carpeta">${icono('carpeta', 'icon-sm')}Cargar carpeta data</button><input type="file" webkitdirectory multiple hidden data-pie-carpeta>` : ''}`;
   pie.addEventListener('click', async (ev) => {
     const b = ev.target.closest('[data-pie]');
@@ -151,7 +79,7 @@ function pintarPie(origen, fechaEmpaquetado) {
         const r = await almacen.exportarRespaldo();
         descargarTexto(JSON.stringify(r, null, 2), `JP2027_respaldo_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`, 'application/json');
         await almacen.guardarMeta({ ultimoRespaldo: new Date().toISOString() });
-        toast({ tipo: 'ok', titulo: 'Respaldo descargado', mensaje: 'Contiene los registros, pases y asistencia guardados en este navegador.' });
+        toast({ tipo: 'ok', titulo: 'Respaldo descargado', mensaje: 'Contiene las descargas, los pases y las lecturas guardados en este navegador.' });
       } catch (e) { toastError('No se pudo exportar el respaldo', e); }
     }
     if (b.dataset.pie === 'importar') pie.querySelector('[data-pie-importar]').click();
@@ -211,7 +139,7 @@ async function mostrar(id) {
     panel = document.createElement('section');
     panel.id = `panel-${vista.id}`;
     panel.className = 'tab-panel';
-    if (vista.id === 'escaner') panel.setAttribute('aria-label', 'Modo escáner');
+    if (vista.id === 'escaner' || vista.id === 'admin') panel.setAttribute('aria-label', vista.titulo);
     else { panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', `tab-${vista.id}`); panel.tabIndex = -1; }
     main.appendChild(panel);
   }
@@ -261,7 +189,6 @@ async function iniciar() {
   medirBarra();
   window.addEventListener('resize', medirBarra);
   navegacion = crearPestanas(qs('#pestanas'), PESTANAS, (id) => ctx.ir(id));
-  enlazarSesion();
 
   let carga;
   try { carga = await cargarDatos(); } catch (e) { errorFatal(e); return; }
@@ -270,7 +197,7 @@ async function iniciar() {
   obtenerLogo().catch(() => null);
 
   try { fijarConsolidado(await almacen.leerConsolidado()); } catch (e) { toastError('No se pudo leer la información guardada', e, e.message); }
-  await iniciarMicrosoft();
+  vaciarCola();
 
   qs('#contenido').innerHTML = '';
   window.addEventListener('hashchange', () => mostrar(idDesdeHash()));
@@ -284,7 +211,7 @@ async function iniciar() {
 
   window.addEventListener('beforeunload', (ev) => {
     const { asistencia, meta } = estado.consolidado;
-    if (asistencia.length > (meta?.asistenciaExportada || 0)) { ev.preventDefault(); ev.returnValue = ''; }
+    if (!estado.datos?.config?.registro?.url && asistencia.length > (meta?.asistenciaExportada || 0)) { ev.preventDefault(); ev.returnValue = ''; }
   });
 }
 

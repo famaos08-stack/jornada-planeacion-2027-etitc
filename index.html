@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Jornada de Planeación Institucional 2027 — ETITC</title>
-  <meta name="description" content="Jornada de Planeación Institucional 2027 de la ETITC: calendario, cargue del Plan de acción con pase QR, Plan de necesidades y Plan de adquisiciones.">
+  <meta name="description" content="Jornada de Planeación Institucional 2027 de la ETITC: agenda, descarga de la Plantilla Plan de Acción 2027 con pase QR de ingreso y Plan de necesidades.">
   <meta name="theme-color" content="#0b4d3b">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -36,8 +36,7 @@
   <link rel="stylesheet" href="src/styles/components.css">
   <link rel="stylesheet" href="src/styles/tabs.css">
 
-  <!-- Librerías externas: versión fija y exacta, con verificación de integridad. Si alguna no carga, la app degrada y avisa.
-       MSAL (inicio de sesión con Microsoft 365) se carga aparte y solo cuando el conector está activo. -->
+  <!-- Librerías externas: versión fija y exacta, con verificación de integridad. Si alguna no carga, la app degrada y avisa. -->
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js" integrity="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.js" integrity="sha384-VT1EeewTCEXgndcPMQ0PzV+uVFYjxFIjmAA7s5gcMX9t4Dt5TD+OVQIn7NJWIXn7" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js" integrity="sha384-c9d8RFSL+u3exBOJ4Yp3HUJXS4znl9f+z66d1y54ig+ea249SpqR+w1wyvXz/lk+" crossorigin="anonymous"></script>
@@ -59,10 +58,9 @@
       <!-- En celular esta misma barra de pestañas se fija abajo, como en una aplicación -->
       <nav class="tabs" id="pestanas" aria-label="Secciones"></nav>
       <div class="topbar-actions">
-        <div id="sesion-microsoft" class="sesion-ms" hidden></div>
-        <a class="btn btn-primary btn-sm" href="#escaner" id="btn-escaner" aria-label="Modo escáner">
+        <a class="btn btn-primary btn-sm" href="#escaner" id="btn-escaner" aria-label="Lector de pases QR">
           <svg class="icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8V5a2 2 0 0 1 2-2h3M16 3h3a2 2 0 0 1 2 2v3M21 16v3a2 2 0 0 1-2 2h-3M8 21H5a2 2 0 0 1-2-2v-3"/><path d="M7 12h10"/></svg>
-          <span class="btn-texto">Escáner</span>
+          <span class="btn-texto">Lector QR</span>
         </a>
         <button type="button" class="btn btn-icon btn-sm" id="btn-tema" aria-label="Cambiar a modo oscuro" aria-pressed="false"></button>
       </div>
@@ -81,7 +79,8 @@
       <div class="pie-grid">
         <div>
           <strong>Escuela Tecnológica Instituto Técnico Central</strong><br>
-          <span>Establecimiento Público de Educación Superior · Oficina Asesora de Planeación</span>
+          <span>Oficina Asesora de Planeación · Jornada de Planeación Institucional 2027</span><br>
+          <span class="credito">Desarrollo y ajustes: Fabián Ospina, profesional de Plan de Acción.</span>
         </div>
         <div class="pie-acciones" id="pie-acciones"></div>
       </div>

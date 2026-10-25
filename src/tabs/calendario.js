@@ -9,7 +9,7 @@ import { icono } from '../ui/iconos.js';
 import { toast, toastError } from '../ui/toast.js';
 import { cronogramaAPdf, generarICS, descargarTexto, pdfDisponible } from '../lib/export.js';
 import { rangoFechasTexto, fechaCorta, hoyISO, deISO } from '../lib/fechas.js';
-import { identificacion } from '../ui/cargue.js';
+import { identificacion, paseDe } from '../ui/registro-descarga.js';
 
 let raiz = null;
 let ctxApp = null;
@@ -60,13 +60,51 @@ function pintarCuenta() {
 }
 
 function tarjetaPase() {
-  const i = identificacion();
-  const pase = i ? estado.consolidado.pases.find((p) => p.e === i.correo && p.a === i.areaId) : null;
+  const pase = paseDe(identificacion());
   if (pase) {
-    const a = areaPorId(pase.a);
-    return `<a class="pase-cta is-ok" href="#accion">${icono('qr', 'icon-lg')}<span><strong>Su pase está listo</strong><small>${esc(pase.id)}${a ? ` · ${esc(a.nombre)}` : ''}</small></span>${icono('derecha', 'icon-sm')}</a>`;
+    const a = pase.a ? areaPorId(pase.a) : null;
+    return `<a class="pase-cta is-ok" href="#accion">${icono('qr', 'icon-lg')}<span><strong>Su pase está listo</strong><small>${esc(pase.id)} · ${esc(pase.n)}${a ? `, ${esc(a.nombre)}` : ''}</small></span>${icono('derecha', 'icon-sm')}</a>`;
   }
-  return `<a class="pase-cta" href="#accion">${icono('qr', 'icon-lg')}<span><strong>Obtenga su pase de entrada</strong><small>Se emite al registrar el Plan de acción de su área. Sin pase no hay ingreso.</small></span>${icono('derecha', 'icon-sm')}</a>`;
+  return `<a class="pase-cta" href="#accion">${icono('qr', 'icon-lg')}<span><strong>Obtenga su pase de ingreso</strong><small>Se entrega al descargar la Plantilla Plan de Acción 2027. Formúlela y cárguela en el SUIE: es su insumo de trabajo en la jornada.</small></span>${icono('derecha', 'icon-sm')}</a>`;
+}
+
+const chipsResp = (b) => (b.responsables || []).length
+  ? `<span class="agenda-resp">${icono('persona', 'icon-sm')}<span>${(b.responsables || []).map((n) => esc(n)).join(', ')}</span></span>` : '';
+
+function bloqueHtml(dia, b, ahora, esHoy) {
+  const ini = instante(dia.fecha, b.inicio);
+  const fin = instante(dia.fecha, b.fin);
+  const actual = esHoy && ahora >= ini && ahora < fin;
+  const pasado = ahora >= fin;
+  if (b.tipo === 'receso') {
+    return `<li class="agenda-item is-breve${actual ? ' is-actual' : ''}${pasado ? ' is-pasado' : ''}">
+      <span class="agenda-hora">${esc(b.inicio)}</span>
+      <span class="agenda-breve">${icono('reloj', 'icon-sm')}${esc(b.titulo)} · ${esc(b.inicio)} a ${esc(b.fin)}</span></li>`;
+  }
+  return `<li class="agenda-item tipo-${esc(b.tipo)}${actual ? ' is-actual' : ''}${pasado ? ' is-pasado' : ''}"${actual ? ' aria-current="time"' : ''}>
+    <span class="agenda-hora">${esc(b.inicio)}<small>${esc(b.fin)}</small></span>
+    <div class="agenda-card">
+      <div class="row" style="gap:6px"><span class="badge ${b.tipo === 'taller' ? 'badge-solid' : ''}">${esc(TIPOS[b.tipo] || b.tipo)}</span>${actual ? '<span class="badge badge-ok"><span class="pulse" aria-hidden="true"></span>Ahora</span>' : ''}${b.tipo === 'llegada' ? `<span class="badge">${icono('qr', 'icon-sm')}Ingreso con pase</span>` : ''}</div>
+      <strong class="agenda-titulo">${esc(b.titulo)}</strong>
+      ${b.detalle && b.detalle !== b.titulo ? `<p class="mb-0">${esc(b.detalle)}</p>` : ''}
+      ${chipsResp(b)}
+    </div></li>`;
+}
+
+function bloqueAgrupado(dia, g, ahora, esHoy) {
+  const bloques = g.ids.map((id) => dia.bloques.find((x) => x.id === id)).filter(Boolean);
+  const ini = instante(dia.fecha, bloques[0].inicio);
+  const fin = instante(dia.fecha, bloques[bloques.length - 1].fin);
+  const actual = esHoy && ahora >= ini && ahora < fin;
+  const pasado = ahora >= fin;
+  return `<li class="agenda-item tipo-sesion is-grupo${actual ? ' is-actual' : ''}${pasado ? ' is-pasado' : ''}">
+    <span class="agenda-hora">${esc(bloques[0].inicio)}<small>${esc(bloques[bloques.length - 1].fin)}</small></span>
+    <div class="agenda-card">
+      <div class="row" style="gap:6px"><span class="badge">Sesión central</span>${actual ? '<span class="badge badge-ok"><span class="pulse" aria-hidden="true"></span>Ahora</span>' : ''}</div>
+      <strong class="agenda-titulo">${esc(g.titulo)}</strong>
+      <p class="mb-0">${esc(g.detalle || '')}</p>
+      <ol class="agenda-momentos">${bloques.map((b) => `<li class="${b.tipo === 'receso' ? 'is-receso' : ''}"><span class="mono">${esc(b.inicio)}</span><div><strong>${esc(b.titulo)}</strong>${b.tipo !== 'receso' ? chipsResp(b) : ''}</div></li>`).join('')}</ol>
+    </div></li>`;
 }
 
 function pintarDia(animar = true) {
@@ -81,25 +119,17 @@ function pintarDia(animar = true) {
       <div><h3 class="mb-0">${esc(dia.titulo)}</h3><span class="muted">${esc(diaCorto(dia.fecha))} · ${esc(dia.bloques[0]?.inicio || '')}–${esc(dia.bloques[dia.bloques.length - 1]?.fin || '')}</span></div>
     </div>
     <ol class="agenda-lista">
-      ${dia.bloques.map((b) => {
-        const ini = instante(dia.fecha, b.inicio);
-        const fin = instante(dia.fecha, b.fin);
-        const actual = esHoy && ahora >= ini && ahora < fin;
-        const pasado = ahora >= fin;
-        if (b.tipo === 'receso' || b.tipo === 'llegada') {
-          return `<li class="agenda-item is-breve${actual ? ' is-actual' : ''}${pasado ? ' is-pasado' : ''}">
-            <span class="agenda-hora">${esc(b.inicio)}</span>
-            <span class="agenda-breve">${icono(b.tipo === 'llegada' ? 'personas' : 'reloj', 'icon-sm')}${esc(b.titulo)} · ${esc(b.inicio)}–${esc(b.fin)}</span></li>`;
-        }
-        return `<li class="agenda-item tipo-${esc(b.tipo)}${actual ? ' is-actual' : ''}${pasado ? ' is-pasado' : ''}"${actual ? ' aria-current="time"' : ''}>
-          <span class="agenda-hora">${esc(b.inicio)}<small>${esc(b.fin)}</small></span>
-          <div class="agenda-card">
-            <div class="row" style="gap:6px"><span class="badge ${b.tipo === 'taller' ? 'badge-solid' : ''}">${esc(TIPOS[b.tipo] || b.tipo)}</span>${actual ? '<span class="badge badge-ok"><span class="pulse" aria-hidden="true"></span>Ahora</span>' : ''}</div>
-            <strong class="agenda-titulo">${esc(b.titulo)}</strong>
-            ${b.detalle && b.detalle !== b.titulo ? `<p class="mb-0">${esc(b.detalle)}</p>` : ''}
-            ${b.responsable ? `<span class="agenda-resp">${icono('persona', 'icon-sm')}${esc(b.responsable)}</span>` : ''}
-          </div></li>`;
-      }).join('')}
+      ${(() => {
+        const grupos = (agenda().agrupaciones || []).filter((g) => g.dia === dia.id);
+        const enGrupo = new Map();
+        grupos.forEach((g) => g.ids.forEach((id, k) => enGrupo.set(id, { g, primero: k === 0 })));
+        return dia.bloques.map((b) => {
+          const gi = enGrupo.get(b.id);
+          if (gi && !gi.primero) return '';
+          if (gi) return bloqueAgrupado(dia, gi.g, ahora, esHoy);
+          return bloqueHtml(dia, b, ahora, esHoy);
+        }).join('');
+      })()}
     </ol>
     ${dia.resultado ? `<div class="resultado-dia">${icono('diana')}<div><span class="eyebrow">Resultado del día</span><p class="mb-0">${esc(dia.resultado)}</p></div></div>` : ''}`;
   if (animar) { cont.classList.remove('paso-enter'); void cont.offsetWidth; cont.classList.add('paso-enter'); }
@@ -143,7 +173,7 @@ function montar(panel, ctx) {
       <div class="hero-datos">
         <span>${icono('agenda', 'icon-sm')}${esc(rangoFechasTexto(dias.map((d) => d.fecha)))}</span>
         <span>${icono('lugar', 'icon-sm')}${esc(ag.sede || 'Sede por confirmar')}</span>
-        <span>${icono('reloj', 'icon-sm')}${esc(dias[0]?.bloques?.[0]?.inicio || '8:00')} a ${esc(dias[0]?.bloques?.[dias[0].bloques.length - 1]?.fin || '17:00')}</span>
+        <span>${icono('reloj', 'icon-sm')}Desde las ${esc(dias[0]?.bloques?.[0]?.inicio || '8:00')}</span>
       </div>
       <div data-cuenta></div>
       <div class="btn-grid hero-botones">

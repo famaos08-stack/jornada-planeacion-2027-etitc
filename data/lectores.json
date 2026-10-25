@@ -1,0 +1,73 @@
+{
+  "descripcion": "Lectores habilitados para el escáner de pases. Solo se publican resúmenes: el correo y el PIN se verifican en el dispositivo.",
+  "reglas": {
+    "minutosAntes": 30,
+    "minutosDespues": 15
+  },
+  "sal": "jAckiFEggrw+d1le",
+  "lectores": [
+    {
+      "nombre": "Fabián Ospina",
+      "cargo": "Profesional Plan de Acción",
+      "rol": "coordinador",
+      "h": "731f58f2edc2f47e91fa1991510f9cdc0624a3445be9a8448a131ea6eb4dc0ee",
+      "p": "7f9b857a597c414654adcfe6e6efdfaf20c10e5d70ffd3db09cfa46dfc0ec4c0"
+    },
+    {
+      "nombre": "Jorge Herrera",
+      "cargo": "Jefe de la Oficina Asesora de Planeación",
+      "rol": "coordinador",
+      "h": "79c979662056252ffd0bf635b6abaaa61ea35081b42ce0bba575f6fc678ff6a3",
+      "p": "b270c2dc17c939e98eec03488d63b2be1ec33f0ecc3fa58e889578e6b3b91da1"
+    },
+    {
+      "nombre": "Jimena Pimiento",
+      "cargo": "Profesional de Aseguramiento de la Calidad",
+      "rol": "moderador",
+      "h": "49e0940dd17b7b72b3e82a90cd8aea725dfa6c038080067f317eaa9e42b1b7f2",
+      "p": "6135ce36e71d603cc734cebc4786e710ccbed9a59dabfcb91e1fde895c523db3"
+    },
+    {
+      "nombre": "Fredy Zabala",
+      "cargo": "Encargado del proyecto SUIE",
+      "rol": "moderador",
+      "h": "437fd396a52ed6f38e1b7ca522bba87658dece049cc1e947868b3f5144e9de9f",
+      "p": "07be55db15ab51a1b7fcc29f9e5e915a47582ec78fbdb1c193afb591901cd4e6"
+    },
+    {
+      "nombre": "Stefany Parra",
+      "cargo": "Profesional de apoyo de Planeación",
+      "rol": "moderador",
+      "h": "88cedcff4af982a9683b141c008d4258957df29d50824a27a63181ec4bfcaf7f",
+      "p": "49e36fa7ca4e64357f6aaa5513a58bbecede2da750f4b83e759102dcc8dbfa4e"
+    },
+    {
+      "nombre": "Antonia Santiago",
+      "cargo": "Profesional de Calidad",
+      "rol": "moderador",
+      "h": "8d57f74bb8aca3b57803b841978e9951ff55dea70518a04de2d8bee103f6cda0",
+      "p": "e1674e43011fbd59a133f1483f0ec25ef8c47857488328c2459869757c7df15c"
+    },
+    {
+      "nombre": "Ariosto Ardila",
+      "cargo": "Rector",
+      "rol": "moderador",
+      "h": "2e7e5e9e479349e97b054c39638025206f0d03aa6694cf43122fec78a4eb3521",
+      "p": "87bd7376ed30457e863d6b8d3adb91903a26de06a133ef4076b7c535f33bc33c"
+    },
+    {
+      "nombre": "María Fernanda Camargo",
+      "cargo": "GIT de Contratación y Adquisiciones",
+      "rol": "moderador",
+      "h": "e7ce0b2e4475042dacc627e2822830f2dc6574085868357131bda0fec99a68a4",
+      "p": "969e25166dd96b2c45905df35c20706ce5c6a6adc729d2c9a9ab4321628b632e"
+    },
+    {
+      "nombre": "Deisy Serrato",
+      "cargo": "Apoyo de registro, Oficina Asesora de Planeación",
+      "rol": "apoyo",
+      "h": "334e27e37c99de515507b7f63a37ca2251303dc350ce154fd6e5627314b73b95",
+      "p": "ee2aafa26fdc534015bfe9eeb547887cdb6ab3df9c8c95dcbe180bdf7619fdae"
+    }
+  ]
+}

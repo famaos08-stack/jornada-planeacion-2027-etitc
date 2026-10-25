@@ -11,19 +11,18 @@ const OBLIGATORIOS = ['dependencias', 'areas', 'config'];
 // Estructura mínima esperada por clave; se usa para detectar archivos mal formados.
 const VALIDADORES = {
   config: (d) => d && typeof d === 'object',
-  directorio: (d) => Array.isArray(d?.personas),
+  directorio: (d) => Boolean(d && d.registros && d.sal),
+  lectores: (d) => Array.isArray(d?.lectores),
   dependencias: (d) => Array.isArray(d?.dependencias),
   areas: (d) => Array.isArray(d?.areas),
   agenda: (d) => Array.isArray(d?.dias),
-  modalidades: (d) => Array.isArray(d?.modalidades),
-  contratacion: (d) => Array.isArray(d?.etapas),
   festivos: (d) => Array.isArray(d?.festivos),
   riesgos: (d) => Array.isArray(d?.riesgos)
 };
 
 const VACIOS = {
-  config: {}, agenda: { dias: [], ruta: { fases: [] } }, contratacion: { etapas: [], normativa: [], reglas: [], errores2026: [], camposClave: [] },
-  modalidades: { modalidades: [] }, festivos: { festivos: [] }, riesgos: { riesgos: [], procesos: [], escalas: {} }
+  config: {}, agenda: { dias: [], ruta: { fases: [] } }, directorio: { registros: {}, sal: '', iteraciones: 1 }, lectores: { lectores: [], sal: '' },
+  festivos: { festivos: [] }, riesgos: { riesgos: [], procesos: [], escalas: {} }
 };
 
 async function leerJson(ruta) {

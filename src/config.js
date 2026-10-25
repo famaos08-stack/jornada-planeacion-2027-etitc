@@ -1,7 +1,6 @@
 /*
  * config.js — Banderas de funcionalidad, rutas de datos y paleta.
- * La conexión con Microsoft 365 (SharePoint, lista de registro y correo) se configura en data/config.json → microsoft,
- * para que TIC pueda activarla sin tocar el código.
+ * El registro en línea (descargas y lecturas del QR) se configura en data/config.json → registro.
  */
 
 // Banderas de funcionalidad. Con mapaRiesgos en true aparece la pestaña del mapa de riesgos.
@@ -13,12 +12,11 @@ export const PREFIJO_LOCAL = 'etitc-jp27';
 // Archivos de datos que se cargan al inicio (todos en /data).
 export const ARCHIVOS_DATOS = {
   config: 'data/config.json',
-  directorio: 'data/directorio.json',
+  directorio: 'data/directorio.cifrado.json',
+  lectores: 'data/lectores.json',
   dependencias: 'data/dependencias.json',
   areas: 'data/areas.json',
   agenda: 'data/agenda.json',
-  modalidades: 'data/modalidades.json',
-  contratacion: 'data/contratacion.json',
   festivos: 'data/festivos.json',
   riesgos: 'data/riesgos.json'
 };
