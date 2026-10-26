@@ -1,24 +1,26 @@
 # Registro en línea con Google Apps Script
 
-El aplicativo guarda en una hoja de cálculo de Google cada descarga de la plantilla, cada activación de lector y cada lectura de pase QR. También envía el pase por correo. Funciona con una cuenta de Google de la Oficina Asesora de Planeación (famaos.08@gmail.com) y no requiere permisos de Tecnología.
+El aplicativo guarda en una hoja de cálculo de Google cada descarga de la plantilla, cada activación de lector y cada lectura de pase QR, y envía el pase por correo. No requiere servidores ni permisos de Tecnología.
 
 Mientras no se configure, el aplicativo guarda todo en cada dispositivo y lo envía en cuanto se configure la dirección (cola con reintentos).
 
-## Instalación (10 minutos)
+La ETITC usa Microsoft 365 y Google solo permite que Apps Script envíe correos desde una cuenta con Gmail. Por eso la hoja y el programa viven en una cuenta de Gmail de la Oficina, con `plandeaccion@itc.edu.co` como correo de recuperación, dirección de respuesta y copia de cada pase. Con el modo RELEVO, un flujo de Power Automate reenvía cada pase desde `plandeaccion@itc.edu.co`.
 
-1. Con la cuenta famaos.08@gmail.com cree una hoja de cálculo de Google llamada «Registro Jornada de Planeación 2027».
-2. En la hoja abra **Extensiones → Apps Script**.
-3. Borre el contenido del editor, pegue el código de [`apps-script/Codigo.gs`](../apps-script/Codigo.gs) y guarde.
-4. En **Configuración del proyecto → Propiedades del script** agregue:
-   - `TOKEN` = `JP27ETITC` (el mismo valor de `data/config.json → registro.token`)
-   - `CLAVEADMIN` = la clave del panel de la Oficina (no se publica en el sitio)
-   - `CORREOCOPIA` = `plandeaccion@itc.edu.co` (opcional; recibe copia de cada pase)
-5. **Implementar → Nueva implementación → Aplicación web**. Ejecutar como: *Yo*. Quién tiene acceso: *Cualquier persona*. Autorice los permisos que pide Google (hoja de cálculo y envío de correo).
-6. Copie la dirección de la aplicación web (termina en `/exec`).
-7. En `data/config.json` pegue la dirección en `registro.url` y guarde el cambio en el repositorio. El sitio se actualiza en uno o dos minutos.
-8. Pruebe: regístrese en el aplicativo y verifique la fila en la hoja **Descargas** y el correo con el pase.
+## Instalación
 
-La hoja crea sola tres pestañas: **Descargas**, **Lecturas** y **Activaciones**.
+1. En una ventana privada (InPrivate o incógnito) con **una sola** cuenta abierta, la de Gmail de la Oficina, cree una hoja llamada «Registro Jornada de Planeación 2027». Con varias cuentas abiertas Google falla al autorizar («error desconocido»).
+2. **Extensiones → Apps Script**. Pegue el código de [`apps-script/Codigo.gs`](../apps-script/Codigo.gs) y escriba la clave del panel en `CLAVE_DEL_PANEL`.
+3. Ejecute la función `instalar`, autorice (Configuración avanzada → Ir a … (no seguro) → Permitir). Crea las propiedades `TOKEN`, `CORREOOFICINA`, `MODOENVIO` y `CLAVEADMIN`, y las hojas **Descargas**, **Lecturas** y **Activaciones**. Después vuelva a dejar el texto de ejemplo en `CLAVE_DEL_PANEL`.
+4. Ejecute `probarCorreo`: llega un pase de prueba a `plandeaccion@itc.edu.co`.
+5. **Implementar → Nueva implementación → Aplicación web**. Ejecutar como: *Yo*. Quién tiene acceso: *Cualquier usuario*. Copie la dirección que termina en `/exec` y pruébela con `?accion=ping`.
+6. Pegue la dirección en `data/config.json → registro.url`. El sitio se actualiza en uno o dos minutos.
+
+## Modos de envío
+
+- `DIRECTO` (inicial): el pase sale de la cuenta de Gmail, con respuesta y copia a `plandeaccion@itc.edu.co`.
+- `RELEVO` (función `usarRelevo`): el pase llega a `plandeaccion@itc.edu.co` con el asunto `JP27RELEVO | para | copia | asunto` y el QR adjunto; un flujo de Power Automate («Cuando llega un correo electrónico nuevo (V3)» → «Seleccionar» → «Enviar un correo electrónico (V2)») lo reenvía desde Outlook. `usarDirecto` vuelve al modo inicial.
+
+Los pases solo se envían a correos `@itc.edu.co`. El paso a paso completo, con el flujo de Power Automate, está en el *Instructivo de enlace institucional y registro automático* de la Oficina.
 
 ## Panel de la Oficina
 
@@ -26,7 +28,7 @@ En el aplicativo, pie de página → **Panel OAP**, escriba la `CLAVEADMIN`. El 
 
 ## Límites y cuidados
 
-- Una cuenta gratuita de Gmail envía cerca de cien correos al día. Si se supera, el registro queda guardado y la persona ve y descarga su pase en pantalla.
+- Una cuenta gratuita de Gmail envía hasta cien destinatarios al día: unos cuarenta pases en modo DIRECTO y cien en modo RELEVO. Si se supera, el registro queda guardado y la persona ve y descarga su pase en pantalla.
 - Si cambia el código, cree una **nueva versión** de la misma implementación para conservar la dirección.
 - Al terminar la jornada, comparta la hoja con la Oficina Asesora de Planeación para el informe de asistencia.
 
@@ -52,4 +54,4 @@ Cada registro se cifra con una clave derivada del propio correo (PBKDF2 y AES-GC
 
 ## Enlace institucional
 
-El sitio es estático. Tecnología puede (1) enlazarlo desde el portal, (2) crear un subdominio, por ejemplo `planeacion.itc.edu.co`, con un registro CNAME hacia `famaos08-stack.github.io` y configurarlo en *Settings → Pages → Custom domain* con *Enforce HTTPS*, o (3) copiar la carpeta a un servidor institucional con HTTPS. La cámara del lector exige HTTPS.
+El sitio es estático y se publica con el subdominio `jornada2027.etitc.edu.co`. Tecnología crea dos registros en la zona DNS: un CNAME `jornada2027` hacia `famaos08-stack.github.io` y el TXT de verificación de GitHub. Después, y nunca antes, se escribe el dominio en *Settings → Pages → Custom domain* y se marca *Enforce HTTPS*. El enlace de github.io redirige solo al subdominio. La cámara del lector exige HTTPS.

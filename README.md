@@ -45,7 +45,7 @@ Antes de difundir el enlace cambie la clave interna de firma del pase QR (`pase.
 
 ## Enlace institucional
 
-Tecnología puede enlazar el sitio desde el portal, crear un subdominio (CNAME a `famaos08-stack.github.io` y *Custom domain* en *Settings → Pages*) o alojar la carpeta en un servidor institucional con HTTPS. Detalle en `docs/REGISTRO_EN_LINEA.md`.
+Subdominio previsto: `jornada2027.etitc.edu.co` (CNAME `jornada2027` hacia `famaos08-stack.github.io` y TXT de verificación de GitHub, creados por Tecnología; luego *Custom domain* y *Enforce HTTPS* en *Settings → Pages*). Detalle en `docs/REGISTRO_EN_LINEA.md`.
 
 ## Estructura
 
