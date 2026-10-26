@@ -24,13 +24,13 @@ Descargas, activaciones y lecturas se envían a una hoja de cálculo de Google m
 
 | Archivo | Contenido |
 |---|---|
-| `config.json` | Evento, sal del pase, archivos descargables, registro en línea (`registro.url`). |
+| `config.json` | Evento, clave interna de firma del pase QR (pase.salFirma), archivos descargables, registro en línea (`registro.url`). |
 | `agenda.json` | Días, bloques con `responsables`, agrupación del bloque central y ruta de planeación. |
 | `lectores.json` | Lectores habilitados (solo resúmenes SHA-256 de correo y PIN). |
 | `directorio.cifrado.json` | Directorio institucional cifrado por correo (sin extensiones). |
 | `dependencias.json`, `areas.json`, `festivos.json` | Catálogos. |
 
-Antes de la jornada cambie `pase.salFirma` en `config.json` y no lo vuelva a cambiar.
+Antes de difundir el enlace cambie la clave interna de firma del pase QR (`pase.salFirma` en `config.json`) y no la vuelva a cambiar, porque los pases ya entregados dejarían de servir.
 
 ## Documentos (`assets/`)
 
