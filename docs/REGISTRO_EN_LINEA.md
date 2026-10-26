@@ -10,10 +10,18 @@ La ETITC usa Microsoft 365 y Google solo permite que Apps Script envíe correos 
 
 1. En una ventana privada (InPrivate o incógnito) con **una sola** cuenta abierta, la de Gmail de la Oficina, cree una hoja llamada «Registro Jornada de Planeación 2027». Con varias cuentas abiertas Google falla al autorizar («error desconocido»).
 2. **Extensiones → Apps Script**. Pegue el código de [`apps-script/Codigo.gs`](../apps-script/Codigo.gs) y escriba la clave del panel en `CLAVE_DEL_PANEL`.
-3. Ejecute la función `instalar`, autorice (Configuración avanzada → Ir a … (no seguro) → Permitir). Crea las propiedades `TOKEN`, `CORREOOFICINA`, `MODOENVIO` y `CLAVEADMIN`, y las hojas **Descargas**, **Lecturas** y **Activaciones**. Después vuelva a dejar el texto de ejemplo en `CLAVE_DEL_PANEL`.
+3. Ejecute la función `instalar`, autorice (Configuración avanzada → Ir a … (no seguro) → Permitir). Crea las propiedades `TOKEN`, `CORREOOFICINA`, `MODOENVIO` y `CLAVEADMIN`, las hojas **Resumen**, **Seguimiento por área**, **Descargas**, **Lecturas** y **Activaciones**, fija la zona horaria de Bogotá y programa la actualización del resumen cada cinco minutos. Después vuelva a dejar el texto de ejemplo en `CLAVE_DEL_PANEL`.
 4. Ejecute `probarCorreo`: llega un pase de prueba a `plandeaccion@itc.edu.co`.
 5. **Implementar → Nueva implementación → Aplicación web**. Ejecutar como: *Yo*. Quién tiene acceso: *Cualquier usuario*. Copie la dirección que termina en `/exec` y pruébela con `?accion=ping`.
 6. Pegue la dirección en `data/config.json → registro.url`. El sitio se actualiza en uno o dos minutos.
+
+## Qué guarda la hoja
+
+- **Resumen**: áreas funcionales que ya descargaron y pendientes, dependencias y personas con descarga, pases enviados, última descarga e ingresos por día.
+- **Seguimiento por área**: las 45 áreas de `data/areas.json` con su dependencia, si descargó, número de descargas, quiénes, primera y última descarga y responsable del cargue en el SUIE.
+- **Descargas**, **Lecturas** y **Activaciones**: una fila por evento, con fecha y hora, fecha y hora por separado (hora de Colombia).
+
+El resumen y el seguimiento se recalculan con cada descarga, cada cinco minutos y desde el menú **Jornada 2027** de la hoja. Los textos que empiezan por `=`, `+`, `-` o `@` se guardan como texto para que no se ejecuten como fórmulas.
 
 ## Modos de envío
 
