@@ -10,9 +10,9 @@ Mientras no se configure, el aplicativo guarda todo en cada dispositivo y lo env
 2. En la hoja abra **Extensiones → Apps Script**.
 3. Borre el contenido del editor, pegue el código de [`apps-script/Codigo.gs`](../apps-script/Codigo.gs) y guarde.
 4. En **Configuración del proyecto → Propiedades del script** agregue:
-   - `TOKEN` = `JP27-ETITC` (el mismo valor de `data/config.json → registro.token`)
-   - `CLAVE_ADMIN` = la clave del panel de la Oficina (no se publica en el sitio)
-   - `CORREO_COPIA` = `plandeaccion@itc.edu.co` (opcional; recibe copia de cada pase)
+   - `TOKEN` = `JP27ETITC` (el mismo valor de `data/config.json → registro.token`)
+   - `CLAVEADMIN` = la clave del panel de la Oficina (no se publica en el sitio)
+   - `CORREOCOPIA` = `plandeaccion@itc.edu.co` (opcional; recibe copia de cada pase)
 5. **Implementar → Nueva implementación → Aplicación web**. Ejecutar como: *Yo*. Quién tiene acceso: *Cualquier persona*. Autorice los permisos que pide Google (hoja de cálculo y envío de correo).
 6. Copie la dirección de la aplicación web (termina en `/exec`).
 7. En `data/config.json` pegue la dirección en `registro.url` y guarde el cambio en el repositorio. El sitio se actualiza en uno o dos minutos.
@@ -22,7 +22,7 @@ La hoja crea sola tres pestañas: **Descargas**, **Lecturas** y **Activaciones**
 
 ## Panel de la Oficina
 
-En el aplicativo, pie de página → **Panel OAP**, escriba la `CLAVE_ADMIN`. El panel muestra descargas por dependencia, quién cargará en el SUIE, ingresos por actividad y lecturas por lector, y exporta todo a Excel.
+En el aplicativo, pie de página → **Panel OAP**, escriba la `CLAVEADMIN`. El panel muestra descargas por dependencia, quién cargará en el SUIE, ingresos por actividad y lecturas por lector, y exporta todo a Excel.
 
 ## Límites y cuidados
 

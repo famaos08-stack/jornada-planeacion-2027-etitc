@@ -3,13 +3,13 @@
  * Aplicación web de Google Apps Script ligada a una hoja de cálculo de Google.
  *
  *  POST  { accion: 'descarga' | 'lectura' | 'activacion', token, datos }  → guarda una fila y responde JSON
- *  GET   ?accion=panel&clave=CLAVE_ADMIN                                  → devuelve descargas y lecturas
+ *  GET   ?accion=panel&clave=CLAVEADMIN                                  → devuelve descargas y lecturas
  *  GET   ?accion=ping                                                     → prueba de conexión
  *
  * Propiedades del script (Configuración del proyecto → Propiedades del script):
  *  TOKEN        el mismo valor de data/config.json → registro.token
- *  CLAVE_ADMIN  la clave del panel de la Oficina Asesora de Planeación (no se publica en el sitio)
- *  CORREO_COPIA opcional: correo que recibe copia de cada pase (por ejemplo, plandeaccion@itc.edu.co)
+ *  CLAVEADMIN  la clave del panel de la Oficina Asesora de Planeación (no se publica en el sitio)
+ *  CORREOCOPIA opcional: correo que recibe copia de cada pase (por ejemplo, plandeaccion@itc.edu.co)
  *
  * Instalación paso a paso: docs/REGISTRO_EN_LINEA.md
  */
@@ -108,7 +108,7 @@ function enviarPase_(d) {
   var opciones = { htmlBody: html, inlineImages: { qr: qr }, name: 'Jornada de Planeación 2027 ETITC', replyTo: 'planeacion@itc.edu.co' };
   var cc = [];
   if (d.responsableSuie && d.responsableSuie.correo && d.responsableSuie.correo !== d.correo) cc.push(d.responsableSuie.correo);
-  if (prop_('CORREO_COPIA')) cc.push(prop_('CORREO_COPIA'));
+  if (prop_('CORREOCOPIA')) cc.push(prop_('CORREOCOPIA'));
   if (cc.length) opciones.cc = cc.join(',');
   MailApp.sendEmail(d.correo, 'Pase de ingreso ' + d.paseId + ' · Jornada de Planeación 2027', 'Su pase de ingreso es ' + d.paseId + '.', opciones);
 }
@@ -125,7 +125,7 @@ function doGet(e) {
   var p = e.parameter || {};
   if (p.accion === 'ping') return json_({ ok: true, hora: fecha_() });
   if (p.accion === 'panel') {
-    if (!prop_('CLAVE_ADMIN') || p.clave !== prop_('CLAVE_ADMIN')) return json_({ ok: false, error: 'Clave de administración no válida.' });
+    if (!prop_('CLAVEADMIN') || p.clave !== prop_('CLAVEADMIN')) return json_({ ok: false, error: 'Clave de administración no válida.' });
     var desc = filas_('Descargas').map(function (r) {
       return { fecha: r['Fecha y hora'].replace(' ', 'T') + '-05:00', correo: r['Correo'], nombre: r['Nombre'], cargo: r['Cargo'], dependencia: r['Código dependencia'],
         areaNombre: r['Área funcional'], responsableSuie: { nombre: r['Responsable del cargue en el SUIE'], correo: r['Correo del responsable SUIE'] },

@@ -55,7 +55,7 @@
   "registro": {
     "_comentario": "URL de la aplicación web de Google Apps Script (ver docs/REGISTRO_EN_LINEA.md). Vacía: el aplicativo guarda en el dispositivo y envía cuando se configure.",
     "url": "",
-    "token": "JP27-ETITC",
+    "token": "JP27ETITC",
     "enviarCorreo": true
   },
   "credito": "Desarrollo y ajustes: Fabián Ospina, profesional de Plan de Acción, Oficina Asesora de Planeación."
