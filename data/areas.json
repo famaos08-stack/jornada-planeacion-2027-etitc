@@ -163,26 +163,6 @@
       "revisar": false
     },
     {
-      "id": "A17",
-      "dependencia": "120",
-      "nombre": "Unidad B-Learning",
-      "proceso": "Docencia PES",
-      "tipoProceso": "misional",
-      "etiqueta": "A17 · Unidad B-Learning (120)",
-      "ubicacion": "Inferida — validar",
-      "revisar": true
-    },
-    {
-      "id": "A18",
-      "dependencia": "101",
-      "nombre": "Articulación de programas (IA)",
-      "proceso": "Direccionamiento Institucional",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A18 · Articulación de programas (IA) (101)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
-    },
-    {
       "id": "A19",
       "dependencia": "101",
       "nombre": "Regionalización",
@@ -445,10 +425,10 @@
     {
       "id": "A45",
       "dependencia": "120",
-      "nombre": "Sedes Tintal / Soacha-UPK / Viotá",
+      "nombre": "Sedes Tintal, Soacha UPK y Viotá",
       "proceso": "Docencia PES",
       "tipoProceso": "misional",
-      "etiqueta": "A45 · Sedes Tintal / Soacha-UPK / Viotá (120)",
+      "etiqueta": "A45 · Sedes Tintal, Soacha UPK y Viotá (120)",
       "ubicacion": "Directorio 2026 (OAPDI)",
       "revisar": false
     },
