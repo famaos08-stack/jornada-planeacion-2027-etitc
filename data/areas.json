@@ -1,456 +1,334 @@
 {
-  "fuente": "Plantilla de Formulación 2027 (versión 7), hoja oculta «Dependencias»: dependencias del Decreto 902 de 2013 y la Resolución 215 de 2022, áreas funcionales y procesos del mapa GDC-DI-01 V9.",
-  "nota": "Las áreas con «revisar» o «validar» en su ubicación tienen la dependencia inferida y debe confirmarla la Oficina Asesora de Planeación. Las etiquetas deben coincidir exactamente con las listas desplegables de las plantillas Excel.",
+  "fuente": "Documento «Áreas por proceso» de la Oficina Asesora de Planeación: 20 procesos y 41 áreas funcionales.",
+  "nota": "Cada proceso se compone de sus áreas; cuando el proceso no se divide en áreas, el mismo proceso actúa como área. El campo dependencia es la dependencia de planta donde opera el área y solo se usa para el pase.",
   "areas": [
     {
       "id": "A01",
-      "dependencia": "100",
-      "nombre": "Despacho de Rectoría",
+      "nombre": "Rectoría",
       "proceso": "Direccionamiento Institucional",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A01 · Despacho de Rectoría (100)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "tipoProceso": "estratégico",
+      "dependencia": "100",
+      "etiqueta": "A01 · Rectoría"
     },
     {
       "id": "A02",
-      "dependencia": "100",
-      "nombre": "Comunicaciones y Mercadeo",
-      "proceso": "Gestión de Comunicaciones",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A02 · Comunicaciones y Mercadeo (100)",
-      "ubicacion": "Directorio 2026 — revisar dependencia",
-      "revisar": true
+      "nombre": "Planeación",
+      "proceso": "Direccionamiento Institucional",
+      "tipoProceso": "estratégico",
+      "dependencia": "101",
+      "etiqueta": "A02 · Planeación"
     },
     {
       "id": "A03",
-      "dependencia": "100",
-      "nombre": "Internacionalización (ORII)",
-      "proceso": "Gestión de Internacionalización",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A03 · Internacionalización (ORII) (100)",
-      "ubicacion": "Directorio 2026 — revisar dependencia",
-      "revisar": true
+      "nombre": "Secretaría General",
+      "proceso": "Direccionamiento Institucional",
+      "tipoProceso": "estratégico",
+      "dependencia": "110",
+      "etiqueta": "A03 · Secretaría General"
     },
     {
       "id": "A04",
-      "dependencia": "102",
-      "nombre": "Control Interno",
-      "proceso": "Gestión de Control Interno",
-      "tipoProceso": "evaluacion",
-      "etiqueta": "A04 · Control Interno (102)",
-      "ubicacion": "Directorio 2026 — revisar dependencia",
-      "revisar": true
+      "nombre": "Gestión de Comunicaciones",
+      "proceso": "Gestión de Comunicaciones",
+      "tipoProceso": "estratégico",
+      "dependencia": "100",
+      "etiqueta": "A04 · Gestión de Comunicaciones"
     },
     {
       "id": "A05",
-      "dependencia": "101",
-      "nombre": "Planeación y Plan de Acción",
-      "proceso": "Direccionamiento Institucional",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A05 · Planeación y Plan de Acción (101)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Gestión de Informática y Telecomunicaciones",
+      "proceso": "Gestión de Informática y Telecomunicaciones",
+      "tipoProceso": "estratégico",
+      "dependencia": "132",
+      "etiqueta": "A05 · Gestión de Informática y Telecomunicaciones"
     },
     {
       "id": "A06",
-      "dependencia": "101",
-      "nombre": "Gestión de Proyectos",
-      "proceso": "Direccionamiento Institucional",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A06 · Gestión de Proyectos (101)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Gestión de Internacionalización",
+      "proceso": "Gestión de Internacionalización",
+      "tipoProceso": "estratégico",
+      "dependencia": "100",
+      "etiqueta": "A06 · Gestión de Internacionalización"
     },
     {
       "id": "A07",
+      "nombre": "Aseguramiento",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
       "dependencia": "101",
-      "nombre": "Autoevaluación y Acreditación",
-      "proceso": "Gestión del Sistema Integrado de Aseguramiento",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A07 · Autoevaluación y Acreditación (101)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "etiqueta": "A07 · Aseguramiento"
     },
     {
       "id": "A08",
+      "nombre": "Calidad",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
       "dependencia": "101",
-      "nombre": "Aseguramiento de la Calidad, MIPG y Registros Calificados",
-      "proceso": "Gestión del Sistema Integrado de Aseguramiento",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A08 · Aseguramiento de la Calidad, MIPG y Registros Calificados (101)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "etiqueta": "A08 · Calidad"
     },
     {
       "id": "A09",
-      "dependencia": "132",
-      "nombre": "Seguridad Digital y Continuidad",
-      "proceso": "Gestión de Informática y Telecomunicaciones",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A09 · Seguridad Digital y Continuidad (132)",
-      "ubicacion": "Directorio 2026 — revisar dependencia",
-      "revisar": true
+      "nombre": "Ambiental",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
+      "dependencia": "101",
+      "etiqueta": "A09 · Ambiental"
     },
     {
       "id": "A10",
-      "dependencia": "101",
-      "nombre": "Gestión Ambiental",
-      "proceso": "Gestión del Sistema Integrado de Aseguramiento",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A10 · Gestión Ambiental (101)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Seguridad y Salud en el Trabajo",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
+      "dependencia": "133",
+      "etiqueta": "A10 · Seguridad y Salud en el Trabajo"
     },
     {
       "id": "A11",
-      "dependencia": "110",
-      "nombre": "Despacho de Secretaría General",
-      "proceso": "Direccionamiento Institucional",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A11 · Despacho de Secretaría General (110)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Seguridad de la Información",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
+      "dependencia": "132",
+      "etiqueta": "A11 · Seguridad de la Información"
     },
     {
       "id": "A12",
-      "dependencia": "110",
-      "nombre": "Gestión Jurídica",
-      "proceso": "Gestión Jurídica",
-      "tipoProceso": "apoyo",
-      "etiqueta": "A12 · Gestión Jurídica (110)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Continuidad",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
+      "dependencia": "132",
+      "etiqueta": "A12 · Continuidad"
     },
     {
       "id": "A13",
-      "dependencia": "110",
-      "nombre": "Control Disciplinario",
-      "proceso": "Gestión de Control Disciplinario",
-      "tipoProceso": "evaluacion",
-      "etiqueta": "A13 · Control Disciplinario (110)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Autoevaluación",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
+      "dependencia": "101",
+      "etiqueta": "A13 · Autoevaluación"
     },
     {
       "id": "A14",
-      "dependencia": "130",
-      "nombre": "Contratación y Adquisiciones",
-      "proceso": "Gestión de Adquisiciones",
-      "tipoProceso": "apoyo",
-      "etiqueta": "A14 · Contratación y Adquisiciones (130)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "MIPG",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "tipoProceso": "estratégico",
+      "dependencia": "101",
+      "etiqueta": "A14 · MIPG"
     },
     {
       "id": "A15",
-      "dependencia": "120",
-      "nombre": "Despacho de la Vicerrectoría Académica",
-      "proceso": "Docencia PES",
-      "tipoProceso": "misional",
-      "etiqueta": "A15 · Despacho de la Vicerrectoría Académica (120)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Bienestar Laboral",
+      "proceso": "Gestión de Talento Humano",
+      "tipoProceso": "estratégico",
+      "dependencia": "133",
+      "etiqueta": "A15 · Bienestar Laboral"
     },
     {
       "id": "A16",
-      "dependencia": "123",
-      "nombre": "Coordinación de Especializaciones",
-      "proceso": "Docencia PES",
-      "tipoProceso": "misional",
-      "etiqueta": "A16 · Coordinación de Especializaciones (123)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Capacitación",
+      "proceso": "Gestión de Talento Humano",
+      "tipoProceso": "estratégico",
+      "dependencia": "133",
+      "etiqueta": "A16 · Capacitación"
+    },
+    {
+      "id": "A17",
+      "nombre": "Selección y Vinculación",
+      "proceso": "Gestión de Talento Humano",
+      "tipoProceso": "estratégico",
+      "dependencia": "133",
+      "etiqueta": "A17 · Selección y Vinculación"
+    },
+    {
+      "id": "A18",
+      "nombre": "Nómina",
+      "proceso": "Gestión de Talento Humano",
+      "tipoProceso": "estratégico",
+      "dependencia": "133",
+      "etiqueta": "A18 · Nómina"
     },
     {
       "id": "A19",
-      "dependencia": "101",
-      "nombre": "Regionalización",
-      "proceso": "Direccionamiento Institucional",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A19 · Regionalización (101)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Vicerrectoría Académica",
+      "proceso": "Docencia PES",
+      "tipoProceso": "misional",
+      "dependencia": "120",
+      "etiqueta": "A19 · Vicerrectoría Académica"
     },
     {
       "id": "A20",
-      "dependencia": "121",
-      "nombre": "GIT Biblioteca y Recursos Académicos",
+      "nombre": "Facultades",
       "proceso": "Docencia PES",
       "tipoProceso": "misional",
-      "etiqueta": "A20 · GIT Biblioteca y Recursos Académicos (121)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "dependencia": "123",
+      "etiqueta": "A20 · Facultades"
     },
     {
       "id": "A21",
-      "dependencia": "122",
-      "nombre": "GIT Bienestar Universitario",
-      "proceso": "Gestión de Bienestar Universitario",
-      "tipoProceso": "apoyo",
-      "etiqueta": "A21 · GIT Bienestar Universitario (122)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Registro y Control",
+      "proceso": "Docencia PES",
+      "tipoProceso": "misional",
+      "dependencia": "126",
+      "etiqueta": "A21 · Registro y Control"
     },
     {
       "id": "A22",
-      "dependencia": "123",
-      "nombre": "Facultad de Electromecánica",
+      "nombre": "Biblioteca",
       "proceso": "Docencia PES",
       "tipoProceso": "misional",
-      "etiqueta": "A22 · Facultad de Electromecánica (123)",
-      "ubicacion": "Estructura 902",
-      "revisar": false
+      "dependencia": "121",
+      "etiqueta": "A22 · Biblioteca"
     },
     {
       "id": "A23",
-      "dependencia": "123",
-      "nombre": "Facultad de Mecánica",
+      "nombre": "Talleres y Laboratorios",
       "proceso": "Docencia PES",
       "tipoProceso": "misional",
-      "etiqueta": "A23 · Facultad de Mecánica (123)",
-      "ubicacion": "Estructura 902",
-      "revisar": false
+      "dependencia": "125",
+      "etiqueta": "A23 · Talleres y Laboratorios"
     },
     {
       "id": "A24",
-      "dependencia": "123",
-      "nombre": "Facultad de Mecatrónica",
-      "proceso": "Docencia PES",
+      "nombre": "Docencia IBTI",
+      "proceso": "Docencia IBTI",
       "tipoProceso": "misional",
-      "etiqueta": "A24 · Facultad de Mecatrónica (123)",
-      "ubicacion": "Estructura 902",
-      "revisar": false
+      "dependencia": "124",
+      "etiqueta": "A24 · Docencia IBTI"
     },
     {
       "id": "A25",
-      "dependencia": "123",
-      "nombre": "Facultad de Procesos Industriales",
-      "proceso": "Docencia PES",
+      "nombre": "Investigación",
+      "proceso": "Investigación",
       "tipoProceso": "misional",
-      "etiqueta": "A25 · Facultad de Procesos Industriales (123)",
-      "ubicacion": "Estructura 902",
-      "revisar": false
+      "dependencia": "140",
+      "etiqueta": "A25 · Investigación"
     },
     {
       "id": "A26",
-      "dependencia": "123",
-      "nombre": "Facultad de Sistemas",
-      "proceso": "Docencia PES",
+      "nombre": "Extensión",
+      "proceso": "Extensión",
       "tipoProceso": "misional",
-      "etiqueta": "A26 · Facultad de Sistemas (123)",
-      "ubicacion": "Estructura 902",
-      "revisar": false
+      "dependencia": "141",
+      "etiqueta": "A26 · Extensión"
     },
     {
       "id": "A27",
-      "dependencia": "124",
-      "nombre": "IBTI",
-      "proceso": "Docencia IBTI",
+      "nombre": "Egresados",
+      "proceso": "Egresados",
       "tipoProceso": "misional",
-      "etiqueta": "A27 · IBTI (124)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "dependencia": "141",
+      "etiqueta": "A27 · Egresados"
     },
     {
       "id": "A28",
-      "dependencia": "125",
-      "nombre": "GIT Talleres y Laboratorios",
-      "proceso": "Gestión de Recursos Físicos",
+      "nombre": "Gestión de Adquisiciones",
+      "proceso": "Gestión de Adquisiciones",
       "tipoProceso": "apoyo",
-      "etiqueta": "A28 · GIT Talleres y Laboratorios (125)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "dependencia": "130",
+      "etiqueta": "A28 · Gestión de Adquisiciones"
     },
     {
       "id": "A29",
-      "dependencia": "126",
-      "nombre": "GIT Registro, Control y Admisiones",
-      "proceso": "Docencia PES",
-      "tipoProceso": "misional",
-      "etiqueta": "A29 · GIT Registro, Control y Admisiones (126)",
-      "ubicacion": "Directorio 2026 — revisar dependencia",
-      "revisar": true
+      "nombre": "Gestión de Bienestar Universitario",
+      "proceso": "Gestión de Bienestar Universitario",
+      "tipoProceso": "apoyo",
+      "dependencia": "122",
+      "etiqueta": "A29 · Gestión de Bienestar Universitario"
     },
     {
       "id": "A30",
-      "dependencia": "130",
-      "nombre": "Despacho de la Vicerrectoría Administrativa y Financiera",
+      "nombre": "Vicerrectoría Administrativa",
       "proceso": "Gestión Financiera",
       "tipoProceso": "apoyo",
-      "etiqueta": "A30 · Despacho de la Vicerrectoría Administrativa y Financiera (130)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "dependencia": "130",
+      "etiqueta": "A30 · Vicerrectoría Administrativa"
     },
     {
       "id": "A31",
-      "dependencia": "130",
-      "nombre": "Recursos Físicos e Infraestructura",
-      "proceso": "Gestión de Recursos Físicos",
+      "nombre": "Contabilidad",
+      "proceso": "Gestión Financiera",
       "tipoProceso": "apoyo",
-      "etiqueta": "A31 · Recursos Físicos e Infraestructura (130)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "dependencia": "130",
+      "etiqueta": "A31 · Contabilidad"
     },
     {
       "id": "A32",
-      "dependencia": "131",
-      "nombre": "Gestión Documental",
-      "proceso": "Gestión Documental",
+      "nombre": "Presupuesto",
+      "proceso": "Gestión Financiera",
       "tipoProceso": "apoyo",
-      "etiqueta": "A32 · Gestión Documental (131)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "dependencia": "130",
+      "etiqueta": "A32 · Presupuesto"
     },
     {
       "id": "A33",
-      "dependencia": "131",
-      "nombre": "Atención al Ciudadano",
-      "proceso": "Gestión de Servicio al Ciudadano",
+      "nombre": "Tesorería",
+      "proceso": "Gestión Financiera",
       "tipoProceso": "apoyo",
-      "etiqueta": "A33 · Atención al Ciudadano (131)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "dependencia": "130",
+      "etiqueta": "A33 · Tesorería"
     },
     {
       "id": "A34",
-      "dependencia": "132",
-      "nombre": "GIT Informática y Telecomunicaciones",
-      "proceso": "Gestión de Informática y Telecomunicaciones",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A34 · GIT Informática y Telecomunicaciones (132)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Gestión Jurídica",
+      "proceso": "Gestión Jurídica",
+      "tipoProceso": "apoyo",
+      "dependencia": "110",
+      "etiqueta": "A34 · Gestión Jurídica"
     },
     {
       "id": "A35",
-      "dependencia": "133",
-      "nombre": "GIT Talento Humano",
-      "proceso": "Gestión de Talento Humano",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A35 · GIT Talento Humano (133)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Almacén",
+      "proceso": "Gestión de Recursos Físicos",
+      "tipoProceso": "apoyo",
+      "dependencia": "130",
+      "etiqueta": "A35 · Almacén"
     },
     {
       "id": "A36",
-      "dependencia": "133",
-      "nombre": "Seguridad y Salud en el Trabajo",
-      "proceso": "Gestión de Talento Humano",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A36 · Seguridad y Salud en el Trabajo (133)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Planta Física",
+      "proceso": "Gestión de Recursos Físicos",
+      "tipoProceso": "apoyo",
+      "dependencia": "130",
+      "etiqueta": "A36 · Planta Física"
     },
     {
       "id": "A37",
-      "dependencia": "133",
-      "nombre": "Bienestar Laboral",
-      "proceso": "Gestión de Talento Humano",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A37 · Bienestar Laboral (133)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Infraestructura Eléctrica",
+      "proceso": "Gestión de Recursos Físicos",
+      "tipoProceso": "apoyo",
+      "dependencia": "130",
+      "etiqueta": "A37 · Infraestructura Eléctrica"
     },
     {
       "id": "A38",
-      "dependencia": "140",
-      "nombre": "Despacho de la VIET",
-      "proceso": "Investigación",
-      "tipoProceso": "misional",
-      "etiqueta": "A38 · Despacho de la VIET (140)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Gestión de Servicio al Ciudadano",
+      "proceso": "Gestión de Servicio al Ciudadano",
+      "tipoProceso": "apoyo",
+      "dependencia": "131",
+      "etiqueta": "A38 · Gestión de Servicio al Ciudadano"
     },
     {
       "id": "A39",
-      "dependencia": "140",
-      "nombre": "Investigación (grupos, semilleros, revista, centro de pensamiento)",
-      "proceso": "Investigación",
-      "tipoProceso": "misional",
-      "etiqueta": "A39 · Investigación (grupos, semilleros, revista, centro de pensamiento) (140)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Gestión Documental",
+      "proceso": "Gestión Documental",
+      "tipoProceso": "apoyo",
+      "dependencia": "131",
+      "etiqueta": "A39 · Gestión Documental"
     },
     {
       "id": "A40",
-      "dependencia": "140",
-      "nombre": "Innovación y Laboratorio Inteligente",
-      "proceso": "Investigación",
-      "tipoProceso": "misional",
-      "etiqueta": "A40 · Innovación y Laboratorio Inteligente (140)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Gestión de Control Interno",
+      "proceso": "Gestión de Control Interno",
+      "tipoProceso": "evaluación",
+      "dependencia": "102",
+      "etiqueta": "A40 · Gestión de Control Interno"
     },
     {
       "id": "A41",
-      "dependencia": "141",
-      "nombre": "GIT Extensión y Proyección Social (incluye ETDH)",
-      "proceso": "Extensión y Proyección Social",
-      "tipoProceso": "misional",
-      "etiqueta": "A41 · GIT Extensión y Proyección Social (incluye ETDH) (141)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
-    },
-    {
-      "id": "A42",
-      "dependencia": "141",
-      "nombre": "Centro de Lenguas (CEL)",
-      "proceso": "Extensión y Proyección Social",
-      "tipoProceso": "misional",
-      "etiqueta": "A42 · Centro de Lenguas (CEL) (141)",
-      "ubicacion": "Directorio 2026 — revisar dependencia",
-      "revisar": true
-    },
-    {
-      "id": "A43",
-      "dependencia": "141",
-      "nombre": "Egresados y Bolsa de Empleo",
-      "proceso": "Egresados",
-      "tipoProceso": "misional",
-      "etiqueta": "A43 · Egresados y Bolsa de Empleo (141)",
-      "ubicacion": "Directorio 2026 — revisar dependencia",
-      "revisar": true
-    },
-    {
-      "id": "A44",
-      "dependencia": "100",
-      "nombre": "Sedes y Campus",
-      "proceso": "Direccionamiento Institucional",
-      "tipoProceso": "estrategico",
-      "etiqueta": "A44 · Sedes y Campus (100)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
-    },
-    {
-      "id": "A45",
-      "dependencia": "120",
-      "nombre": "Sedes Tintal, Soacha UPK y Viotá",
-      "proceso": "Docencia PES",
-      "tipoProceso": "misional",
-      "etiqueta": "A45 · Sedes Tintal, Soacha UPK y Viotá (120)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
-    },
-    {
-      "id": "A46",
-      "dependencia": "123",
-      "nombre": "Facultad de Inteligencia Artificial (Acuerdo 010 de 2025)",
-      "proceso": "Docencia PES",
-      "tipoProceso": "misional",
-      "etiqueta": "A46 · Facultad de Inteligencia Artificial (Acuerdo 010 de 2025) (123)",
-      "ubicacion": "Acuerdo 010 de 2025 — validar si ya opera",
-      "revisar": true
-    },
-    {
-      "id": "A47",
-      "dependencia": "130",
-      "nombre": "Gestión Financiera (Presupuesto, Contabilidad, Tesorería)",
-      "proceso": "Gestión Financiera",
-      "tipoProceso": "apoyo",
-      "etiqueta": "A47 · Gestión Financiera (Presupuesto, Contabilidad, Tesorería) (130)",
-      "ubicacion": "Directorio 2026 (OAPDI)",
-      "revisar": false
+      "nombre": "Gestión de Control Disciplinario",
+      "proceso": "Gestión de Control Disciplinario",
+      "tipoProceso": "evaluación",
+      "dependencia": "110",
+      "etiqueta": "A41 · Gestión de Control Disciplinario"
     }
   ]
 }

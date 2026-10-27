@@ -91,7 +91,7 @@ function mostrarOverlay(tipo, datos) {
   clearTimeout(overlayTimer);
   const d = dependencia(datos.dependencia);
   const a = datos.area ? areaPorId(datos.area) : null;
-  const lugar = a ? `${esc(a.nombre)}` : `${esc(datos.dependencia || '')} · ${esc(d?.nombre || '')}`;
+  const lugar = a ? `${esc(a.nombre)}, ${esc(a.proceso)}` : esc(d?.nombre || '');
   const metodo = { QR: 'con QR', codigo: 'con el código del pase', manual: 'manual sin pase' }[datos.metodo] || '';
   const contenido = {
     ok: `<span class="ov-icono">${icono('check')}</span><span class="ov-estado">${turno?.prueba ? 'Ensayo · ' : ''}Bienvenido</span>

@@ -7,7 +7,7 @@
  *   3. emite el pase QR de ingreso a la jornada y lo envía por correo.
  */
 import { PREFIJO_LOCAL } from '../config.js';
-import { estado, dependencias, dependencia, areas, area as areaPorId, sugerirArea, emitir } from '../estado.js';
+import { estado, dependencia, areas, procesos, area as areaPorId, sugerirArea, emitir } from '../estado.js';
 import { esc } from './dom.js';
 import { icono } from './iconos.js';
 import { abrirModal } from './modal.js';
@@ -66,12 +66,13 @@ function dispositivo() {
   return `${so} · ${/Mobi/.test(ua) ? 'celular' : 'computador'}`;
 }
 
-function opcionesDependencia(sel) {
-  return `<option value="">Elija su dependencia…</option>${dependencias().map((d) => `<option value="${esc(d.codigo)}" ${String(d.codigo) === String(sel) ? 'selected' : ''}>${esc(d.codigo)} · ${esc(d.nombre)}</option>`).join('')}`;
+function opcionesProceso(sel) {
+  return `<option value="">Elija el proceso…</option>${procesos().map((p) => `<option value="${esc(p)}" ${p === sel ? 'selected' : ''}>${esc(p)}</option>`).join('')}`;
 }
-function opcionesArea(dep, sel) {
-  const lista = areas().filter((a) => !dep || String(a.dependencia) === String(dep));
-  return `<option value="">${lista.length ? 'Elija el área (opcional)…' : 'Sin áreas para esta dependencia'}</option>${lista.map((a) => `<option value="${esc(a.id)}" ${a.id === sel ? 'selected' : ''}>${esc(a.nombre)}</option>`).join('')}`;
+function opcionesArea(proc, sel) {
+  const lista = areas().filter((a) => a.proceso === proc);
+  if (!proc) return '<option value="">Primero elija el proceso…</option>';
+  return `<option value="">Elija el área funcional…</option>${lista.map((a) => `<option value="${esc(a.id)}" ${a.id === sel ? 'selected' : ''}>${esc(a.nombre)}</option>`).join('')}`;
 }
 
 /*
@@ -103,8 +104,8 @@ export async function registrarYDescargar({ ctx, origen = 'accion', forzarFormul
         <label class="field"><span class="field-label">Nombre completo</span><input class="input" name="nombre" autocomplete="name" required></label>
         <label class="field"><span class="field-label">Cargo</span><input class="input" name="cargo" autocomplete="organization-title" required></label>
       </div>
-      <label class="field"><span class="field-label">Dependencia</span><select class="select" name="dependencia" required>${opcionesDependencia('')}</select></label>
-      <label class="field"><span class="field-label">Área funcional</span><select class="select" name="area">${opcionesArea('', '')}</select></label>
+      <label class="field"><span class="field-label">Proceso</span><select class="select" name="proceso" required>${opcionesProceso('')}</select></label>
+      <label class="field"><span class="field-label">Área funcional</span><select class="select" name="area" required>${opcionesArea('', '')}</select></label>
       <fieldset class="field fieldset-suie"><legend class="field-label">¿Quién cargará el documento formulado en el SUIE?</legend>
         <div class="segmentado-op" role="radiogroup">
           <label><input type="radio" name="quien" value="yo" checked> Yo mismo</label>
@@ -146,12 +147,12 @@ export async function registrarYDescargar({ ctx, origen = 'accion', forzarFormul
         persona = p;
         f.nombre.value = p.n || f.nombre.value;
         f.cargo.value = p.c || f.cargo.value;
-        if (p.d && dependencia(p.d)) {
-          f.dependencia.value = String(p.d);
-          const sug = sugerirArea(p);
-          f.area.innerHTML = opcionesArea(p.d, sug ? sug.id : '');
+        const sug = sugerirArea(p);
+        if (sug) {
+          f.proceso.innerHTML = opcionesProceso(sug.proceso);
+          f.area.innerHTML = opcionesArea(sug.proceso, sug.id);
         }
-        hallado.innerHTML = `<div class="persona-ok">${icono('usuarioCheck')}<span><strong>${esc(p.n || 'Persona del directorio')}</strong><br><span class="muted">${esc(p.c || '')}${p.d ? ` · ${esc(p.d)} ${esc(dependencia(p.d)?.nombre || '')}` : ''}</span></span></div>`;
+        hallado.innerHTML = `<div class="persona-ok">${icono('usuarioCheck')}<span><strong>${esc(p.n || 'Persona del directorio')}</strong><br><span class="muted">${esc(p.c || '')}${p.d ? ` · ${esc(dependencia(p.d)?.nombre || '')}` : ''}</span></span></div>`;
       };
       if (lista.length === 1) { usar(lista[0]); return; }
       hallado.innerHTML = `<div class="notice">${icono('personas')}<div>Este buzón lo comparten ${lista.length} personas. Toque su nombre:<div class="chips-sugeridos" style="margin-top:8px">${lista.map((p, i) => `<button type="button" class="chip" data-p="${i}">${esc(p.n || 'Sin nombre')}</button>`).join('')}</div></div></div>`;
@@ -160,7 +161,7 @@ export async function registrarYDescargar({ ctx, origen = 'accion', forzarFormul
     let t = null;
     f.correo.addEventListener('input', () => { clearTimeout(t); t = setTimeout(buscar, 350); });
     f.correo.addEventListener('blur', () => { const v = f.correo.value.trim(); if (v && !v.includes('@')) { f.correo.value = `${v}${dominio()}`; } buscar(); });
-    f.dependencia.addEventListener('change', () => { f.area.innerHTML = opcionesArea(f.dependencia.value, ''); });
+    f.proceso.addEventListener('change', () => { f.area.innerHTML = opcionesArea(f.proceso.value, ''); });
     form.querySelectorAll('[name="quien"]').forEach((r) => r.addEventListener('change', () => { form.querySelector('[data-otro]').hidden = f.quien.value !== 'otro'; }));
 
     form.addEventListener('submit', async (ev) => {
@@ -170,7 +171,8 @@ export async function registrarYDescargar({ ctx, origen = 'accion', forzarFormul
       if (!correoValido(correo)) faltan.push('un correo institucional válido');
       if (!f.nombre.value.trim()) faltan.push('el nombre');
       if (!f.cargo.value.trim()) faltan.push('el cargo');
-      if (!f.dependencia.value) faltan.push('la dependencia');
+      if (!f.proceso.value) faltan.push('el proceso');
+      if (!f.area.value) faltan.push('el área funcional');
       const otro = f.quien.value === 'otro';
       const suieCorreo = otro ? normalizarCorreo(f.suieCorreo.value) : correo;
       if (otro && (!f.suieNombre.value.trim() || !correoValido(suieCorreo))) faltan.push('el nombre y el correo institucional de quien cargará en el SUIE');
@@ -181,9 +183,11 @@ export async function registrarYDescargar({ ctx, origen = 'accion', forzarFormul
       boton.innerHTML = '<span class="spinner" aria-hidden="true"></span>Registrando…';
       try {
         const a = f.area.value ? areaPorId(f.area.value) : null;
+        // La dependencia de planta solo identifica el pase: la del directorio si existe; si no, la del área elegida
+        const dep = persona?.d && dependencia(persona.d) ? String(persona.d) : String(a?.dependencia || '');
         const ident = {
-          correo, nombre: f.nombre.value.trim(), cargo: f.cargo.value.trim(), dependencia: f.dependencia.value,
-          dependenciaNombre: dependencia(f.dependencia.value)?.nombre || '', area: a ? a.id : '', areaNombre: a ? a.nombre : '',
+          correo, nombre: f.nombre.value.trim(), cargo: f.cargo.value.trim(), dependencia: dep,
+          dependenciaNombre: dependencia(dep)?.nombre || '', area: a ? a.id : '', areaNombre: a ? a.nombre : '', proceso: a ? a.proceso : '',
           responsableSuie: { nombre: otro ? f.suieNombre.value.trim() : f.nombre.value.trim(), correo: suieCorreo, mismo: !otro },
           verificado: Boolean(persona)
         };

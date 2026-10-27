@@ -1,5 +1,5 @@
 /*
- * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-26T23:59:52.472Z. No editar a mano.
+ * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-27T17:20:03.186Z. No editar a mano.
  * Contiene los 30 módulos de src/ como un script clásico para abrir la app con doble clic (file://).
  * Servida por HTTP, la aplicación usa directamente los módulos ES6 de src/ y este archivo no se carga.
  */
@@ -489,6 +489,9 @@ function nombreDependencia(codigo) { const d = dependencia(codigo); return d ? d
 function dependencias() { return estado.datos?.dependencias?.dependencias || []; }
 function area(id) { return estado.indices.areas.get(id) || null; }
 function areas() { return estado.datos?.areas?.areas || []; }
+// Procesos en el orden del documento «Áreas por proceso»; cada área trae el suyo.
+function procesos() { return [...new Set(areas().map((a) => a.proceso).filter(Boolean))]; }
+function procesoDeArea(id) { return area(id)?.proceso || ''; }
 
 // Sugiere el área funcional de una persona del directorio: dentro de su dependencia, la de nombre más parecido a su grupo o cargo.
 function sugerirArea(persona) {
@@ -506,7 +509,7 @@ function sugerirArea(persona) {
 
 function umbral(nombre, defecto) { return estado.datos?.config?.umbrales?.[nombre] ?? defecto; }
 
-Object.assign(__m["src/estado.js"], { on, emitir, fijarDatos, fijarConsolidado, dependencia, nombreDependencia, dependencias, area, areas, sugerirArea, umbral, estado });
+Object.assign(__m["src/estado.js"], { on, emitir, fijarDatos, fijarConsolidado, dependencia, nombreDependencia, dependencias, area, areas, procesos, procesoDeArea, sugerirArea, umbral, estado });
 })();
 
 // ── src/lib/datos.js ──
@@ -1647,7 +1650,7 @@ __m["src/ui/registro-descarga.js"] = {};
  *   3. emite el pase QR de ingreso a la jornada y lo envía por correo.
  */
 const { PREFIJO_LOCAL } = __m["src/config.js"];
-const { estado, dependencias, dependencia, areas, area: areaPorId, sugerirArea, emitir } = __m["src/estado.js"];
+const { estado, dependencia, areas, procesos, area: areaPorId, sugerirArea, emitir } = __m["src/estado.js"];
 const { esc } = __m["src/ui/dom.js"];
 const { icono } = __m["src/ui/iconos.js"];
 const { abrirModal } = __m["src/ui/modal.js"];
@@ -1706,12 +1709,13 @@ function dispositivo() {
   return `${so} · ${/Mobi/.test(ua) ? 'celular' : 'computador'}`;
 }
 
-function opcionesDependencia(sel) {
-  return `<option value="">Elija su dependencia…</option>${dependencias().map((d) => `<option value="${esc(d.codigo)}" ${String(d.codigo) === String(sel) ? 'selected' : ''}>${esc(d.codigo)} · ${esc(d.nombre)}</option>`).join('')}`;
+function opcionesProceso(sel) {
+  return `<option value="">Elija el proceso…</option>${procesos().map((p) => `<option value="${esc(p)}" ${p === sel ? 'selected' : ''}>${esc(p)}</option>`).join('')}`;
 }
-function opcionesArea(dep, sel) {
-  const lista = areas().filter((a) => !dep || String(a.dependencia) === String(dep));
-  return `<option value="">${lista.length ? 'Elija el área (opcional)…' : 'Sin áreas para esta dependencia'}</option>${lista.map((a) => `<option value="${esc(a.id)}" ${a.id === sel ? 'selected' : ''}>${esc(a.nombre)}</option>`).join('')}`;
+function opcionesArea(proc, sel) {
+  const lista = areas().filter((a) => a.proceso === proc);
+  if (!proc) return '<option value="">Primero elija el proceso…</option>';
+  return `<option value="">Elija el área funcional…</option>${lista.map((a) => `<option value="${esc(a.id)}" ${a.id === sel ? 'selected' : ''}>${esc(a.nombre)}</option>`).join('')}`;
 }
 
 /*
@@ -1743,8 +1747,8 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
         <label class="field"><span class="field-label">Nombre completo</span><input class="input" name="nombre" autocomplete="name" required></label>
         <label class="field"><span class="field-label">Cargo</span><input class="input" name="cargo" autocomplete="organization-title" required></label>
       </div>
-      <label class="field"><span class="field-label">Dependencia</span><select class="select" name="dependencia" required>${opcionesDependencia('')}</select></label>
-      <label class="field"><span class="field-label">Área funcional</span><select class="select" name="area">${opcionesArea('', '')}</select></label>
+      <label class="field"><span class="field-label">Proceso</span><select class="select" name="proceso" required>${opcionesProceso('')}</select></label>
+      <label class="field"><span class="field-label">Área funcional</span><select class="select" name="area" required>${opcionesArea('', '')}</select></label>
       <fieldset class="field fieldset-suie"><legend class="field-label">¿Quién cargará el documento formulado en el SUIE?</legend>
         <div class="segmentado-op" role="radiogroup">
           <label><input type="radio" name="quien" value="yo" checked> Yo mismo</label>
@@ -1786,12 +1790,12 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
         persona = p;
         f.nombre.value = p.n || f.nombre.value;
         f.cargo.value = p.c || f.cargo.value;
-        if (p.d && dependencia(p.d)) {
-          f.dependencia.value = String(p.d);
-          const sug = sugerirArea(p);
-          f.area.innerHTML = opcionesArea(p.d, sug ? sug.id : '');
+        const sug = sugerirArea(p);
+        if (sug) {
+          f.proceso.innerHTML = opcionesProceso(sug.proceso);
+          f.area.innerHTML = opcionesArea(sug.proceso, sug.id);
         }
-        hallado.innerHTML = `<div class="persona-ok">${icono('usuarioCheck')}<span><strong>${esc(p.n || 'Persona del directorio')}</strong><br><span class="muted">${esc(p.c || '')}${p.d ? ` · ${esc(p.d)} ${esc(dependencia(p.d)?.nombre || '')}` : ''}</span></span></div>`;
+        hallado.innerHTML = `<div class="persona-ok">${icono('usuarioCheck')}<span><strong>${esc(p.n || 'Persona del directorio')}</strong><br><span class="muted">${esc(p.c || '')}${p.d ? ` · ${esc(dependencia(p.d)?.nombre || '')}` : ''}</span></span></div>`;
       };
       if (lista.length === 1) { usar(lista[0]); return; }
       hallado.innerHTML = `<div class="notice">${icono('personas')}<div>Este buzón lo comparten ${lista.length} personas. Toque su nombre:<div class="chips-sugeridos" style="margin-top:8px">${lista.map((p, i) => `<button type="button" class="chip" data-p="${i}">${esc(p.n || 'Sin nombre')}</button>`).join('')}</div></div></div>`;
@@ -1800,7 +1804,7 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
     let t = null;
     f.correo.addEventListener('input', () => { clearTimeout(t); t = setTimeout(buscar, 350); });
     f.correo.addEventListener('blur', () => { const v = f.correo.value.trim(); if (v && !v.includes('@')) { f.correo.value = `${v}${dominio()}`; } buscar(); });
-    f.dependencia.addEventListener('change', () => { f.area.innerHTML = opcionesArea(f.dependencia.value, ''); });
+    f.proceso.addEventListener('change', () => { f.area.innerHTML = opcionesArea(f.proceso.value, ''); });
     form.querySelectorAll('[name="quien"]').forEach((r) => r.addEventListener('change', () => { form.querySelector('[data-otro]').hidden = f.quien.value !== 'otro'; }));
 
     form.addEventListener('submit', async (ev) => {
@@ -1810,7 +1814,8 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
       if (!correoValido(correo)) faltan.push('un correo institucional válido');
       if (!f.nombre.value.trim()) faltan.push('el nombre');
       if (!f.cargo.value.trim()) faltan.push('el cargo');
-      if (!f.dependencia.value) faltan.push('la dependencia');
+      if (!f.proceso.value) faltan.push('el proceso');
+      if (!f.area.value) faltan.push('el área funcional');
       const otro = f.quien.value === 'otro';
       const suieCorreo = otro ? normalizarCorreo(f.suieCorreo.value) : correo;
       if (otro && (!f.suieNombre.value.trim() || !correoValido(suieCorreo))) faltan.push('el nombre y el correo institucional de quien cargará en el SUIE');
@@ -1821,9 +1826,11 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
       boton.innerHTML = '<span class="spinner" aria-hidden="true"></span>Registrando…';
       try {
         const a = f.area.value ? areaPorId(f.area.value) : null;
+        // La dependencia de planta solo identifica el pase: la del directorio si existe; si no, la del área elegida
+        const dep = persona?.d && dependencia(persona.d) ? String(persona.d) : String(a?.dependencia || '');
         const ident = {
-          correo, nombre: f.nombre.value.trim(), cargo: f.cargo.value.trim(), dependencia: f.dependencia.value,
-          dependenciaNombre: dependencia(f.dependencia.value)?.nombre || '', area: a ? a.id : '', areaNombre: a ? a.nombre : '',
+          correo, nombre: f.nombre.value.trim(), cargo: f.cargo.value.trim(), dependencia: dep,
+          dependenciaNombre: dependencia(dep)?.nombre || '', area: a ? a.id : '', areaNombre: a ? a.nombre : '', proceso: a ? a.proceso : '',
           responsableSuie: { nombre: otro ? f.suieNombre.value.trim() : f.nombre.value.trim(), correo: suieCorreo, mismo: !otro },
           verificado: Boolean(persona)
         };
@@ -2154,8 +2161,8 @@ function htmlPase(pase, logoDataUrl) {
       <span class="pase-cargo">${esc(pase.c)}</span>
     </div>
     <div class="pase-dep">
-      <span class="pase-dep-cod">${esc(a ? a.id : pase.d)}</span>
-      <span>${esc(a ? a.nombre : (d?.nombre || ''))}<small>${esc(pase.d)} · ${esc(d?.nombre || '')}</small></span>
+      <span class="pase-dep-cod">${esc(a ? a.id : 'ETITC')}</span>
+      <span>${esc(a ? a.nombre : (d?.nombre || ''))}<small>${esc(a ? a.proceso : (d?.nombre || ''))}</small></span>
     </div>
     <div class="pase-qr" data-qr><span class="spinner" aria-hidden="true"></span></div>
     <div class="pase-id mono">${esc(pase.id)}</div>
@@ -2284,7 +2291,7 @@ function pintarEstado() {
     <div class="card card-tight ident-registro">
       <dl class="dl-mini">
         <div><dt>Registrado</dt><dd>${esc(i.nombre)} · ${esc(i.correo)}</dd></div>
-        <div><dt>Dependencia</dt><dd>${esc(i.dependencia)} · ${esc(dependencia(i.dependencia)?.nombre || i.dependenciaNombre || '')}${i.area ? `, ${esc(areaPorId(i.area)?.nombre || i.areaNombre)}` : ''}</dd></div>
+        <div><dt>Proceso y área</dt><dd>${i.area ? `${esc(areaPorId(i.area)?.proceso || i.proceso || '')}, ${esc(areaPorId(i.area)?.nombre || i.areaNombre)}` : esc(dependencia(i.dependencia)?.nombre || i.dependenciaNombre || '')}</dd></div>
         <div><dt>Carga en el SUIE</dt><dd>${esc(i.responsableSuie?.nombre || i.nombre)} · ${esc(i.responsableSuie?.correo || i.correo)}</dd></div>
         ${primera ? `<div><dt>Primera descarga</dt><dd>${esc(fechaCorta(primera.fecha.slice(0, 10)))}, ${esc(horaLegible(new Date(primera.fecha)))}${desc.length > 1 ? ` · ${desc.length} descargas en este dispositivo` : ''}</dd></div>` : ''}
       </dl>
@@ -3067,7 +3074,7 @@ function mostrarOverlay(tipo, datos) {
   clearTimeout(overlayTimer);
   const d = dependencia(datos.dependencia);
   const a = datos.area ? areaPorId(datos.area) : null;
-  const lugar = a ? `${esc(a.nombre)}` : `${esc(datos.dependencia || '')} · ${esc(d?.nombre || '')}`;
+  const lugar = a ? `${esc(a.nombre)}, ${esc(a.proceso)}` : esc(d?.nombre || '');
   const metodo = { QR: 'con QR', codigo: 'con el código del pase', manual: 'manual sin pase' }[datos.metodo] || '';
   const contenido = {
     ok: `<span class="ov-icono">${icono('check')}</span><span class="ov-estado">${turno?.prueba ? 'Ensayo · ' : ''}Bienvenido</span>
@@ -3412,11 +3419,15 @@ __m["src/tabs/admin.js"] = {};
 (function () {
 /*
  * admin.js — Panel de la Oficina Asesora de Planeación (vista #admin, enlace en el pie de página).
- * Con la clave de administración lee el registro en línea: quién descargó la plantilla, desde qué dependencia y a
+ * Con la clave de administración lee el registro en línea: quién descargó la plantilla, desde qué proceso y área y a
  * qué hora, quién cargará en el SUIE, y cada lectura de QR por lector y por actividad. Sin registro en línea muestra
  * los datos de este dispositivo. Todo se exporta a Excel.
  */
-const { estado, dependencias, nombreDependencia } = __m["src/estado.js"];
+const { estado, procesos, area: areaPorId, nombreDependencia } = __m["src/estado.js"];
+
+// Proceso de un registro: el de su área funcional; los registros sin área quedan aparte
+const procesoDe = (x) => areaPorId(x.area)?.proceso || x.proceso || 'Sin área funcional';
+const lugarDe = (x) => (x.area && areaPorId(x.area) ? `${areaPorId(x.area).proceso}, ${x.areaNombre || areaPorId(x.area).nombre}` : (x.areaNombre || nombreDependencia(x.dependencia)));
 const { esc, on } = __m["src/ui/dom.js"];
 const { icono } = __m["src/ui/iconos.js"];
 const { toast, toastError } = __m["src/ui/toast.js"];
@@ -3449,7 +3460,7 @@ function pintarPanel() {
   const unicas = new Map();
   d.descargas.forEach((x) => { if (!unicas.has(x.correo)) unicas.set(x.correo, x); });
   const personas = [...unicas.values()];
-  const deps = new Set(personas.map((x) => String(x.dependencia)));
+  const procs = new Set(personas.map(procesoDe));
   const reales = d.lecturas.filter((l) => !(l.prueba === true || l.prueba === 'Sí'));
   const ok = reales.filter((l) => l.resultado === 'ok');
   const porLector = new Map();
@@ -3460,26 +3471,26 @@ function pintarPanel() {
   });
   const porActividad = new Map();
   ok.forEach((l) => { const k = l.actividad?.titulo || 'Sin actividad'; porActividad.set(k, (porActividad.get(k) || 0) + 1); });
-  const sinDescarga = dependencias().filter((x) => !deps.has(String(x.codigo)));
+  const sinDescarga = procesos().filter((x) => !procs.has(x));
   raiz.querySelector('[data-panel]').innerHTML = `
     <p class="field-hint">Fuente: <strong>${esc(d.origen)}</strong>${remotoConfigurado() && pendientes() ? ` · ${pendientes()} envíos pendientes en este dispositivo` : ''}</p>
     <div class="cifras-mini cifras-admin">
       <div class="cifra-mini"><strong>${entero(personas.length)}</strong><span>Personas que descargaron</span></div>
-      <div class="cifra-mini"><strong>${entero(deps.size)}/${entero(dependencias().length)}</strong><span>Dependencias con descarga</span></div>
+      <div class="cifra-mini"><strong>${entero(procesos().filter((x) => procs.has(x)).length)}/${entero(procesos().length)}</strong><span>Procesos con descarga</span></div>
       <div class="cifra-mini"><strong>${entero(ok.length)}</strong><span>Ingresos leídos</span></div>
       <div class="cifra-mini"><strong>${entero(porLector.size)}</strong><span>Lectores con lecturas</span></div>
     </div>
     <div class="grid-2">
-      <section class="card"><h3>Descargas por dependencia</h3>${barrasHorizontales(dependencias().map((x) => ({ etiqueta: `${x.codigo} · ${x.sigla || x.nombre}`, valor: personas.filter((p) => String(p.dependencia) === String(x.codigo)).length })).filter((i) => i.valor).sort((a, b) => b.valor - a.valor)) || '<p class="muted">Sin descargas.</p>'}
-        ${sinDescarga.length ? `<p class="field-hint" style="margin-top:12px"><strong>Sin descarga todavía:</strong> ${sinDescarga.map((x) => esc(`${x.codigo} ${x.sigla || x.nombre}`)).join(', ')}</p>` : ''}</section>
+      <section class="card"><h3>Descargas por proceso</h3>${barrasHorizontales([...procesos(), 'Sin área funcional'].map((x) => ({ etiqueta: x, valor: personas.filter((p) => procesoDe(p) === x).length })).filter((i) => i.valor).sort((a, b) => b.valor - a.valor)) || '<p class="muted">Sin descargas.</p>'}
+        ${sinDescarga.length ? `<p class="field-hint" style="margin-top:12px"><strong>Sin descarga todavía:</strong> ${sinDescarga.map((x) => esc(x)).join(', ')}</p>` : ''}</section>
       <section class="card"><h3>Lecturas por lector</h3>
         <ul class="recientes">${[...porLector.entries()].sort((a, b) => b[1].ok - a[1].ok).map(([n, c]) => `<li><span class="mono">${entero(c.ok)}</span><span><strong>${esc(n)}</strong></span><span class="badge">${entero(c.duplicado || 0)} rep. · ${entero(c.rechazo || 0)} rech.</span></li>`).join('') || '<li class="muted">Sin lecturas.</li>'}</ul>
         <h3 style="margin-top:16px">Ingresos por actividad</h3>
         ${barrasHorizontales([...porActividad.entries()].map(([k, v]) => ({ etiqueta: k, valor: v })).sort((a, b) => b.valor - a.valor)) || '<p class="muted">Sin ingresos.</p>'}</section>
     </div>
     <section class="card"><div class="card-head"><div><h3 class="mb-0">Quién descargó</h3><p>Una fila por persona, con su primera descarga.</p></div></div>
-      <div class="table-wrap"><table class="table"><thead><tr><th>Fecha</th><th>Nombre</th><th>Dependencia</th><th>Carga en el SUIE</th><th>Pase</th></tr></thead>
-      <tbody>${personas.sort((a, b) => String(b.fecha).localeCompare(String(a.fecha))).slice(0, 300).map((p) => `<tr><td class="nowrap">${esc(fecha(p.fecha))}</td><td><strong>${esc(p.nombre)}</strong><br><span class="muted">${esc(p.correo)}${p.verificado === false || p.verificado === 'No' ? ' · no verificado' : ''}</span></td><td>${esc(p.dependencia)} · ${esc(nombreDependencia(p.dependencia))}</td><td>${esc(p.responsableSuie?.nombre || '')}<br><span class="muted">${esc(p.responsableSuie?.correo || '')}</span></td><td class="mono">${esc(p.paseId || '')}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">Sin descargas.</td></tr>'}</tbody></table></div></section>`;
+      <div class="table-wrap"><table class="table"><thead><tr><th>Fecha</th><th>Nombre</th><th>Proceso y área</th><th>Carga en el SUIE</th><th>Pase</th></tr></thead>
+      <tbody>${personas.sort((a, b) => String(b.fecha).localeCompare(String(a.fecha))).slice(0, 300).map((p) => `<tr><td class="nowrap">${esc(fecha(p.fecha))}</td><td><strong>${esc(p.nombre)}</strong><br><span class="muted">${esc(p.correo)}${p.verificado === false || p.verificado === 'No' ? ' · no verificado' : ''}</span></td><td>${esc(lugarDe(p))}</td><td>${esc(p.responsableSuie?.nombre || '')}<br><span class="muted">${esc(p.responsableSuie?.correo || '')}</span></td><td class="mono">${esc(p.paseId || '')}</td></tr>`).join('') || '<tr><td colspan="5" class="muted">Sin descargas.</td></tr>'}</tbody></table></div></section>`;
   activarAnimaciones(raiz);
 }
 
@@ -3492,12 +3503,12 @@ async function exportar() {
       logo: logo.bytes,
       hojas: [
         { nombre: 'Descargas', titulo: 'Descargas de la Plantilla Plan de Acción 2027', subtitulo: `${datos.descargas.length} registros · ${datos.origen}`,
-          columnas: [{ titulo: 'Fecha y hora', ancho: 20 }, { titulo: 'Nombre', ancho: 32 }, { titulo: 'Cargo', ancho: 30 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Dependencia', ancho: 36 }, { titulo: 'Área funcional', ancho: 30 }, { titulo: 'Responsable del cargue en el SUIE', ancho: 30 }, { titulo: 'Correo del responsable', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Verificado', ancho: 10 }, { titulo: 'Repetida', ancho: 10 }, { titulo: 'Dispositivo', ancho: 18 }],
-          filas: datos.descargas.map((x) => [fecha(x.fecha), x.nombre, x.cargo, x.correo, `${x.dependencia} · ${nombreDependencia(x.dependencia)}`, x.areaNombre || '', x.responsableSuie?.nombre || '', x.responsableSuie?.correo || '', x.paseId || '', x.verificado === false || x.verificado === 'No' ? 'No' : 'Sí', x.repetida === true || x.repetida === 'Sí' ? 'Sí' : 'No', x.dispositivo || ''])
+          columnas: [{ titulo: 'Fecha y hora', ancho: 20 }, { titulo: 'Nombre', ancho: 32 }, { titulo: 'Cargo', ancho: 30 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Proceso', ancho: 36 }, { titulo: 'Área funcional', ancho: 30 }, { titulo: 'Responsable del cargue en el SUIE', ancho: 30 }, { titulo: 'Correo del responsable', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Verificado', ancho: 10 }, { titulo: 'Repetida', ancho: 10 }, { titulo: 'Dispositivo', ancho: 18 }],
+          filas: datos.descargas.map((x) => [fecha(x.fecha), x.nombre, x.cargo, x.correo, procesoDe(x), x.areaNombre || '', x.responsableSuie?.nombre || '', x.responsableSuie?.correo || '', x.paseId || '', x.verificado === false || x.verificado === 'No' ? 'No' : 'Sí', x.repetida === true || x.repetida === 'Sí' ? 'Sí' : 'No', x.dispositivo || ''])
         },
         { nombre: 'Lecturas', titulo: 'Lecturas de pases QR', subtitulo: `${datos.lecturas.length} lecturas · ${datos.origen}`,
-          columnas: [{ titulo: 'Fecha y hora', ancho: 20 }, { titulo: 'Resultado', ancho: 12 }, { titulo: 'Actividad', ancho: 40 }, { titulo: 'Lector', ancho: 26 }, { titulo: 'Participante', ancho: 32 }, { titulo: 'Dependencia', ancho: 36 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Método', ancho: 12 }, { titulo: 'Prueba', ancho: 8 }],
-          filas: datos.lecturas.map((l) => [fecha(l.hora), RES[l.resultado] || l.resultado, l.actividad?.titulo || '', l.lector?.nombre || '', l.nombre || '', l.dependencia ? `${l.dependencia} · ${nombreDependencia(l.dependencia)}` : '', l.correo || '', l.paseId || '', l.metodo || '', l.prueba === true || l.prueba === 'Sí' ? 'Sí' : 'No'])
+          columnas: [{ titulo: 'Fecha y hora', ancho: 20 }, { titulo: 'Resultado', ancho: 12 }, { titulo: 'Actividad', ancho: 40 }, { titulo: 'Lector', ancho: 26 }, { titulo: 'Participante', ancho: 32 }, { titulo: 'Proceso y área', ancho: 36 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Método', ancho: 12 }, { titulo: 'Prueba', ancho: 8 }],
+          filas: datos.lecturas.map((l) => [fecha(l.hora), RES[l.resultado] || l.resultado, l.actividad?.titulo || '', l.lector?.nombre || '', l.nombre || '', l.area || l.dependencia ? lugarDe(l) : '', l.correo || '', l.paseId || '', l.metodo || '', l.prueba === true || l.prueba === 'Sí' ? 'Sí' : 'No'])
         }
       ]
     });
@@ -3511,7 +3522,7 @@ function montar(panel) {
     <header class="app-hero">
       <span class="eyebrow">${icono('baseDatos', 'icon-sm')}Oficina Asesora de Planeación</span>
       <h1>Panel de seguimiento</h1>
-      <p class="lead">Descargas de la plantilla por dependencia y lecturas de los pases por lector y por actividad.</p>
+      <p class="lead">Descargas de la plantilla por proceso y lecturas de los pases por lector y por actividad.</p>
     </header>
     <form class="card card-tight row" data-clave>
       <label class="field" style="flex:1;min-width:220px"><span class="field-label">Clave de administración</span><input class="input" type="password" name="clave" autocomplete="current-password" ${remotoConfigurado() ? '' : 'disabled placeholder="Registro en línea sin configurar"'}></label>

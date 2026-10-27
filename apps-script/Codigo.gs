@@ -8,7 +8,7 @@
  *
  * Hojas del libro (las crea la función instalar):
  *  Resumen               cifras generales: áreas con descarga y pendientes, personas, pases enviados, ingresos por día
- *  Seguimiento por área  las 45 áreas funcionales: si descargó, cuántas veces, quiénes, primera y última descarga, responsable SUIE
+ *  Seguimiento por área  las 41 áreas funcionales agrupadas por proceso: si descargó, cuántas veces, quiénes, primera y última descarga, responsable SUIE
  *  Descargas             una fila por cada descarga de la plantilla, con fecha, hora, persona, dependencia y área
  *  Lecturas              una fila por cada lectura de pase QR en las actividades de la jornada
  *  Activaciones          una fila por cada activación de un lector de pases
@@ -30,63 +30,59 @@ var ZONA = 'America/Bogota';
 var QR_PRUEBA = 'iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAIAAAD/gAIDAAAB+klEQVR4nO2cS27DMAwFm6LLHKln6GFzhh4pe3erDVEOSFo2MLNsHUsYMA/6RY/jOD4kx+fuDtwJZQGUBVAWQFkAZQGUBfiK/vH8+W5v7P36/bet9ZmoD5lnKkT9tLIAygIoCxBm1kr0Hc5AMyWTUxHT/bSyAMoCKAuQyqyVzHc7kx10DBWNxej7o7YyWFkAZQGUBcCZ1QWd31XGUF1YWQBlAZQF2JZZK1F+Zf5+JlYWQFkAZQFwZk3nRdf7J/ppZQGUBVAWIJVZE3tzE+OpiX6uWFkAZQGUBXjsOlNaOcfg3PAGKAugLECYWXRdfHqM05VllXGclQVQFkBZgNQ4i46JMmdHI7rmgxPr+lYWQFkAZQHa9g1pTlWyaf1s5Ww9zS8rC6AsgLIAqd/uVOZcmTOiK1FbNJvcN9yMsgDKAoSZVcmpid8JTpzPon2wsgDKAigLUJob0jFR5j3Ta2eVtTYrC6AsgLIAl7vXgXLm3Q9WFkBZAGUBLnevA33PmefmrSyAsgDKAmy71yHzfGa9rLIPSHPQygIoC6AswOXudcjs/dG9yEx+Oc5qRlkAZQG2ZVbXvmHXOS/PZzWjLICyAJe714G2S7OvsjZvZQGUBVAWYNu9Dpm26Dho4ozFipUFUBZAWYBt9zrcESsLoCyAsgDKAigLoCyAsgB/ZwMJojANCgEAAAAASUVORK5CYII=';
 var VALORES = { TOKEN: 'JP27ETITC', CORREOOFICINA: 'plandeaccion@itc.edu.co', MODOENVIO: 'DIRECTO' };
 
-// Áreas funcionales de data/areas.json: id, código de dependencia, dependencia, área.
+// Áreas funcionales de data/areas.json (documento «Áreas por proceso»): id, proceso, tipo de proceso, área.
 var AREAS = [
-  ['A01', '100', 'Rectoría', 'Despacho de Rectoría'],
-  ['A02', '100', 'Rectoría', 'Comunicaciones y Mercadeo'],
-  ['A03', '100', 'Rectoría', 'Internacionalización (ORII)'],
-  ['A04', '102', 'Control Interno', 'Control Interno'],
-  ['A05', '101', 'Oficina Asesora de Planeación y Desarrollo Institucional', 'Planeación y Plan de Acción'],
-  ['A06', '101', 'Oficina Asesora de Planeación y Desarrollo Institucional', 'Gestión de Proyectos'],
-  ['A07', '101', 'Oficina Asesora de Planeación y Desarrollo Institucional', 'Autoevaluación y Acreditación'],
-  ['A08', '101', 'Oficina Asesora de Planeación y Desarrollo Institucional', 'Aseguramiento de la Calidad, MIPG y Registros Calificados'],
-  ['A09', '132', 'GIT Informática y Telecomunicaciones', 'Seguridad Digital y Continuidad'],
-  ['A10', '101', 'Oficina Asesora de Planeación y Desarrollo Institucional', 'Gestión Ambiental'],
-  ['A11', '110', 'Secretaría General', 'Despacho de Secretaría General'],
-  ['A12', '110', 'Secretaría General', 'Gestión Jurídica'],
-  ['A13', '110', 'Secretaría General', 'Control Disciplinario'],
-  ['A14', '130', 'Vicerrectoría Administrativa y Financiera', 'Contratación y Adquisiciones'],
-  ['A15', '120', 'Vicerrectoría Académica', 'Despacho de la Vicerrectoría Académica'],
-  ['A16', '123', 'Facultades', 'Coordinación de Especializaciones'],
-  ['A19', '101', 'Oficina Asesora de Planeación y Desarrollo Institucional', 'Regionalización'],
-  ['A20', '121', 'GIT Biblioteca y Recursos Académicos', 'GIT Biblioteca y Recursos Académicos'],
-  ['A21', '122', 'GIT Bienestar Universitario', 'GIT Bienestar Universitario'],
-  ['A22', '123', 'Facultades', 'Facultad de Electromecánica'],
-  ['A23', '123', 'Facultades', 'Facultad de Mecánica'],
-  ['A24', '123', 'Facultades', 'Facultad de Mecatrónica'],
-  ['A25', '123', 'Facultades', 'Facultad de Procesos Industriales'],
-  ['A26', '123', 'Facultades', 'Facultad de Sistemas'],
-  ['A27', '124', 'Instituto de Bachillerato Técnico Industrial', 'IBTI'],
-  ['A28', '125', 'GIT Talleres y Laboratorios', 'GIT Talleres y Laboratorios'],
-  ['A29', '126', 'GIT Registro y Control', 'GIT Registro, Control y Admisiones'],
-  ['A30', '130', 'Vicerrectoría Administrativa y Financiera', 'Despacho de la Vicerrectoría Administrativa y Financiera'],
-  ['A31', '130', 'Vicerrectoría Administrativa y Financiera', 'Recursos Físicos e Infraestructura'],
-  ['A32', '131', 'GIT Gestión Documental y Atención al Ciudadano', 'Gestión Documental'],
-  ['A33', '131', 'GIT Gestión Documental y Atención al Ciudadano', 'Atención al Ciudadano'],
-  ['A34', '132', 'GIT Informática y Telecomunicaciones', 'GIT Informática y Telecomunicaciones'],
-  ['A35', '133', 'GIT Talento Humano', 'GIT Talento Humano'],
-  ['A36', '133', 'GIT Talento Humano', 'Seguridad y Salud en el Trabajo'],
-  ['A37', '133', 'GIT Talento Humano', 'Bienestar Laboral'],
-  ['A38', '140', 'Vicerrectoría de Investigación, Extensión y Transferencia', 'Despacho de la VIET'],
-  ['A39', '140', 'Vicerrectoría de Investigación, Extensión y Transferencia', 'Investigación (grupos, semilleros, revista, centro de pensamiento)'],
-  ['A40', '140', 'Vicerrectoría de Investigación, Extensión y Transferencia', 'Innovación y Laboratorio Inteligente'],
-  ['A41', '141', 'GIT Extensión y Proyección Social', 'GIT Extensión y Proyección Social (incluye ETDH)'],
-  ['A42', '141', 'GIT Extensión y Proyección Social', 'Centro de Lenguas (CEL)'],
-  ['A43', '141', 'GIT Extensión y Proyección Social', 'Egresados y Bolsa de Empleo'],
-  ['A44', '100', 'Rectoría', 'Sedes y Campus'],
-  ['A45', '120', 'Vicerrectoría Académica', 'Sedes Tintal, Soacha UPK y Viotá'],
-  ['A46', '123', 'Facultades', 'Facultad de Inteligencia Artificial (Acuerdo 010 de 2025)'],
-  ['A47', '130', 'Vicerrectoría Administrativa y Financiera', 'Gestión Financiera (Presupuesto, Contabilidad, Tesorería)']
+  ['A01', 'Direccionamiento Institucional', 'Estratégico', 'Rectoría'],
+  ['A02', 'Direccionamiento Institucional', 'Estratégico', 'Planeación'],
+  ['A03', 'Direccionamiento Institucional', 'Estratégico', 'Secretaría General'],
+  ['A04', 'Gestión de Comunicaciones', 'Estratégico', 'Gestión de Comunicaciones'],
+  ['A05', 'Gestión de Informática y Telecomunicaciones', 'Estratégico', 'Gestión de Informática y Telecomunicaciones'],
+  ['A06', 'Gestión de Internacionalización', 'Estratégico', 'Gestión de Internacionalización'],
+  ['A07', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'Aseguramiento'],
+  ['A08', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'Calidad'],
+  ['A09', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'Ambiental'],
+  ['A10', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'Seguridad y Salud en el Trabajo'],
+  ['A11', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'Seguridad de la Información'],
+  ['A12', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'Continuidad'],
+  ['A13', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'Autoevaluación'],
+  ['A14', 'Gestión de Sistema Integrado de Aseguramiento', 'Estratégico', 'MIPG'],
+  ['A15', 'Gestión de Talento Humano', 'Estratégico', 'Bienestar Laboral'],
+  ['A16', 'Gestión de Talento Humano', 'Estratégico', 'Capacitación'],
+  ['A17', 'Gestión de Talento Humano', 'Estratégico', 'Selección y Vinculación'],
+  ['A18', 'Gestión de Talento Humano', 'Estratégico', 'Nómina'],
+  ['A19', 'Docencia PES', 'Misional', 'Vicerrectoría Académica'],
+  ['A20', 'Docencia PES', 'Misional', 'Facultades'],
+  ['A21', 'Docencia PES', 'Misional', 'Registro y Control'],
+  ['A22', 'Docencia PES', 'Misional', 'Biblioteca'],
+  ['A23', 'Docencia PES', 'Misional', 'Talleres y Laboratorios'],
+  ['A24', 'Docencia IBTI', 'Misional', 'Docencia IBTI'],
+  ['A25', 'Investigación', 'Misional', 'Investigación'],
+  ['A26', 'Extensión', 'Misional', 'Extensión'],
+  ['A27', 'Egresados', 'Misional', 'Egresados'],
+  ['A28', 'Gestión de Adquisiciones', 'Apoyo', 'Gestión de Adquisiciones'],
+  ['A29', 'Gestión de Bienestar Universitario', 'Apoyo', 'Gestión de Bienestar Universitario'],
+  ['A30', 'Gestión Financiera', 'Apoyo', 'Vicerrectoría Administrativa'],
+  ['A31', 'Gestión Financiera', 'Apoyo', 'Contabilidad'],
+  ['A32', 'Gestión Financiera', 'Apoyo', 'Presupuesto'],
+  ['A33', 'Gestión Financiera', 'Apoyo', 'Tesorería'],
+  ['A34', 'Gestión Jurídica', 'Apoyo', 'Gestión Jurídica'],
+  ['A35', 'Gestión de Recursos Físicos', 'Apoyo', 'Almacén'],
+  ['A36', 'Gestión de Recursos Físicos', 'Apoyo', 'Planta Física'],
+  ['A37', 'Gestión de Recursos Físicos', 'Apoyo', 'Infraestructura Eléctrica'],
+  ['A38', 'Gestión de Servicio al Ciudadano', 'Apoyo', 'Gestión de Servicio al Ciudadano'],
+  ['A39', 'Gestión Documental', 'Apoyo', 'Gestión Documental'],
+  ['A40', 'Gestión de Control Interno', 'Evaluación', 'Gestión de Control Interno'],
+  ['A41', 'Gestión de Control Disciplinario', 'Evaluación', 'Gestión de Control Disciplinario']
 ];
 
 var HOJAS = {
   Descargas: ['Fecha y hora', 'Fecha', 'Hora', 'Correo', 'Nombre', 'Cargo', 'Código dependencia', 'Dependencia', 'Id área', 'Área funcional',
     'Responsable del cargue en el SUIE', 'Correo del responsable SUIE', 'Pase', 'Verificado en directorio', 'Descarga repetida',
-    'Origen', 'Dispositivo', 'Correo enviado', 'Id registro'],
+    'Origen', 'Dispositivo', 'Correo enviado', 'Id registro', 'Proceso'],
   Lecturas: ['Fecha y hora', 'Fecha', 'Hora', 'Resultado', 'Día', 'Actividad', 'Id actividad', 'Lector', 'Correo del lector', 'Rol del lector',
     'Participante', 'Cargo', 'Código dependencia', 'Dependencia', 'Correo del participante', 'Pase', 'Método', 'Prueba', 'Dispositivo', 'Clave'],
   Activaciones: ['Fecha y hora', 'Fecha', 'Hora', 'Lector', 'Correo del lector', 'Rol', 'Actividad', 'Prueba', 'Dispositivo'],
-  'Seguimiento por área': ['Id área', 'Código dependencia', 'Dependencia', 'Área funcional', '¿Descargó?', 'Descargas', 'Personas que descargaron',
+  'Seguimiento por área': ['Id área', 'Proceso', 'Tipo de proceso', 'Área funcional', '¿Descargó?', 'Descargas', 'Personas que descargaron',
     'Primera descarga', 'Última descarga', 'Responsable del cargue en el SUIE', 'Correo del responsable SUIE', 'Nombres de quienes descargaron']
 };
 var ORDEN = ['Resumen', 'Seguimiento por área', 'Descargas', 'Lecturas', 'Activaciones'];
@@ -99,7 +95,18 @@ function libro_() { return SpreadsheetApp.getActiveSpreadsheet(); }
 
 function hoja_(nombre) {
   var h = libro_().getSheetByName(nombre);
-  if (h) return h;
+  if (h) {
+    // Una hoja creada con la versión anterior recibe los encabezados nuevos: se agregan columnas al final o se renombran las del seguimiento
+    var enc = HOJAS[nombre];
+    if (enc) {
+      var actual = h.getRange(1, 1, 1, enc.length).getDisplayValues()[0];
+      var prefijo = actual.every(function (v, i) { return v === '' || v === enc[i]; });
+      if (actual.join('|') !== enc.join('|') && (prefijo || nombre === 'Seguimiento por área')) {
+        h.getRange(1, 1, 1, enc.length).setValues([enc]).setFontWeight('bold').setBackground(VERDE).setFontColor('#ffffff').setWrap(true);
+      }
+    }
+    return h;
+  }
   h = libro_().insertSheet(nombre);
   if (nombre === 'Resumen') return h;
   var enc = HOJAS[nombre];
@@ -132,6 +139,7 @@ function agregar_(nombre, o) {
 }
 
 function si_(b) { return b ? 'Sí' : 'No'; }
+function procesoDe_(id) { for (var i = 0; i < AREAS.length; i++) { if (AREAS[i][0] === id) return AREAS[i][1]; } return ''; }
 function oficina_() { return prop_('CORREOOFICINA') || VALORES.CORREOOFICINA; }
 function modo_() { return (prop_('MODOENVIO') || 'DIRECTO').toUpperCase(); }
 function institucional_(c) { return new RegExp('^[^@\\s|;,<>]+@' + DOMINIO.replace(/\./g, '\\.') + '$', 'i').test(String(c || '').trim()); }
@@ -212,7 +220,8 @@ function registrarDescarga_(d) {
   agregar_('Descargas', { momento: d.fecha, 'Correo': d.correo, 'Nombre': d.nombre, 'Cargo': d.cargo, 'Código dependencia': d.dependencia,
     'Dependencia': d.dependenciaNombre, 'Id área': d.area, 'Área funcional': d.areaNombre, 'Responsable del cargue en el SUIE': suie.nombre,
     'Correo del responsable SUIE': suie.correo, 'Pase': d.paseId, 'Verificado en directorio': si_(d.verificado), 'Descarga repetida': si_(d.repetida),
-    'Origen': d.origen, 'Dispositivo': d.dispositivo, 'Correo enviado': correo.enviado ? 'Sí' : (d.repetida ? '' : 'No'), 'Id registro': d.id });
+    'Origen': d.origen, 'Dispositivo': d.dispositivo, 'Correo enviado': correo.enviado ? 'Sí' : (d.repetida ? '' : 'No'), 'Id registro': d.id,
+    'Proceso': d.proceso || procesoDe_(d.area) });
   try { actualizarSeguimiento(); } catch (err) { /* el registro ya quedó guardado */ }
   return { ok: true, correo: correo.enviado, motivoCorreo: correo.motivo };
 }
@@ -264,11 +273,12 @@ function actualizarSeguimiento() {
   seg.getRange(2, 5, filas.length, 1).setBackgrounds(filas.map(function (f) { return [f[4] === 'Sí' ? '#d9efe0' : '#fbe3e1']; })).setFontWeight('bold');
 
   var conArea = Object.keys(porArea).filter(function (id) { return AREAS.some(function (a) { return a[0] === id; }); }).length;
-  var personas = {}, deps = {}, enviados = 0, verificados = 0, sinArea = 0, ultima = null;
+  var personas = {}, procs = {}, enviados = 0, verificados = 0, sinArea = 0, ultima = null;
   desc.forEach(function (r) {
     var c = String(r['Correo'] || '').toLowerCase();
     if (c) personas[c] = 1;
-    if (r['Código dependencia'] !== '') deps[String(r['Código dependencia'])] = 1;
+    var pr = procesoDe_(String(r['Id área'] || ''));
+    if (pr) procs[pr] = 1;
     if (r['Correo enviado'] === 'Sí') enviados++;
     if (r['Verificado en directorio'] === 'Sí' && r['Descarga repetida'] !== 'Sí') verificados++;
     if (!r['Id área']) sinArea++;
@@ -286,7 +296,7 @@ function actualizarSeguimiento() {
     ['Actualizado', new Date()],
     ['Áreas funcionales que ya descargaron la plantilla', conArea + ' de ' + AREAS.length],
     ['Áreas funcionales pendientes de descargar', AREAS.length - conArea],
-    ['Dependencias con al menos una descarga', Object.keys(deps).length],
+    ['Procesos con al menos una descarga', Object.keys(procs).length + ' de ' + AREAS.map(function (a) { return a[1]; }).filter(function (p, i, l) { return l.indexOf(p) === i; }).length],
     ['Personas que descargaron (correos distintos)', Object.keys(personas).length],
     ['Descargas totales, incluidas las repetidas', desc.length],
     ['Registros verificados en el directorio', verificados],
@@ -365,7 +375,7 @@ function doGet(e) {
     if (!prop_('CLAVEADMIN') || p.clave !== prop_('CLAVEADMIN')) return json_({ ok: false, error: 'Clave de administración no válida.' });
     var desc = filas_('Descargas').map(function (r) {
       return { fecha: r['Fecha y hora'].replace(' ', 'T') + '-05:00', correo: r['Correo'], nombre: r['Nombre'], cargo: r['Cargo'], dependencia: r['Código dependencia'],
-        areaNombre: r['Área funcional'], responsableSuie: { nombre: r['Responsable del cargue en el SUIE'], correo: r['Correo del responsable SUIE'] },
+        area: r['Id área'], areaNombre: r['Área funcional'], proceso: r['Proceso'], responsableSuie: { nombre: r['Responsable del cargue en el SUIE'], correo: r['Correo del responsable SUIE'] },
         paseId: r['Pase'], verificado: r['Verificado en directorio'], repetida: r['Descarga repetida'], dispositivo: r['Dispositivo'] };
     });
     var lect = filas_('Lecturas').map(function (r) {

@@ -9,10 +9,10 @@ Desarrollo y ajustes: **Fabián Ospina**, profesional de Plan de Acción, Oficin
 | Pestaña | Contenido |
 |---|---|
 | **Agenda** | Los tres días con horarios, talleres y responsables. En el día 1, logros y transformaciones, grandes apuestas del PDI y tendencias van en un solo bloque. Descarga del cronograma en PDF y del calendario para Outlook. |
-| **Plan de acción** | Un solo archivo: la **Plantilla Plan de Acción 2027**. Para descargarla, la persona se registra con su correo institucional (el directorio cifrado completa nombre, cargo y dependencia), elige dependencia y área e indica quién cargará el documento en el SUIE. Al registrarse recibe su **pase QR** de ingreso. Además: Manual de ejemplos e Instructivo de formulación en PDF. |
+| **Plan de acción** | Un solo archivo: la **Plantilla Plan de Acción 2027**. Para descargarla, la persona se registra con su correo institucional (el directorio cifrado completa nombre y cargo y sugiere su área), elige proceso y área funcional e indica quién cargará el documento en el SUIE. Al registrarse recibe su **pase QR** de ingreso. Además: Manual de ejemplos e Instructivo de formulación en PDF. |
 | **Plan de necesidades** | Relación necesidad, acción y meta; código UNSPSC paso a paso con enlace al clasificador de Colombia Compra Eficiente; errores 2026; descarga del formato (hoja PlandeNecesidades de la misma plantilla). |
 | **Lector QR** | Solo lo activan los responsables de la actividad en curso según la agenda, con correo institucional y PIN. Cada lectura queda con fecha, hora, lector, participante, actividad y resultado. Modo ensayo para practicar. |
-| **Panel OAP** (`#admin`) | Quién descargó, por dependencia, responsables del cargue en el SUIE, ingresos por actividad y lecturas por lector; exportación a Excel. |
+| **Panel OAP** (`#admin`) | Quién descargó, por proceso y área, responsables del cargue en el SUIE, ingresos por actividad y lecturas por lector; exportación a Excel. |
 
 El cargue de la formulación se hace en el **SUIE**, no en el aplicativo.
 

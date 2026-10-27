@@ -48,7 +48,7 @@ function pintarEstado() {
     <div class="card card-tight ident-registro">
       <dl class="dl-mini">
         <div><dt>Registrado</dt><dd>${esc(i.nombre)} · ${esc(i.correo)}</dd></div>
-        <div><dt>Dependencia</dt><dd>${esc(i.dependencia)} · ${esc(dependencia(i.dependencia)?.nombre || i.dependenciaNombre || '')}${i.area ? `, ${esc(areaPorId(i.area)?.nombre || i.areaNombre)}` : ''}</dd></div>
+        <div><dt>Proceso y área</dt><dd>${i.area ? `${esc(areaPorId(i.area)?.proceso || i.proceso || '')}, ${esc(areaPorId(i.area)?.nombre || i.areaNombre)}` : esc(dependencia(i.dependencia)?.nombre || i.dependenciaNombre || '')}</dd></div>
         <div><dt>Carga en el SUIE</dt><dd>${esc(i.responsableSuie?.nombre || i.nombre)} · ${esc(i.responsableSuie?.correo || i.correo)}</dd></div>
         ${primera ? `<div><dt>Primera descarga</dt><dd>${esc(fechaCorta(primera.fecha.slice(0, 10)))}, ${esc(horaLegible(new Date(primera.fecha)))}${desc.length > 1 ? ` · ${desc.length} descargas en este dispositivo` : ''}</dd></div>` : ''}
       </dl>

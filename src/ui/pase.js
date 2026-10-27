@@ -36,8 +36,8 @@ export function htmlPase(pase, logoDataUrl) {
       <span class="pase-cargo">${esc(pase.c)}</span>
     </div>
     <div class="pase-dep">
-      <span class="pase-dep-cod">${esc(a ? a.id : pase.d)}</span>
-      <span>${esc(a ? a.nombre : (d?.nombre || ''))}<small>${esc(pase.d)} · ${esc(d?.nombre || '')}</small></span>
+      <span class="pase-dep-cod">${esc(a ? a.id : 'ETITC')}</span>
+      <span>${esc(a ? a.nombre : (d?.nombre || ''))}<small>${esc(a ? a.proceso : (d?.nombre || ''))}</small></span>
     </div>
     <div class="pase-qr" data-qr><span class="spinner" aria-hidden="true"></span></div>
     <div class="pase-id mono">${esc(pase.id)}</div>

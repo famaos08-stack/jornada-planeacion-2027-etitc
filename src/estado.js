@@ -49,6 +49,9 @@ export function nombreDependencia(codigo) { const d = dependencia(codigo); retur
 export function dependencias() { return estado.datos?.dependencias?.dependencias || []; }
 export function area(id) { return estado.indices.areas.get(id) || null; }
 export function areas() { return estado.datos?.areas?.areas || []; }
+// Procesos en el orden del documento «Áreas por proceso»; cada área trae el suyo.
+export function procesos() { return [...new Set(areas().map((a) => a.proceso).filter(Boolean))]; }
+export function procesoDeArea(id) { return area(id)?.proceso || ''; }
 
 // Sugiere el área funcional de una persona del directorio: dentro de su dependencia, la de nombre más parecido a su grupo o cargo.
 export function sugerirArea(persona) {
