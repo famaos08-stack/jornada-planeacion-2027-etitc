@@ -53,9 +53,10 @@
   },
   "clasificadorUNSPSC": "https://operaciones.colombiacompra.gov.co/clasificador-de-bienes-y-servicios",
   "registro": {
-    "_comentario": "URL de la aplicación web de Google Apps Script (ver docs/REGISTRO_EN_LINEA.md). Vacía: el aplicativo guarda en el dispositivo y envía cuando se configure.",
+    "_comentario": "URL de la aplicación web de Google Apps Script (ver docs/REGISTRO_EN_LINEA.md). Vacía: el aplicativo guarda en el dispositivo y envía cuando se configure. desde: momento en que se conectó la hoja; las descargas anteriores de cada dispositivo se envían una sola vez.",
     "url": "https://script.google.com/macros/s/AKfycbycrp58EmaD9Wix6zWd7t2psuw-LQhTC0j3AJ6Cr2T2aWgY_oYwHTp5He9IqVMvrw51qg/exec",
     "token": "JP27ETITC",
+    "desde": "2026-10-26T23:57:00Z",
     "enviarCorreo": true
   },
   "credito": "Desarrollo y ajustes: Fabián Ospina, profesional de Plan de Acción, Oficina Asesora de Planeación."

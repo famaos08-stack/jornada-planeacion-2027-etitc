@@ -1,5 +1,5 @@
 /*
- * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-26T23:55:28.324Z. No editar a mano.
+ * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-26T23:59:52.472Z. No editar a mano.
  * Contiene los 30 módulos de src/ como un script clásico para abrir la app con doble clic (file://).
  * Servida por HTTP, la aplicación usa directamente los módulos ES6 de src/ y este archivo no se carga.
  */
@@ -1170,6 +1170,29 @@ async function vaciarCola() {
   }
 }
 
+/*
+ * sincronizarPrevios(descargas) — Envía una sola vez las descargas que este dispositivo registró antes de que el
+ * registro en línea estuviera conectado (config.json → registro.desde). No reenvía el pase por correo.
+ */
+const CLAVE_SINCRONIZADOS = `${PREFIJO_LOCAL}:sincronizados`;
+function sincronizarPrevios(descargas = []) {
+  const desde = Date.parse(cfg().desde || '');
+  if (!remotoConfigurado() || Number.isNaN(desde)) return 0;
+  let hechos;
+  try { hechos = new Set(JSON.parse(localStorage.getItem(CLAVE_SINCRONIZADOS) || '[]')); } catch { hechos = new Set(); }
+  const previas = descargas.filter((d) => d && d.id && !hechos.has(d.id) && Date.parse(d.fecha) < desde);
+  if (!previas.length) return 0;
+  const cola = leerCola();
+  previas.forEach((d) => {
+    cola.push({ accion: 'descarga', datos: { ...d, qrPng: null, enviarCorreo: false, origen: `${d.origen || 'accion'} sincronizado` }, id: `S-${d.id}` });
+    hechos.add(d.id);
+  });
+  escribirCola(cola);
+  try { localStorage.setItem(CLAVE_SINCRONIZADOS, JSON.stringify([...hechos])); } catch { /* sin almacenamiento */ }
+  vaciarCola();
+  return previas.length;
+}
+
 async function leerPanel(claveAdmin) {
   if (!remotoConfigurado()) throw new Error('El registro en línea no está configurado. Se muestran solo los datos de este dispositivo.');
   const u = new URL(cfg().url);
@@ -1183,7 +1206,7 @@ async function leerPanel(claveAdmin) {
 
 window.addEventListener('online', () => vaciarCola());
 
-Object.assign(__m["src/lib/remoto.js"], { enviar, vaciarCola, leerPanel, remotoConfigurado, pendientes });
+Object.assign(__m["src/lib/remoto.js"], { enviar, vaciarCola, sincronizarPrevios, leerPanel, remotoConfigurado, pendientes });
 })();
 
 // ── src/ui/tabs.js ──
@@ -3542,7 +3565,7 @@ const { estado, fijarDatos, fijarConsolidado, on, emitir } = __m["src/estado.js"
 const { cargarDatos, cargarDesdeArchivos } = __m["src/lib/datos.js"];
 const { esperarLibrerias, avisarLibreriasFaltantes } = __m["src/lib/libs.js"];
 const { descargarTexto, obtenerLogo } = __m["src/lib/export.js"];
-const { vaciarCola } = __m["src/lib/remoto.js"];
+const { vaciarCola, sincronizarPrevios } = __m["src/lib/remoto.js"];
 const { crearPestanas } = __m["src/ui/tabs.js"];
 const { toast, toastError } = __m["src/ui/toast.js"];
 const { skeletonPestana } = __m["src/ui/skeleton.js"];
@@ -3729,6 +3752,7 @@ async function iniciar() {
 
   try { fijarConsolidado(await almacen.leerConsolidado()); } catch (e) { toastError('No se pudo leer la información guardada', e, e.message); }
   vaciarCola();
+  sincronizarPrevios(estado.consolidado?.descargas);
 
   qs('#contenido').innerHTML = '';
   window.addEventListener('hashchange', () => mostrar(idDesdeHash()));

@@ -67,6 +67,29 @@ export async function vaciarCola() {
   }
 }
 
+/*
+ * sincronizarPrevios(descargas) — Envía una sola vez las descargas que este dispositivo registró antes de que el
+ * registro en línea estuviera conectado (config.json → registro.desde). No reenvía el pase por correo.
+ */
+const CLAVE_SINCRONIZADOS = `${PREFIJO_LOCAL}:sincronizados`;
+export function sincronizarPrevios(descargas = []) {
+  const desde = Date.parse(cfg().desde || '');
+  if (!remotoConfigurado() || Number.isNaN(desde)) return 0;
+  let hechos;
+  try { hechos = new Set(JSON.parse(localStorage.getItem(CLAVE_SINCRONIZADOS) || '[]')); } catch { hechos = new Set(); }
+  const previas = descargas.filter((d) => d && d.id && !hechos.has(d.id) && Date.parse(d.fecha) < desde);
+  if (!previas.length) return 0;
+  const cola = leerCola();
+  previas.forEach((d) => {
+    cola.push({ accion: 'descarga', datos: { ...d, qrPng: null, enviarCorreo: false, origen: `${d.origen || 'accion'} sincronizado` }, id: `S-${d.id}` });
+    hechos.add(d.id);
+  });
+  escribirCola(cola);
+  try { localStorage.setItem(CLAVE_SINCRONIZADOS, JSON.stringify([...hechos])); } catch { /* sin almacenamiento */ }
+  vaciarCola();
+  return previas.length;
+}
+
 export async function leerPanel(claveAdmin) {
   if (!remotoConfigurado()) throw new Error('El registro en línea no está configurado. Se muestran solo los datos de este dispositivo.');
   const u = new URL(cfg().url);

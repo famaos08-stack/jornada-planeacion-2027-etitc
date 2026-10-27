@@ -11,7 +11,7 @@ import { estado, fijarDatos, fijarConsolidado, on, emitir } from './estado.js';
 import { cargarDatos, cargarDesdeArchivos } from './lib/datos.js';
 import { esperarLibrerias, avisarLibreriasFaltantes } from './lib/libs.js';
 import { descargarTexto, obtenerLogo } from './lib/export.js';
-import { vaciarCola } from './lib/remoto.js';
+import { vaciarCola, sincronizarPrevios } from './lib/remoto.js';
 import { crearPestanas } from './ui/tabs.js';
 import { toast, toastError } from './ui/toast.js';
 import { skeletonPestana } from './ui/skeleton.js';
@@ -198,6 +198,7 @@ async function iniciar() {
 
   try { fijarConsolidado(await almacen.leerConsolidado()); } catch (e) { toastError('No se pudo leer la información guardada', e, e.message); }
   vaciarCola();
+  sincronizarPrevios(estado.consolidado?.descargas);
 
   qs('#contenido').innerHTML = '';
   window.addEventListener('hashchange', () => mostrar(idDesdeHash()));
