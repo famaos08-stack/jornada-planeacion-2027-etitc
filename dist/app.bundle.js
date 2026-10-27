@@ -1,5 +1,5 @@
 /*
- * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-27T17:20:03.186Z. No editar a mano.
+ * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-27T17:27:09.475Z. No editar a mano.
  * Contiene los 30 módulos de src/ como un script clásico para abrir la app con doble clic (file://).
  * Servida por HTTP, la aplicación usa directamente los módulos ES6 de src/ y este archivo no se carga.
  */
