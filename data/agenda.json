@@ -501,41 +501,41 @@
   "ruta": {
     "titulo": "Ruta de planeación institucional 2027",
     "resultado": "Plan de Acción 2027 consolidado y documentado para validación institucional.",
-    "nota": "OAP: Oficina Asesora de Planeación · Fechas previas y posteriores propuestas.",
+    "nota": "OAP: Oficina Asesora de Planeación · Ruta ajustada el 3 de noviembre de 2026.",
     "fases": [
       {
         "id": "antes",
         "titulo": "Antes",
         "hitos": [
           {
-            "actividad": "Alinear objetivo, agenda y metodología",
-            "desde": "2026-10-23",
-            "hasta": "2026-10-23",
-            "responsable": "Rectoría + OAP"
-          },
-          {
-            "actividad": "Enviar Excel de acciones, necesidades y fichas de indicadores",
-            "desde": "2026-10-23",
-            "hasta": "2026-10-30",
+            "actividad": "Enviar invitación y plantillas",
+            "desde": "2026-11-03",
+            "hasta": "2026-11-03",
             "responsable": "OAP"
           },
           {
-            "actividad": "Entregar insumos y balance de logros 2025–2026",
-            "desde": "2026-10-30",
-            "hasta": "2026-11-06",
+            "actividad": "Construir plantillas de acciones y necesidades 2027",
+            "desde": "2026-11-03",
+            "hasta": "2026-11-09",
             "responsable": "Líderes de proceso"
           },
           {
-            "actividad": "Revisar insumos, accesos y logística",
-            "desde": "2026-11-06",
-            "hasta": "2026-11-13",
-            "responsable": "OAP + apoyo técnico"
+            "actividad": "Construir plantillas de contexto",
+            "desde": "2026-11-03",
+            "hasta": "2026-11-09",
+            "responsable": "Líderes de proceso"
           },
           {
-            "actividad": "Descargar la Plantilla Plan de Acción 2027 en el aplicativo, formularla y cargarla en el SUIE",
-            "desde": "2026-10-28",
+            "actividad": "Tutorías sobre el diligenciamiento de plantillas (4, 5 y 9 de noviembre)",
+            "desde": "2026-11-04",
+            "hasta": "2026-11-09",
+            "responsable": "OAP"
+          },
+          {
+            "actividad": "Revisar insumos, accesos y cargar plantillas a la metodología ETITC",
+            "desde": "2026-11-10",
             "hasta": "2026-11-13",
-            "responsable": "Líderes de proceso y áreas"
+            "responsable": "OAP + líderes + apoyo técnico"
           }
         ]
       },
