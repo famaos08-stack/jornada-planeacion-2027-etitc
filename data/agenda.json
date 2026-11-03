@@ -16,8 +16,8 @@
       "bloques": [
         {
           "id": "d1-01",
-          "inicio": "09:30",
-          "fin": "10:00",
+          "inicio": "10:00",
+          "fin": "10:30",
           "tipo": "llegada",
           "titulo": "Ubicación de habitaciones y registro de asistencia",
           "detalle": "Entrega de habitaciones a los participantes y registro de ingreso con el pase QR.",
@@ -30,7 +30,7 @@
         },
         {
           "id": "d1-r1",
-          "inicio": "10:00",
+          "inicio": "10:30",
           "fin": "11:00",
           "tipo": "receso",
           "titulo": "Refrigerio",
