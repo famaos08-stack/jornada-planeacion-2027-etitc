@@ -45,7 +45,7 @@ export function fijarConsolidado(c) {
 }
 
 export function dependencia(codigo) { return estado.indices.dependencias.get(String(codigo)) || null; }
-export function nombreDependencia(codigo) { const d = dependencia(codigo); return d ? d.nombre : `Dependencia ${codigo}`; }
+export function nombreDependencia(codigo) { const d = dependencia(codigo); return d ? d.nombre : `Proceso ${codigo}`; }
 export function dependencias() { return estado.datos?.dependencias?.dependencias || []; }
 export function area(id) { return estado.indices.areas.get(id) || null; }
 export function areas() { return estado.datos?.areas?.areas || []; }

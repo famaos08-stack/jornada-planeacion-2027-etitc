@@ -58,7 +58,7 @@ export function verificarPase(texto, { sal, prefijo = 'JP27', dependenciasValida
   const patron = new RegExp(`^${prefijo}-(\\d{3})-[${ALFABETO}]{5}$`);
   const m = patron.exec(pase.id);
   if (!m || m[1] !== String(pase.d)) return { valido: false, motivo: 'El identificador del pase no tiene el formato de la jornada.', pase };
-  if (dependenciasValidas && !dependenciasValidas.has(String(pase.d))) return { valido: false, motivo: 'La dependencia del pase no existe en el catálogo.', pase };
+  if (dependenciasValidas && !dependenciasValidas.has(String(pase.d))) return { valido: false, motivo: 'El proceso del pase no existe en el catálogo.', pase };
   if (firmar(pase, sal) !== String(pase.h).toUpperCase()) return { valido: false, motivo: 'La firma no coincide: el pase fue alterado o emitido con otra configuración.', pase };
   return { valido: true, pase };
 }

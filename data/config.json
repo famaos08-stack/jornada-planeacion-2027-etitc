@@ -28,7 +28,7 @@
   "descargas": {
     "plantilla": {
       "titulo": "Plantilla Plan de Acción 2027",
-      "descripcion": "Un solo libro de Excel con el instructivo, la propuesta del Plan de Acción 2027, las acciones y actividades por meta, la formulación por ejes, el buscador por área, la hoja de importación al SUIE y el Plan de Necesidades.",
+      "descripcion": "Un solo libro de Excel con los instructivos, el Plan de Acción 2027 consolidado (metas, acciones, actividades, productos, áreas responsables e impacto), el buscador por proceso y área, la hoja Formulación PAA2027 para importar al SUIE y el Plan de Necesidades.",
       "archivo": "assets/plantillas/Plantilla_Plan_de_Accion_2027.xlsx",
       "nombreDescarga": "Plantilla_Plan_de_Accion_2027.xlsx"
     },
@@ -40,7 +40,7 @@
     },
     "instructivo": {
       "titulo": "Instructivo de formulación",
-      "descripcion": "Cómo está construida la plantilla, hoja por hoja, con énfasis en la hoja de importación al SUIE.",
+      "descripcion": "Cómo está construida la plantilla consolidada, hoja por hoja, con énfasis en la hoja Formulación PAA2027 que se carga en el SUIE.",
       "archivo": "assets/documentos/Instructivo_formulacion_2027.pdf",
       "nombreDescarga": "Instructivo_formulacion_2027.pdf"
     },

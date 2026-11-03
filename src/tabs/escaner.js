@@ -370,7 +370,7 @@ async function exportarLecturas() {
       logo: logo.bytes,
       hojas: [{
         nombre: 'Lecturas', titulo: 'Lecturas de pases, Jornada de Planeación 2027', subtitulo: `${lista.length} lecturas registradas en este dispositivo`,
-        columnas: [{ titulo: 'Fecha y hora', ancho: 22 }, { titulo: 'Resultado', ancho: 12 }, { titulo: 'Actividad', ancho: 40 }, { titulo: 'Lector', ancho: 26 }, { titulo: 'Correo del lector', ancho: 30 }, { titulo: 'Participante', ancho: 32 }, { titulo: 'Cargo', ancho: 30 }, { titulo: 'Dependencia', ancho: 36 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Método', ancho: 14 }, { titulo: 'Prueba', ancho: 8 }],
+        columnas: [{ titulo: 'Fecha y hora', ancho: 22 }, { titulo: 'Resultado', ancho: 12 }, { titulo: 'Actividad', ancho: 40 }, { titulo: 'Lector', ancho: 26 }, { titulo: 'Correo del lector', ancho: 30 }, { titulo: 'Participante', ancho: 32 }, { titulo: 'Cargo', ancho: 30 }, { titulo: 'Proceso', ancho: 36 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Método', ancho: 14 }, { titulo: 'Prueba', ancho: 8 }],
         filas: lista.map((a) => [new Date(a.hora).toLocaleString('es-CO'), { ok: 'Ingreso', duplicado: 'Repetida', rechazo: 'Rechazo' }[a.resultado] || a.resultado, a.actividad?.titulo || '', a.lector?.nombre || '', a.lector?.correo || '', a.nombre, a.cargo, a.dependencia ? nombreDependencia(a.dependencia) : '', a.correo, a.paseId, a.metodo, a.prueba ? 'Sí' : 'No'])
       }]
     });

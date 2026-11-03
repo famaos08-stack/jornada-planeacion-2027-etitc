@@ -1,5 +1,5 @@
 /*
- * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-27T17:27:09.475Z. No editar a mano.
+ * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-10-30T07:47:16.680Z. No editar a mano.
  * Contiene los 30 módulos de src/ como un script clásico para abrir la app con doble clic (file://).
  * Servida por HTTP, la aplicación usa directamente los módulos ES6 de src/ y este archivo no se carga.
  */
@@ -485,7 +485,7 @@ function fijarConsolidado(c) {
 }
 
 function dependencia(codigo) { return estado.indices.dependencias.get(String(codigo)) || null; }
-function nombreDependencia(codigo) { const d = dependencia(codigo); return d ? d.nombre : `Dependencia ${codigo}`; }
+function nombreDependencia(codigo) { const d = dependencia(codigo); return d ? d.nombre : `Proceso ${codigo}`; }
 function dependencias() { return estado.datos?.dependencias?.dependencias || []; }
 function area(id) { return estado.indices.areas.get(id) || null; }
 function areas() { return estado.datos?.areas?.areas || []; }
@@ -1622,7 +1622,7 @@ function verificarPase(texto, { sal, prefijo = 'JP27', dependenciasValidas = nul
   const patron = new RegExp(`^${prefijo}-(\\d{3})-[${ALFABETO}]{5}$`);
   const m = patron.exec(pase.id);
   if (!m || m[1] !== String(pase.d)) return { valido: false, motivo: 'El identificador del pase no tiene el formato de la jornada.', pase };
-  if (dependenciasValidas && !dependenciasValidas.has(String(pase.d))) return { valido: false, motivo: 'La dependencia del pase no existe en el catálogo.', pase };
+  if (dependenciasValidas && !dependenciasValidas.has(String(pase.d))) return { valido: false, motivo: 'El proceso del pase no existe en el catálogo.', pase };
   if (firmar(pase, sal) !== String(pase.h).toUpperCase()) return { valido: false, motivo: 'La firma no coincide: el pase fue alterado o emitido con otra configuración.', pase };
   return { valido: true, pase };
 }
@@ -2567,7 +2567,7 @@ function pintar() {
               <div class="row-between"><span class="badge zona-badge zona-${z.id}">${z.nombre} · ${r.probabilidad * r.impacto}</span><span class="muted mono">${esc(r.id)} · ${esc(p.nombre)}</span></div>
               <h4>${esc(r.descripcion)}</h4>
               <dl class="dl"><dt>Causa</dt><dd>${esc(r.causa)}</dd><dt>Consecuencia</dt><dd>${esc(r.consecuencia)}</dd><dt>Responsable</dt><dd>${esc(r.responsable)}</dd>
-              <dt>Dependencias</dt><dd>${(p.dependencias || []).map((c) => esc(dependencia(c)?.sigla || c)).join(', ')}</dd></dl>
+              <dt>Responsables</dt><dd>${(p.dependencias || []).map((c) => esc(dependencia(c)?.sigla || c)).join(', ')}</dd></dl>
               <ul class="controles">${(r.controles || []).map((c) => `<li>${icono('riesgos', 'icon-sm')}<span><strong>${esc(c.tipo)}:</strong> ${esc(c.descripcion)} <span class="muted">· ${esc(c.responsable)}</span></span></li>`).join('')}</ul>
             </article>`;
           }).join('')).join('')}</div>`).join('') : '<p class="muted">No hay riesgos con ese filtro.</p>'}
@@ -3353,7 +3353,7 @@ async function exportarLecturas() {
       logo: logo.bytes,
       hojas: [{
         nombre: 'Lecturas', titulo: 'Lecturas de pases, Jornada de Planeación 2027', subtitulo: `${lista.length} lecturas registradas en este dispositivo`,
-        columnas: [{ titulo: 'Fecha y hora', ancho: 22 }, { titulo: 'Resultado', ancho: 12 }, { titulo: 'Actividad', ancho: 40 }, { titulo: 'Lector', ancho: 26 }, { titulo: 'Correo del lector', ancho: 30 }, { titulo: 'Participante', ancho: 32 }, { titulo: 'Cargo', ancho: 30 }, { titulo: 'Dependencia', ancho: 36 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Método', ancho: 14 }, { titulo: 'Prueba', ancho: 8 }],
+        columnas: [{ titulo: 'Fecha y hora', ancho: 22 }, { titulo: 'Resultado', ancho: 12 }, { titulo: 'Actividad', ancho: 40 }, { titulo: 'Lector', ancho: 26 }, { titulo: 'Correo del lector', ancho: 30 }, { titulo: 'Participante', ancho: 32 }, { titulo: 'Cargo', ancho: 30 }, { titulo: 'Proceso', ancho: 36 }, { titulo: 'Correo', ancho: 30 }, { titulo: 'Pase', ancho: 18 }, { titulo: 'Método', ancho: 14 }, { titulo: 'Prueba', ancho: 8 }],
         filas: lista.map((a) => [new Date(a.hora).toLocaleString('es-CO'), { ok: 'Ingreso', duplicado: 'Repetida', rechazo: 'Rechazo' }[a.resultado] || a.resultado, a.actividad?.titulo || '', a.lector?.nombre || '', a.lector?.correo || '', a.nombre, a.cargo, a.dependencia ? nombreDependencia(a.dependencia) : '', a.correo, a.paseId, a.metodo, a.prueba ? 'Sí' : 'No'])
       }]
     });
