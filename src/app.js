@@ -14,6 +14,7 @@ import { descargarTexto, obtenerLogo } from './lib/export.js';
 import { vaciarCola, sincronizarPrevios } from './lib/remoto.js';
 import { crearPestanas } from './ui/tabs.js';
 import { toast, toastError } from './ui/toast.js';
+import { pedirClave } from './ui/modal.js';
 import { skeletonPestana } from './ui/skeleton.js';
 import { icono } from './ui/iconos.js';
 import { esc, qs } from './ui/dom.js';
@@ -62,6 +63,14 @@ function iniciarTema() {
 }
 
 // ───────── Respaldo local (pie de página) ─────────
+// Exportar e importar el respaldo exige la clave de la Oficina. Solo se guarda su resumen SHA-256, no la clave.
+const CLAVE_RESPALDO = { sal: 'JP2027-respaldo', resumenEsperado: '95697f8ec3156632dd94bcb362db3e7f4d093b4ca4b583b4130793db269e2ac3' };
+const autorizarRespaldo = (accion) => pedirClave({
+  titulo: `${accion} respaldo`,
+  mensaje: 'Esta opción es exclusiva de la Oficina Asesora de Planeación. Escriba la clave para continuar.',
+  ...CLAVE_RESPALDO
+});
+
 function pintarPie(origen, fechaEmpaquetado) {
   const pie = qs('#pie-acciones');
   const enDisco = Object.values(origen).includes('empaquetado');
@@ -75,6 +84,7 @@ function pintarPie(origen, fechaEmpaquetado) {
     const b = ev.target.closest('[data-pie]');
     if (!b) return;
     if (b.dataset.pie === 'respaldo') {
+      if (!(await autorizarRespaldo('Exportar'))) return;
       try {
         const r = await almacen.exportarRespaldo();
         descargarTexto(JSON.stringify(r, null, 2), `JP2027_respaldo_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`, 'application/json');
@@ -82,7 +92,10 @@ function pintarPie(origen, fechaEmpaquetado) {
         toast({ tipo: 'ok', titulo: 'Respaldo descargado', mensaje: 'Contiene las descargas, los pases y las lecturas guardados en este navegador.' });
       } catch (e) { toastError('No se pudo exportar el respaldo', e); }
     }
-    if (b.dataset.pie === 'importar') pie.querySelector('[data-pie-importar]').click();
+    if (b.dataset.pie === 'importar') {
+      if (!(await autorizarRespaldo('Importar'))) return;
+      pie.querySelector('[data-pie-importar]').click();
+    }
     if (b.dataset.pie === 'carpeta') pie.querySelector('[data-pie-carpeta]').click();
   });
   pie.querySelector('[data-pie-importar]').addEventListener('change', async (ev) => {

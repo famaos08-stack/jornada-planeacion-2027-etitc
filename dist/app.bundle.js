@@ -1,5 +1,5 @@
 /*
- * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-11-03T16:50:11.785Z. No editar a mano.
+ * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-11-03T19:14:46.416Z. No editar a mano.
  * Contiene los 30 módulos de src/ como un script clásico para abrir la app con doble clic (file://).
  * Servida por HTTP, la aplicación usa directamente los módulos ES6 de src/ y este archivo no se carga.
  */
@@ -1278,6 +1278,134 @@ function crearPestanas(contenedor, definiciones, alSeleccionar) {
 Object.assign(__m["src/ui/tabs.js"], { crearPestanas });
 })();
 
+// ── src/ui/modal.js ──
+__m["src/ui/modal.js"] = {};
+(function () {
+/*
+ * modal.js — Modal centrado y panel lateral deslizante con trampa de foco, cierre con Escape y retorno del foco.
+ */
+const { esc } = __m["src/ui/dom.js"];
+const { icono } = __m["src/ui/iconos.js"];
+
+const ENFOCABLES = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+function abrir({ tipo, titulo, subtitulo = '', contenido = '', pie = '', alCerrar }) {
+  const previo = document.activeElement;
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  const panel = document.createElement('div');
+  const idTitulo = `dlg-${Date.now()}`;
+  panel.className = tipo === 'drawer' ? 'drawer' : 'modal';
+  panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-modal', 'true');
+  panel.setAttribute('aria-labelledby', idTitulo);
+  const cab = tipo === 'drawer' ? 'drawer' : 'modal';
+  panel.innerHTML = `
+    <div class="${cab}-head">
+      <div><h2 id="${idTitulo}">${esc(titulo)}</h2>${subtitulo ? `<p class="muted mb-0">${esc(subtitulo)}</p>` : ''}</div>
+      <button type="button" class="btn btn-ghost btn-icon" data-cerrar aria-label="Cerrar">${icono('cerrar')}</button>
+    </div>
+    <div class="${cab}-body"></div>
+    ${pie ? `<div class="${cab}-foot"></div>` : ''}`;
+  const cuerpo = panel.querySelector(`.${cab}-body`);
+  if (typeof contenido === 'string') cuerpo.innerHTML = contenido; else cuerpo.appendChild(contenido);
+  if (pie) {
+    const p = panel.querySelector(`.${cab}-foot`);
+    if (typeof pie === 'string') p.innerHTML = pie; else p.appendChild(pie);
+  }
+  document.body.append(overlay, panel);
+  document.body.style.overflow = 'hidden';
+
+  const cerrar = () => {
+    overlay.classList.remove('is-open');
+    panel.classList.remove('is-open');
+    document.removeEventListener('keydown', teclado, true);
+    document.body.style.overflow = '';
+    setTimeout(() => { overlay.remove(); panel.remove(); }, 380);
+    if (previo && previo.focus) previo.focus();
+    if (alCerrar) alCerrar();
+  };
+  const teclado = (ev) => {
+    if (ev.key === 'Escape') { ev.preventDefault(); cerrar(); return; }
+    if (ev.key !== 'Tab') return;
+    const f = Array.from(panel.querySelectorAll(ENFOCABLES)).filter((n) => n.offsetParent !== null);
+    if (!f.length) return;
+    const primero = f[0];
+    const ultimo = f[f.length - 1];
+    if (ev.shiftKey && document.activeElement === primero) { ev.preventDefault(); ultimo.focus(); }
+    else if (!ev.shiftKey && document.activeElement === ultimo) { ev.preventDefault(); primero.focus(); }
+  };
+  document.addEventListener('keydown', teclado, true);
+  overlay.addEventListener('click', cerrar);
+  panel.querySelectorAll('[data-cerrar]').forEach((b) => b.addEventListener('click', cerrar));
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    overlay.classList.add('is-open');
+    panel.classList.add('is-open');
+    const objetivo = panel.querySelector('[data-autofoco]') || panel.querySelector('[data-cerrar]');
+    if (objetivo) objetivo.focus();
+  }));
+  return { panel, cuerpo, cerrar };
+}
+
+function abrirModal(opciones) { return abrir({ ...opciones, tipo: 'modal' }); }
+function abrirPanel(opciones) { return abrir({ ...opciones, tipo: 'drawer' }); }
+
+// Confirmación simple con promesa.
+function confirmar({ titulo, mensaje, aceptar = 'Aceptar', cancelar = 'Cancelar', peligro = false }) {
+  return new Promise((resolver) => {
+    let respondido = false;
+    const pie = document.createElement('div');
+    pie.className = 'btn-group';
+    pie.innerHTML = `<button type="button" class="btn" data-r="no">${esc(cancelar)}</button>
+      <button type="button" class="btn ${peligro ? 'btn-danger' : 'btn-primary'}" data-r="si" data-autofoco>${esc(aceptar)}</button>`;
+    const m = abrirModal({ titulo, contenido: `<p>${esc(mensaje)}</p>`, pie, alCerrar: () => { if (!respondido) resolver(false); } });
+    pie.addEventListener('click', (ev) => {
+      const b = ev.target.closest('[data-r]');
+      if (!b) return;
+      respondido = true;
+      resolver(b.dataset.r === 'si');
+      m.cerrar();
+    });
+  });
+}
+
+// Solicitud de clave numérica. Resuelve true solo si el resumen SHA-256 de `${sal}|clave` coincide con `resumenEsperado`.
+function pedirClave({ titulo, mensaje, sal, resumenEsperado }) {
+  return new Promise((resolver) => {
+    let respondido = false;
+    const form = document.createElement('form');
+    form.className = 'stack';
+    form.noValidate = true;
+    form.innerHTML = `<p class="mb-0">${esc(mensaje)}</p>
+      <label class="field"><span class="field-label">Clave</span><input class="input" name="clave" type="password" inputmode="numeric" autocomplete="off" maxlength="12" required data-autofoco></label>
+      <p class="muted mb-0" data-error hidden role="alert">La clave no es correcta.</p>
+      <div class="btn-group"><button type="button" class="btn" data-cerrar-clave>Cancelar</button><button type="submit" class="btn btn-primary">Continuar</button></div>`;
+    const m = abrirModal({ titulo, contenido: form, alCerrar: () => { if (!respondido) resolver(false); } });
+    form.querySelector('[data-cerrar-clave]').addEventListener('click', () => m.cerrar());
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const valor = form.clave.value.trim();
+      let ok = false;
+      try {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${sal}|${valor}`));
+        ok = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('') === resumenEsperado;
+      } catch { ok = false; }
+      if (!ok) {
+        form.querySelector('[data-error]').hidden = false;
+        form.clave.value = '';
+        form.clave.focus();
+        return;
+      }
+      respondido = true;
+      resolver(true);
+      m.cerrar();
+    });
+  });
+}
+
+Object.assign(__m["src/ui/modal.js"], { abrirModal, abrirPanel, confirmar, pedirClave });
+})();
+
 // ── src/ui/skeleton.js ──
 __m["src/ui/skeleton.js"] = {};
 (function () {
@@ -1404,100 +1532,6 @@ function barrasHorizontales(items, { formato = 'entero' } = {}) {
 }
 
 Object.assign(__m["src/ui/cards.js"], { estadoVacio, cadenaLogica, animarNumero, activarAnimaciones, barrasHorizontales });
-})();
-
-// ── src/ui/modal.js ──
-__m["src/ui/modal.js"] = {};
-(function () {
-/*
- * modal.js — Modal centrado y panel lateral deslizante con trampa de foco, cierre con Escape y retorno del foco.
- */
-const { esc } = __m["src/ui/dom.js"];
-const { icono } = __m["src/ui/iconos.js"];
-
-const ENFOCABLES = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-
-function abrir({ tipo, titulo, subtitulo = '', contenido = '', pie = '', alCerrar }) {
-  const previo = document.activeElement;
-  const overlay = document.createElement('div');
-  overlay.className = 'overlay';
-  const panel = document.createElement('div');
-  const idTitulo = `dlg-${Date.now()}`;
-  panel.className = tipo === 'drawer' ? 'drawer' : 'modal';
-  panel.setAttribute('role', 'dialog');
-  panel.setAttribute('aria-modal', 'true');
-  panel.setAttribute('aria-labelledby', idTitulo);
-  const cab = tipo === 'drawer' ? 'drawer' : 'modal';
-  panel.innerHTML = `
-    <div class="${cab}-head">
-      <div><h2 id="${idTitulo}">${esc(titulo)}</h2>${subtitulo ? `<p class="muted mb-0">${esc(subtitulo)}</p>` : ''}</div>
-      <button type="button" class="btn btn-ghost btn-icon" data-cerrar aria-label="Cerrar">${icono('cerrar')}</button>
-    </div>
-    <div class="${cab}-body"></div>
-    ${pie ? `<div class="${cab}-foot"></div>` : ''}`;
-  const cuerpo = panel.querySelector(`.${cab}-body`);
-  if (typeof contenido === 'string') cuerpo.innerHTML = contenido; else cuerpo.appendChild(contenido);
-  if (pie) {
-    const p = panel.querySelector(`.${cab}-foot`);
-    if (typeof pie === 'string') p.innerHTML = pie; else p.appendChild(pie);
-  }
-  document.body.append(overlay, panel);
-  document.body.style.overflow = 'hidden';
-
-  const cerrar = () => {
-    overlay.classList.remove('is-open');
-    panel.classList.remove('is-open');
-    document.removeEventListener('keydown', teclado, true);
-    document.body.style.overflow = '';
-    setTimeout(() => { overlay.remove(); panel.remove(); }, 380);
-    if (previo && previo.focus) previo.focus();
-    if (alCerrar) alCerrar();
-  };
-  const teclado = (ev) => {
-    if (ev.key === 'Escape') { ev.preventDefault(); cerrar(); return; }
-    if (ev.key !== 'Tab') return;
-    const f = Array.from(panel.querySelectorAll(ENFOCABLES)).filter((n) => n.offsetParent !== null);
-    if (!f.length) return;
-    const primero = f[0];
-    const ultimo = f[f.length - 1];
-    if (ev.shiftKey && document.activeElement === primero) { ev.preventDefault(); ultimo.focus(); }
-    else if (!ev.shiftKey && document.activeElement === ultimo) { ev.preventDefault(); primero.focus(); }
-  };
-  document.addEventListener('keydown', teclado, true);
-  overlay.addEventListener('click', cerrar);
-  panel.querySelectorAll('[data-cerrar]').forEach((b) => b.addEventListener('click', cerrar));
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    overlay.classList.add('is-open');
-    panel.classList.add('is-open');
-    const objetivo = panel.querySelector('[data-autofoco]') || panel.querySelector('[data-cerrar]');
-    if (objetivo) objetivo.focus();
-  }));
-  return { panel, cuerpo, cerrar };
-}
-
-function abrirModal(opciones) { return abrir({ ...opciones, tipo: 'modal' }); }
-function abrirPanel(opciones) { return abrir({ ...opciones, tipo: 'drawer' }); }
-
-// Confirmación simple con promesa.
-function confirmar({ titulo, mensaje, aceptar = 'Aceptar', cancelar = 'Cancelar', peligro = false }) {
-  return new Promise((resolver) => {
-    let respondido = false;
-    const pie = document.createElement('div');
-    pie.className = 'btn-group';
-    pie.innerHTML = `<button type="button" class="btn" data-r="no">${esc(cancelar)}</button>
-      <button type="button" class="btn ${peligro ? 'btn-danger' : 'btn-primary'}" data-r="si" data-autofoco>${esc(aceptar)}</button>`;
-    const m = abrirModal({ titulo, contenido: `<p>${esc(mensaje)}</p>`, pie, alCerrar: () => { if (!respondido) resolver(false); } });
-    pie.addEventListener('click', (ev) => {
-      const b = ev.target.closest('[data-r]');
-      if (!b) return;
-      respondido = true;
-      resolver(b.dataset.r === 'si');
-      m.cerrar();
-    });
-  });
-}
-
-Object.assign(__m["src/ui/modal.js"], { abrirModal, abrirPanel, confirmar });
 })();
 
 // ── src/lib/directorio.js ──
@@ -3579,6 +3613,7 @@ const { descargarTexto, obtenerLogo } = __m["src/lib/export.js"];
 const { vaciarCola, sincronizarPrevios } = __m["src/lib/remoto.js"];
 const { crearPestanas } = __m["src/ui/tabs.js"];
 const { toast, toastError } = __m["src/ui/toast.js"];
+const { pedirClave } = __m["src/ui/modal.js"];
 const { skeletonPestana } = __m["src/ui/skeleton.js"];
 const { icono } = __m["src/ui/iconos.js"];
 const { esc, qs } = __m["src/ui/dom.js"];
@@ -3627,6 +3662,14 @@ function iniciarTema() {
 }
 
 // ───────── Respaldo local (pie de página) ─────────
+// Exportar e importar el respaldo exige la clave de la Oficina. Solo se guarda su resumen SHA-256, no la clave.
+const CLAVE_RESPALDO = { sal: 'JP2027-respaldo', resumenEsperado: '95697f8ec3156632dd94bcb362db3e7f4d093b4ca4b583b4130793db269e2ac3' };
+const autorizarRespaldo = (accion) => pedirClave({
+  titulo: `${accion} respaldo`,
+  mensaje: 'Esta opción es exclusiva de la Oficina Asesora de Planeación. Escriba la clave para continuar.',
+  ...CLAVE_RESPALDO
+});
+
 function pintarPie(origen, fechaEmpaquetado) {
   const pie = qs('#pie-acciones');
   const enDisco = Object.values(origen).includes('empaquetado');
@@ -3640,6 +3683,7 @@ function pintarPie(origen, fechaEmpaquetado) {
     const b = ev.target.closest('[data-pie]');
     if (!b) return;
     if (b.dataset.pie === 'respaldo') {
+      if (!(await autorizarRespaldo('Exportar'))) return;
       try {
         const r = await almacen.exportarRespaldo();
         descargarTexto(JSON.stringify(r, null, 2), `JP2027_respaldo_${new Date().toISOString().slice(0, 16).replace(/[:T]/g, '-')}.json`, 'application/json');
@@ -3647,7 +3691,10 @@ function pintarPie(origen, fechaEmpaquetado) {
         toast({ tipo: 'ok', titulo: 'Respaldo descargado', mensaje: 'Contiene las descargas, los pases y las lecturas guardados en este navegador.' });
       } catch (e) { toastError('No se pudo exportar el respaldo', e); }
     }
-    if (b.dataset.pie === 'importar') pie.querySelector('[data-pie-importar]').click();
+    if (b.dataset.pie === 'importar') {
+      if (!(await autorizarRespaldo('Importar'))) return;
+      pie.querySelector('[data-pie-importar]').click();
+    }
     if (b.dataset.pie === 'carpeta') pie.querySelector('[data-pie-carpeta]').click();
   });
   pie.querySelector('[data-pie-importar]').addEventListener('change', async (ev) => {

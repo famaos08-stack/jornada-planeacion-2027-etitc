@@ -85,3 +85,37 @@ export function confirmar({ titulo, mensaje, aceptar = 'Aceptar', cancelar = 'Ca
     });
   });
 }
+
+// Solicitud de clave numérica. Resuelve true solo si el resumen SHA-256 de `${sal}|clave` coincide con `resumenEsperado`.
+export function pedirClave({ titulo, mensaje, sal, resumenEsperado }) {
+  return new Promise((resolver) => {
+    let respondido = false;
+    const form = document.createElement('form');
+    form.className = 'stack';
+    form.noValidate = true;
+    form.innerHTML = `<p class="mb-0">${esc(mensaje)}</p>
+      <label class="field"><span class="field-label">Clave</span><input class="input" name="clave" type="password" inputmode="numeric" autocomplete="off" maxlength="12" required data-autofoco></label>
+      <p class="muted mb-0" data-error hidden role="alert">La clave no es correcta.</p>
+      <div class="btn-group"><button type="button" class="btn" data-cerrar-clave>Cancelar</button><button type="submit" class="btn btn-primary">Continuar</button></div>`;
+    const m = abrirModal({ titulo, contenido: form, alCerrar: () => { if (!respondido) resolver(false); } });
+    form.querySelector('[data-cerrar-clave]').addEventListener('click', () => m.cerrar());
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const valor = form.clave.value.trim();
+      let ok = false;
+      try {
+        const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`${sal}|${valor}`));
+        ok = Array.from(new Uint8Array(buf)).map((b) => b.toString(16).padStart(2, '0')).join('') === resumenEsperado;
+      } catch { ok = false; }
+      if (!ok) {
+        form.querySelector('[data-error]').hidden = false;
+        form.clave.value = '';
+        form.clave.focus();
+        return;
+      }
+      respondido = true;
+      resolver(true);
+      m.cerrar();
+    });
+  });
+}
