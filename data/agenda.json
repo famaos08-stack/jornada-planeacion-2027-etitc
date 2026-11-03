@@ -1,6 +1,6 @@
 {
   "provisional": false,
-  "fuente": "Agenda de la Jornada de Planeación ajustada en el comité de la Oficina Asesora de Planeación del 22 de octubre de 2026 (Acta No. 1).",
+  "fuente": "Agenda de la Jornada de Planeación ajustada por la Oficina Asesora de Planeación el 3 de noviembre de 2026.",
   "nota": "Agenda sujeta a ajustes de la Oficina Asesora de Planeación.",
   "titulo": "Jornada de Planeación Institucional 2027",
   "lema": "Logros que nos transforman, decisiones que construyen futuro.",
@@ -16,11 +16,11 @@
       "bloques": [
         {
           "id": "d1-01",
-          "inicio": "08:00",
-          "fin": "08:30",
+          "inicio": "09:30",
+          "fin": "10:00",
           "tipo": "llegada",
-          "titulo": "Registro de asistencia y café",
-          "detalle": "Ingreso con el pase QR. De fondo se proyecta el video institucional de ambientación con música.",
+          "titulo": "Ubicación de habitaciones y registro de asistencia",
+          "detalle": "Entrega de habitaciones a los participantes y registro de ingreso con el pase QR.",
           "responsables": [
             "Fabián Ospina"
           ],
@@ -29,11 +29,23 @@
           "insumo": "Video institucional de ambientación con música"
         },
         {
+          "id": "d1-r1",
+          "inicio": "10:00",
+          "fin": "11:00",
+          "tipo": "receso",
+          "titulo": "Refrigerio",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
           "id": "d1-02",
-          "inicio": "08:30",
-          "fin": "08:40",
+          "inicio": "11:00",
+          "fin": "11:10",
           "tipo": "sesion",
-          "titulo": "Apertura del evento",
+          "titulo": "Mensaje de bienvenida: apertura de la jornada",
           "detalle": "Bienvenida y propósito de la jornada.",
           "responsables": [
             "Jorge Herrera"
@@ -44,10 +56,10 @@
         },
         {
           "id": "d1-03",
-          "inicio": "08:40",
-          "fin": "09:00",
+          "inicio": "11:10",
+          "fin": "11:30",
           "tipo": "sesion",
-          "titulo": "Intervención del Hermano Rector Ariosto Ardila",
+          "titulo": "Mensaje de bienvenida: intervención del Hermano Rector Ariosto Ardila",
           "detalle": "Mensaje del Rector a la comunidad que planea la vigencia 2027.",
           "responsables": [
             "Ariosto Ardila"
@@ -58,8 +70,8 @@
         },
         {
           "id": "d1-04",
-          "inicio": "09:00",
-          "fin": "10:00",
+          "inicio": "11:30",
+          "fin": "12:30",
           "tipo": "sesion",
           "titulo": "Logros y transformaciones 2025 y 2026: ¿cómo estamos?",
           "detalle": "Balance de los logros y transformaciones institucionales de las vigencias 2025 y 2026.",
@@ -68,46 +80,6 @@
             "Fabián Ospina"
           ],
           "responsable": "Jorge Herrera, Fabián Ospina",
-          "apoyo": "",
-          "insumo": ""
-        },
-        {
-          "id": "d1-05",
-          "inicio": "10:00",
-          "fin": "10:20",
-          "tipo": "receso",
-          "titulo": "Receso",
-          "detalle": "",
-          "responsables": [],
-          "responsable": "Todos los participantes",
-          "apoyo": "",
-          "insumo": ""
-        },
-        {
-          "id": "d1-06",
-          "inicio": "10:20",
-          "fin": "11:30",
-          "tipo": "sesion",
-          "titulo": "Grandes apuestas del PDI",
-          "detalle": "Las apuestas del Plan de Desarrollo Institucional 2025 a 2032 que orientan la vigencia 2027.",
-          "responsables": [
-            "Ariosto Ardila"
-          ],
-          "responsable": "Ariosto Ardila",
-          "apoyo": "",
-          "insumo": ""
-        },
-        {
-          "id": "d1-07",
-          "inicio": "11:30",
-          "fin": "12:30",
-          "tipo": "sesion",
-          "titulo": "Tendencias y proyección como universidad",
-          "detalle": "Tendencias tecnológicas, visión y misión, excelencia académica y sostenibilidad financiera.",
-          "responsables": [
-            "Ariosto Ardila"
-          ],
-          "responsable": "Ariosto Ardila",
           "apoyo": "",
           "insumo": ""
         },
@@ -124,9 +96,49 @@
           "insumo": ""
         },
         {
-          "id": "d1-09",
+          "id": "d1-06",
           "inicio": "14:00",
-          "fin": "14:30",
+          "fin": "15:00",
+          "tipo": "sesion",
+          "titulo": "Grandes apuestas del PDI",
+          "detalle": "Las apuestas del Plan de Desarrollo Institucional 2025 a 2032 que orientan la vigencia 2027.",
+          "responsables": [
+            "Ariosto Ardila"
+          ],
+          "responsable": "Ariosto Ardila",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-07",
+          "inicio": "15:00",
+          "fin": "15:45",
+          "tipo": "sesion",
+          "titulo": "Tendencias y proyección como universidad",
+          "detalle": "Tendencias tecnológicas, visión y misión, excelencia académica y sostenibilidad financiera.",
+          "responsables": [
+            "Ariosto Ardila"
+          ],
+          "responsable": "Ariosto Ardila",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-11",
+          "inicio": "15:45",
+          "fin": "16:05",
+          "tipo": "receso",
+          "titulo": "Receso",
+          "detalle": "",
+          "responsables": [],
+          "responsable": "Todos los participantes",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d1-09",
+          "inicio": "16:05",
+          "fin": "16:35",
           "tipo": "sesion",
           "titulo": "Cadena de valor e indicadores de impacto",
           "detalle": "Cómo se genera y cómo se demuestra el impacto, según la Guía Metodológica para la Evaluación de Impacto Institucional.",
@@ -139,42 +151,11 @@
         },
         {
           "id": "d1-10",
-          "inicio": "14:30",
-          "fin": "15:30",
+          "inicio": "16:35",
+          "fin": "18:00",
           "tipo": "taller",
           "titulo": "Taller: análisis de contexto, parte 1",
           "detalle": "Variables del entorno interno y externo de cada proceso.",
-          "responsables": [
-            "Jimena Pimiento",
-            "Fredy Zabala",
-            "Fabián Ospina",
-            "Stefany Parra",
-            "Antonia Santiago",
-            "Jorge Herrera"
-          ],
-          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
-          "apoyo": "",
-          "insumo": ""
-        },
-        {
-          "id": "d1-11",
-          "inicio": "15:30",
-          "fin": "15:50",
-          "tipo": "receso",
-          "titulo": "Receso",
-          "detalle": "",
-          "responsables": [],
-          "responsable": "Todos los participantes",
-          "apoyo": "",
-          "insumo": ""
-        },
-        {
-          "id": "d1-12",
-          "inicio": "15:50",
-          "fin": "17:00",
-          "tipo": "taller",
-          "titulo": "Taller: análisis de contexto, parte 2",
-          "detalle": "Valoración de variables y conclusiones por proceso.",
           "responsables": [
             "Jimena Pimiento",
             "Fredy Zabala",
@@ -198,11 +179,11 @@
       "bloques": [
         {
           "id": "d2-01",
-          "inicio": "08:00",
-          "fin": "08:30",
+          "inicio": "07:00",
+          "fin": "07:30",
           "tipo": "llegada",
-          "titulo": "Registro de asistencia y café",
-          "detalle": "Ingreso con el pase QR. De fondo se proyecta el video institucional de ambientación con música.",
+          "titulo": "Desayuno y registro de asistencia",
+          "detalle": "Desayuno y registro de ingreso con el pase QR.",
           "responsables": [
             "Fabián Ospina"
           ],
@@ -211,9 +192,28 @@
           "insumo": "Video institucional de ambientación con música"
         },
         {
+          "id": "d1-12",
+          "inicio": "07:30",
+          "fin": "08:30",
+          "tipo": "taller",
+          "titulo": "Taller: análisis de contexto, parte 2",
+          "detalle": "Valoración de variables y conclusiones por proceso.",
+          "responsables": [
+            "Jimena Pimiento",
+            "Fredy Zabala",
+            "Fabián Ospina",
+            "Stefany Parra",
+            "Antonia Santiago",
+            "Jorge Herrera"
+          ],
+          "responsable": "Jimena Pimiento, Fredy Zabala, Fabián Ospina, Stefany Parra, Antonia Santiago, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
           "id": "d2-02",
           "inicio": "08:30",
-          "fin": "10:00",
+          "fin": "09:30",
           "tipo": "taller",
           "titulo": "Taller: análisis de contexto, parte 3",
           "detalle": "Cierre del análisis de contexto y priorización.",
@@ -231,10 +231,10 @@
         },
         {
           "id": "d2-03",
-          "inicio": "10:00",
-          "fin": "10:30",
+          "inicio": "09:30",
+          "fin": "10:00",
           "tipo": "receso",
-          "titulo": "Receso",
+          "titulo": "Refrigerio",
           "detalle": "",
           "responsables": [],
           "responsable": "Todos los participantes",
@@ -243,7 +243,7 @@
         },
         {
           "id": "d2-04",
-          "inicio": "10:30",
+          "inicio": "10:00",
           "fin": "12:30",
           "tipo": "taller",
           "titulo": "Taller: acciones PDI y Plan de Necesidades 2027, parte 1",
@@ -275,7 +275,7 @@
         {
           "id": "d2-06",
           "inicio": "14:00",
-          "fin": "14:45",
+          "fin": "15:00",
           "tipo": "taller",
           "titulo": "Taller: acciones PDI y Plan de Necesidades 2027, parte 2",
           "detalle": "Revisión de la formulación y del cargue en el SUIE.",
@@ -293,8 +293,8 @@
         },
         {
           "id": "d2-07",
-          "inicio": "14:45",
-          "fin": "15:15",
+          "inicio": "15:00",
+          "fin": "15:30",
           "tipo": "sesion",
           "titulo": "Plan de Adquisiciones",
           "detalle": "Del Plan de Necesidades al Plan Anual de Adquisiciones: tiempos, modalidades y temas contractuales.",
@@ -307,8 +307,8 @@
         },
         {
           "id": "d2-08",
-          "inicio": "15:15",
-          "fin": "15:35",
+          "inicio": "15:30",
+          "fin": "15:50",
           "tipo": "receso",
           "titulo": "Receso",
           "detalle": "",
@@ -319,8 +319,8 @@
         },
         {
           "id": "d2-09",
-          "inicio": "15:35",
-          "fin": "17:00",
+          "inicio": "15:50",
+          "fin": "18:00",
           "tipo": "taller",
           "titulo": "Taller: indicadores 2027 y responsables de productos (KPI)",
           "detalle": "Indicadores de seguimiento, metas 2027 y responsables de cada producto.",
@@ -347,11 +347,11 @@
       "bloques": [
         {
           "id": "d3-01",
-          "inicio": "08:00",
-          "fin": "08:30",
+          "inicio": "07:00",
+          "fin": "07:30",
           "tipo": "llegada",
-          "titulo": "Registro de asistencia y café",
-          "detalle": "Ingreso con el pase QR. De fondo se proyecta el video institucional de ambientación con música.",
+          "titulo": "Desayuno y registro de asistencia",
+          "detalle": "Desayuno y registro de ingreso con el pase QR.",
           "responsables": [
             "Fabián Ospina"
           ],
@@ -361,8 +361,8 @@
         },
         {
           "id": "d3-02",
-          "inicio": "08:30",
-          "fin": "10:00",
+          "inicio": "07:30",
+          "fin": "09:30",
           "tipo": "taller",
           "titulo": "Taller: indicadores 2027 y responsables de productos (KPI), parte 2",
           "detalle": "Validación de indicadores y responsables por área.",
@@ -380,10 +380,10 @@
         },
         {
           "id": "d3-03",
-          "inicio": "10:00",
-          "fin": "10:30",
+          "inicio": "09:30",
+          "fin": "10:00",
           "tipo": "receso",
-          "titulo": "Receso",
+          "titulo": "Refrigerio",
           "detalle": "",
           "responsables": [],
           "responsable": "Todos los participantes",
@@ -392,8 +392,8 @@
         },
         {
           "id": "d3-04",
-          "inicio": "10:30",
-          "fin": "11:30",
+          "inicio": "10:00",
+          "fin": "11:00",
           "tipo": "taller",
           "titulo": "Taller: acciones PDI y Plan de Necesidades 2027, parte 3",
           "detalle": "Ajustes finales a acciones y necesidades.",
@@ -411,7 +411,7 @@
         },
         {
           "id": "d3-05",
-          "inicio": "11:30",
+          "inicio": "11:00",
           "fin": "12:30",
           "tipo": "taller",
           "titulo": "Taller: matriz de riesgos, parte 1",
@@ -439,7 +439,7 @@
         {
           "id": "d3-07",
           "inicio": "14:00",
-          "fin": "15:00",
+          "fin": "14:45",
           "tipo": "taller",
           "titulo": "Taller: matriz de riesgos, parte 2",
           "detalle": "Valoración y controles. Metodología y plantillas a cargo de sus responsables.",
@@ -448,6 +448,50 @@
             "Antonia Santiago"
           ],
           "responsable": "Stefany Parra, Antonia Santiago",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-08",
+          "inicio": "14:45",
+          "fin": "15:10",
+          "tipo": "sesion",
+          "titulo": "Plenaria: resultados por eje y compromisos",
+          "detalle": "Socialización de los resultados de la jornada por eje estratégico y de los compromisos de cada proceso para el cargue en el SUIE.",
+          "responsables": [
+            "Jorge Herrera",
+            "Fabián Ospina"
+          ],
+          "responsable": "Jorge Herrera, Fabián Ospina",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-09",
+          "inicio": "15:10",
+          "fin": "15:30",
+          "tipo": "sesion",
+          "titulo": "Cierre y evaluación de la jornada",
+          "detalle": "Palabras de cierre y evaluación de la jornada por parte de los participantes.",
+          "responsables": [
+            "Ariosto Ardila",
+            "Jorge Herrera"
+          ],
+          "responsable": "Ariosto Ardila, Jorge Herrera",
+          "apoyo": "",
+          "insumo": ""
+        },
+        {
+          "id": "d3-10",
+          "inicio": "15:30",
+          "fin": "16:00",
+          "tipo": "llegada",
+          "titulo": "Entrega de habitaciones",
+          "detalle": "Entrega de las habitaciones y salida de los participantes.",
+          "responsables": [
+            "Fabián Ospina"
+          ],
+          "responsable": "Fabián Ospina",
           "apoyo": "",
           "insumo": ""
         }
@@ -549,14 +593,22 @@
     {
       "dia": "d1",
       "ids": [
-        "d1-04",
-        "d1-05",
+        "d1-02",
+        "d1-03"
+      ],
+      "id": "d1-g0",
+      "titulo": "Mensaje de bienvenida",
+      "detalle": "Apertura y propósito de la jornada, e intervención del Hermano Rector a la comunidad que planea la vigencia 2027."
+    },
+    {
+      "dia": "d1",
+      "ids": [
         "d1-06",
         "d1-07"
       ],
       "id": "d1-g1",
-      "titulo": "Balance y visión: logros y transformaciones, grandes apuestas del PDI y tendencias",
-      "detalle": "Un solo bloque de 9:00 a 12:30 con tres momentos: cómo estamos (logros y transformaciones 2025 y 2026), las grandes apuestas del PDI y las tendencias y la proyección de la ETITC como universidad. Incluye un receso de 10:00 a 10:20."
+      "titulo": "Grandes apuestas del PDI y tendencias",
+      "detalle": "Un bloque de 2:00 a 3:45 pm con las grandes apuestas del Plan de Desarrollo Institucional y las tendencias y la proyección de la ETITC como universidad."
     }
   ]
 }
