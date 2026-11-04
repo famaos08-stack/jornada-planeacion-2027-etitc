@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Comparativo PAA 2026 frente a PAA 2027 · ETITC</title>
+  <meta name="description" content="Descarga del documento Comparativo PAA 2026 frente a PAA 2027, Oficina Asesora de Planeación de la Escuela Tecnológica Instituto Técnico Central.">
+  <meta name="robots" content="noindex">
+  <style>
+    :root { --verde: #054030; --verde2: #03835E; --lima: #94C124; --fondo: #EEF4E6; --texto: #1B2A21; --gris: #5E7A6A; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; color: var(--texto); background: var(--fondo); min-height: 100vh; display: flex; flex-direction: column; }
+    header { background: var(--verde); padding: 18px 16px; display: flex; justify-content: center; }
+    header img { height: 56px; width: auto; }
+    main { flex: 1; width: 100%; max-width: 560px; margin: 0 auto; padding: 28px 16px; }
+    .tarjeta { background: #fff; border-radius: 16px; padding: 28px 22px; box-shadow: 0 6px 24px rgba(5, 64, 48, .12); }
+    .etiqueta { display: inline-block; background: var(--fondo); color: var(--verde2); font-weight: bold; font-size: 13px; padding: 6px 10px; border-radius: 999px; }
+    h1 { color: var(--verde); font-size: 26px; line-height: 1.25; margin: 14px 0 8px; }
+    p { line-height: 1.5; margin: 0 0 14px; }
+    .meta { color: var(--gris); font-size: 14px; }
+    .estado { display: flex; gap: 10px; align-items: center; background: var(--fondo); border-radius: 12px; padding: 12px 14px; margin: 18px 0; font-size: 15px; }
+    .punto { width: 12px; height: 12px; border-radius: 50%; background: var(--lima); flex: none; animation: latido 1.2s ease-in-out infinite; }
+    .listo .punto { animation: none; background: var(--verde2); }
+    @keyframes latido { 50% { transform: scale(1.5); opacity: .5; } }
+    .boton { display: block; text-align: center; text-decoration: none; font-weight: bold; font-size: 17px; border-radius: 12px; padding: 16px; margin-top: 12px; }
+    .primario { background: var(--verde2); color: #fff; }
+    .primario:hover { background: var(--verde); }
+    .secundario { background: #fff; color: var(--verde); border: 2px solid var(--verde2); }
+    footer { text-align: center; color: var(--gris); font-size: 12px; padding: 18px 16px 26px; }
+    @media (prefers-reduced-motion: reduce) { .punto { animation: none; } }
+  </style>
+</head>
+<body>
+  <header><img src="logo-etitc.png" alt="Escuela Tecnológica Instituto Técnico Central"></header>
+  <main>
+    <div class="tarjeta">
+      <span class="etiqueta">Oficina Asesora de Planeación</span>
+      <h1>Comparativo PAA 2026 frente a PAA 2027</h1>
+      <p>Modificaciones del Plan de Acción Institucional 2027 frente al de 2026, metas 2027 alineadas al PDI 2025 a 2032 e indicadores de impacto.</p>
+      <p class="meta">Documento de soporte para el Comité Institucional de Gestión y Desempeño · PDF de solo lectura · 26 páginas · 0,7 MB</p>
+      <div class="estado" id="estado" role="status" aria-live="polite"><span class="punto" aria-hidden="true"></span><span id="estado-texto">La descarga empezará en un momento…</span></div>
+      <a class="boton primario" id="descargar" href="Comparativo_PAA_2026_frente_a_PAA_2027.pdf" download="Comparativo_PAA_2026_frente_a_PAA_2027.pdf">Descargar el PDF</a>
+      <a class="boton secundario" href="Comparativo_PAA_2026_frente_a_PAA_2027.pdf" target="_blank" rel="noopener">Leer en el navegador</a>
+    </div>
+  </main>
+  <footer>Escuela Tecnológica Instituto Técnico Central · Oficina Asesora de Planeación · Proyectado: Fabián Ospina</footer>
+  <script>
+    // Descarga automática al abrir la página desde el código QR; el botón queda como respaldo.
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        document.getElementById('descargar').click();
+        document.getElementById('estado').classList.add('listo');
+        document.getElementById('estado-texto').textContent = 'Si la descarga no empezó, toque «Descargar el PDF».';
+      }, 900);
+    });
+  </script>
+</body>
+</html>
