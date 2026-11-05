@@ -14,6 +14,7 @@ export const ARCHIVOS_DATOS = {
   config: 'data/config.json',
   directorio: 'data/directorio.cifrado.json',
   lectores: 'data/lectores.json',
+  invitados: 'data/invitados.json',
   dependencias: 'data/dependencias.json',
   areas: 'data/areas.json',
   agenda: 'data/agenda.json',

@@ -329,6 +329,14 @@
       "tipoProceso": "evaluación",
       "dependencia": "110",
       "etiqueta": "A41 · Gestión de Control Disciplinario"
+    },
+    {
+      "id": "A42",
+      "nombre": "Administración de la sede",
+      "proceso": "Sede Tintal",
+      "tipoProceso": "apoyo",
+      "dependencia": "100",
+      "etiqueta": "A42 · Administración de la Sede Tintal"
     }
   ]
 }

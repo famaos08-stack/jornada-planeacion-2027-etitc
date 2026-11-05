@@ -1,0 +1,263 @@
+{
+  "descripcion": "Invitados a la Jornada de Planeación Institucional 2027 (32 líderes aprobados por austeridad del gasto). Solo se publican nombre, proceso, área y un resumen del correo; el correo se verifica en el dispositivo.",
+  "actualizado": "2026-11-05",
+  "sal": "BwkxEnHMCwOEsQV7",
+  "invitados": [
+    {
+      "id": "I01",
+      "nombre": "Hno. Ariosto Ardila Silva",
+      "area": "A01",
+      "proceso": "Direccionamiento Institucional",
+      "areaNombre": "Rectoría",
+      "h": "d83147968f276a67f285f585abb4b941ff9959c89682031d0f2100749f080d85"
+    },
+    {
+      "id": "I02",
+      "nombre": "Jorge Herrera Ortiz",
+      "area": "A02",
+      "proceso": "Direccionamiento Institucional",
+      "areaNombre": "Planeación",
+      "h": "a51526da627b5b5eee2bcef164535ae21b3cc4efd16d1561d1d94b6e264ddb06"
+    },
+    {
+      "id": "I03",
+      "nombre": "Fabián Mauricio Ospina Castañeda",
+      "area": "A02",
+      "proceso": "Direccionamiento Institucional",
+      "areaNombre": "Planeación",
+      "h": "3535fd754da013c456fd7f720d0ea89f8384d5f76286fd2526504538d8a4f431"
+    },
+    {
+      "id": "I04",
+      "nombre": "Fredy Zabala Huertas",
+      "area": "A02",
+      "proceso": "Direccionamiento Institucional",
+      "areaNombre": "Planeación",
+      "h": "1d7754313b6f42cf529f0f1d3681e0431c53aa0070583f5ff72afdd416214cd2"
+    },
+    {
+      "id": "I05",
+      "nombre": "Edgar Mauricio López Lizarazo",
+      "area": "A03",
+      "proceso": "Direccionamiento Institucional",
+      "areaNombre": "Secretaría General",
+      "h": "a3e5773c9a72f447a9910036163d985689fe40d9d7778d2ecac0021eba2ce153"
+    },
+    {
+      "id": "I06",
+      "nombre": "Diana Marcela Castañeda Miranda",
+      "area": "A04",
+      "proceso": "Gestión de Comunicaciones",
+      "areaNombre": "Gestión de Comunicaciones",
+      "h": "db0b80c99edee5af872fc482fb1c5164175fb52bec6f5677f7598c96f77338d1"
+    },
+    {
+      "id": "I07",
+      "nombre": "Jair Alejandro Contreras Parra",
+      "area": "A05",
+      "proceso": "Gestión de Informática y Telecomunicaciones",
+      "areaNombre": "Gestión de Informática y Telecomunicaciones",
+      "h": "db64211dae89606b028d8d93f5560396a5259afb9b54a8a6bed33c107354ae40"
+    },
+    {
+      "id": "I08",
+      "nombre": "Yormary Andrea García Castillejo",
+      "area": "A06",
+      "proceso": "Gestión de Internacionalización",
+      "areaNombre": "Gestión de Internacionalización",
+      "h": "af18e0119469f2e22ca60812c196ab2136e63b84719153a24cc7c8559497fed6"
+    },
+    {
+      "id": "I09",
+      "nombre": "Yaneth Jimena Pimiento Cortés",
+      "area": "A07",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "areaNombre": "Aseguramiento",
+      "h": "fe3e9c5c2f939b3242e0669b0710affd59f5dc109df13aec6e63779bd6ef4853"
+    },
+    {
+      "id": "I10",
+      "nombre": "Yazmin Antonia Santiago Cabrera",
+      "area": "A08",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "areaNombre": "Calidad",
+      "h": "48e6e025b644b85d7debcb3a70f10e21d3e4e42fc0b71ad661a23e51425acfae"
+    },
+    {
+      "id": "I11",
+      "nombre": "Luis Javier Tovar Turcio",
+      "area": "A11",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "areaNombre": "Seguridad de la Información",
+      "h": "6b2b839b37aff0efeedba113b40b2dcf67bee6109de00f728e7aa59bafd8c95c"
+    },
+    {
+      "id": "I12",
+      "nombre": "Maritza Zabala Huertas",
+      "area": "A13",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "areaNombre": "Autoevaluación",
+      "h": "cf4df42df18636a5c6048413f036ded09f564cf9946f7b0bd5854878a3fa2b91"
+    },
+    {
+      "id": "I13",
+      "nombre": "Nelcy Stefany Parra Mora",
+      "area": "A14",
+      "proceso": "Gestión de Sistema Integrado de Aseguramiento",
+      "areaNombre": "MIPG",
+      "h": "94f13c540516f277d41e8c43128de4a1508f9a68fd3cf9a2165ca71b64d592a5"
+    },
+    {
+      "id": "I14",
+      "nombre": "Lucybeth Blanchar Maestre",
+      "area": "A17",
+      "proceso": "Gestión de Talento Humano",
+      "areaNombre": "Selección y Vinculación",
+      "h": "a077eb6b581a458d36aeadd8b435f692f972791fa79785229176bbb75c5b68b9"
+    },
+    {
+      "id": "I15",
+      "nombre": "Hno. Néstor Raúl Polanía González",
+      "area": "A19",
+      "proceso": "Docencia PES",
+      "areaNombre": "Viceacadémica",
+      "h": "da03c5d642e9d0dc6d05046a4998d361b17e938a8a51d9f1485f41d1e1771c2a"
+    },
+    {
+      "id": "I16",
+      "nombre": "Estefanía Castañeda Álvarez",
+      "area": "A19",
+      "proceso": "Docencia PES",
+      "areaNombre": "Viceacadémica",
+      "h": "d63766576b29e2805f6ac39f5c4f1fdd010c745bf6b892e5202fa473b7adb928"
+    },
+    {
+      "id": "I17",
+      "nombre": "María Nury Escobar Guzmán",
+      "area": "A20",
+      "proceso": "Docencia PES",
+      "areaNombre": "Facultades",
+      "h": "935ffa68da12290474230842ab9942962649102a7a2c9d9baf5d5d963cd0add1"
+    },
+    {
+      "id": "I18",
+      "nombre": "Nubia Cristina Naizaque Aponte",
+      "area": "A20",
+      "proceso": "Docencia PES",
+      "areaNombre": "Facultades",
+      "h": "59298935d7fecd43b749a2011f190c2d42f93a6bf5994018e79eda989b343fcf"
+    },
+    {
+      "id": "I19",
+      "nombre": "Lady Fajardo Castellanos",
+      "area": "A20",
+      "proceso": "Docencia PES",
+      "areaNombre": "Facultades",
+      "h": "58b6709e5513d2ea35fdbc1b6ee5c2d343c1fb3f8adb6effda9af8dc9efeb753"
+    },
+    {
+      "id": "I20",
+      "nombre": "Isabel Cristina Castellanos Cuéllar",
+      "area": "A20",
+      "proceso": "Docencia PES",
+      "areaNombre": "Facultades",
+      "h": "5dd737e988ec1618b890a11c8bf8814e7ab20447d13afd6b27a600a21b9429fb"
+    },
+    {
+      "id": "I21",
+      "nombre": "Héctor Ricardo Amaya Barbosa",
+      "area": "A20",
+      "proceso": "Docencia PES",
+      "areaNombre": "Facultades",
+      "h": "da7d8850e020df99a900be3ad582a6ac997a5effffa485ac056f68cea3535dee"
+    },
+    {
+      "id": "I22",
+      "nombre": "Wilson Ramiro Camargo Cardozo",
+      "area": "A20",
+      "proceso": "Docencia PES",
+      "areaNombre": "Facultades",
+      "h": "bd3e6526c3004fe615c30e7f9aec9f1f6d25eb58e446d353327a97ec40d6759c"
+    },
+    {
+      "id": "I23",
+      "nombre": "Hno. Camilo Andrés Vargas Castillo",
+      "area": "A24",
+      "proceso": "Docencia IBTI",
+      "areaNombre": "Docencia IBTI",
+      "h": "d63dd2d9d4f64af905971df44608fe3894fa8bc38541b17c9f54d39e34c980d7"
+    },
+    {
+      "id": "I24",
+      "nombre": "Gloria Marcela Cruz Daza",
+      "area": "A29",
+      "proceso": "Gestión de Bienestar Universitario",
+      "areaNombre": "Gestión de Bienestar Universitario",
+      "h": "1e143f19bed1705c8a31c356c6a316b211e227d86accd4beecb1ba7229986570"
+    },
+    {
+      "id": "I25",
+      "nombre": "Ángela María García Mora",
+      "area": "A25",
+      "proceso": "Investigación",
+      "areaNombre": "Investigación",
+      "h": "ec433455df811f124e58c6cc1a179864f4d8fd1a26e97542fe1c3545af18b71c"
+    },
+    {
+      "id": "I26",
+      "nombre": "Martha Cecilia Herrera Romero",
+      "area": "A25",
+      "proceso": "Investigación",
+      "areaNombre": "Investigación",
+      "h": "59f3b46d45f7e8310dec3fdc1d685c7ab1dd35c0b8638e7f9e56532bb99ad72f"
+    },
+    {
+      "id": "I27",
+      "nombre": "Óscar Alfonso Ruiz Ballén",
+      "area": "A26",
+      "proceso": "Extensión",
+      "areaNombre": "Extensión",
+      "h": "6d41efe31250aec2d617f3a5fc5c04f4a53c8bb80bb26d7bf6cb6dd883fdab4b"
+    },
+    {
+      "id": "I28",
+      "nombre": "Leidy Stephany Cifuentes Santamaría",
+      "area": "A26",
+      "proceso": "Extensión",
+      "areaNombre": "Extensión",
+      "h": "6d5cf671c0656151796fc8c2041387dbe832cb8323b419fd21481cbf09b2b486"
+    },
+    {
+      "id": "I29",
+      "nombre": "John Fredy Ortegate",
+      "area": "A27",
+      "proceso": "Egresados",
+      "areaNombre": "Egresados",
+      "h": "173e3b74ba42edfc11cf2684eee541e5bc09af004a5ec23577ff40b70a62a9c3"
+    },
+    {
+      "id": "I30",
+      "nombre": "Ariel Tovar Gómez",
+      "area": "A30",
+      "proceso": "Gestión Financiera",
+      "areaNombre": "Vicerrectoría Administrativa",
+      "h": "aa35b3df1b0f4dc5c44fb5f1e22af176bc03fe9fcaf220bc12145033fcca5112"
+    },
+    {
+      "id": "I31",
+      "nombre": "Guillermina Yaguara Pedroza",
+      "area": "A40",
+      "proceso": "Gestión de Control Interno",
+      "areaNombre": "Gestión de Control Interno",
+      "h": "964d66a3834e6157d711993564600b889dd1b4849e7f8256551f7f1f4e93f585"
+    },
+    {
+      "id": "I32",
+      "nombre": "Benjamín Rodolfo Quintero Puentes",
+      "area": "A42",
+      "proceso": "Sede Tintal",
+      "areaNombre": "Administración de la sede",
+      "h": "cfb44a636da46ba74f118e46a5806e2002ffb8d929d6f21e63f87198b993b930"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 /*
- * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-11-05T18:51:51.569Z. No editar a mano.
+ * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-11-05T19:03:21.449Z. No editar a mano.
  * Contiene los 30 módulos de src/ como un script clásico para abrir la app con doble clic (file://).
  * Servida por HTTP, la aplicación usa directamente los módulos ES6 de src/ y este archivo no se carga.
  */
@@ -25,6 +25,7 @@ const ARCHIVOS_DATOS = {
   config: 'data/config.json',
   directorio: 'data/directorio.cifrado.json',
   lectores: 'data/lectores.json',
+  invitados: 'data/invitados.json',
   dependencias: 'data/dependencias.json',
   areas: 'data/areas.json',
   agenda: 'data/agenda.json',
@@ -530,6 +531,7 @@ const VALIDADORES = {
   config: (d) => d && typeof d === 'object',
   directorio: (d) => Boolean(d && d.registros && d.sal),
   lectores: (d) => Array.isArray(d?.lectores),
+  invitados: (d) => Array.isArray(d?.invitados),
   dependencias: (d) => Array.isArray(d?.dependencias),
   areas: (d) => Array.isArray(d?.areas),
   agenda: (d) => Array.isArray(d?.dias),
@@ -538,7 +540,7 @@ const VALIDADORES = {
 };
 
 const VACIOS = {
-  config: {}, agenda: { dias: [], ruta: { fases: [] } }, directorio: { registros: {}, sal: '', iteraciones: 1 }, lectores: { lectores: [], sal: '' },
+  config: {}, agenda: { dias: [], ruta: { fases: [] } }, directorio: { registros: {}, sal: '', iteraciones: 1 }, lectores: { lectores: [], sal: '' }, invitados: { invitados: [], sal: '' },
   festivos: { festivos: [] }, riesgos: { riesgos: [], procesos: [], escalas: {} }
 };
 
@@ -1706,7 +1708,7 @@ const { icono } = __m["src/ui/iconos.js"];
 const { abrirModal } = __m["src/ui/modal.js"];
 const { toast, toastError } = __m["src/ui/toast.js"];
 const { almacen } = __m["src/storage.js"];
-const { buscarPorCorreo, normalizarCorreo, cifradoDisponible } = __m["src/lib/directorio.js"];
+const { buscarPorCorreo, normalizarCorreo, cifradoDisponible, resumen } = __m["src/lib/directorio.js"];
 const { crearPase, contenidoQR, qrComoDataUrl, qrDisponible } = __m["src/lib/qr.js"];
 const { enviar, remotoConfigurado } = __m["src/lib/remoto.js"];
 const { descargarBlob } = __m["src/lib/export.js"];
@@ -1759,6 +1761,18 @@ function dispositivo() {
   return `${so} · ${/Mobi/.test(ua) ? 'celular' : 'computador'}`;
 }
 
+// Invitados a la jornada (data/invitados.json). Si la lista existe, solo ellos pueden registrarse.
+const invitados = () => estado.datos?.invitados?.invitados || [];
+function opcionesInvitado() {
+  const grupos = {};
+  invitados().forEach((x) => { (grupos[x.proceso] = grupos[x.proceso] || []).push(x); });
+  return `<option value="">Elija su nombre…</option>${Object.entries(grupos).map(([p, l]) => `<optgroup label="${esc(p)}">${l.map((x) => `<option value="${esc(x.id)}">${esc(x.nombre)} · ${esc(x.areaNombre)}</option>`).join('')}</optgroup>`).join('')}`;
+}
+async function correoDelInvitado(inv, correo) {
+  const sal = estado.datos?.invitados?.sal || '';
+  return Boolean(inv && correo && (await resumen(`${sal}|${correo}`)) === inv.h);
+}
+
 function opcionesProceso(sel) {
   return `<option value="">Elija el proceso…</option>${procesos().map((p) => `<option value="${esc(p)}" ${p === sel ? 'selected' : ''}>${esc(p)}</option>`).join('')}`;
 }
@@ -1789,6 +1803,8 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
     form.noValidate = true;
     form.innerHTML = `
       <p class="muted mb-0">Registre sus datos para descargar la plantilla. Al terminar recibirá su <strong>pase QR de ingreso</strong> a la jornada.</p>
+      ${invitados().length ? `<label class="field"><span class="field-label">Participante invitado</span><select class="select" name="invitado" required>${opcionesInvitado()}</select>
+        <span class="field-hint">La jornada es solo para los líderes invitados. Si no aparece en la lista, comuníquese con la Oficina Asesora de Planeación.</span></label>` : ''}
       <label class="field"><span class="field-label">Correo institucional</span>
         <div class="input-icon">${icono('correo')}<input class="input" name="correo" type="email" inputmode="email" autocomplete="email" placeholder="usuario${esc(dominio())}" required data-autofoco></div>
         <span class="field-error" data-err-correo role="alert"></span></label>
@@ -1838,10 +1854,10 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
       }
       const usar = (p) => {
         persona = p;
-        f.nombre.value = p.n || f.nombre.value;
+        if (!invitadoSel()) f.nombre.value = p.n || f.nombre.value;
         f.cargo.value = p.c || f.cargo.value;
         const sug = sugerirArea(p);
-        if (sug) {
+        if (sug && !invitadoSel()) {
           f.proceso.innerHTML = opcionesProceso(sug.proceso);
           f.area.innerHTML = opcionesArea(sug.proceso, sug.id);
         }
@@ -1855,6 +1871,19 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
     f.correo.addEventListener('input', () => { clearTimeout(t); t = setTimeout(buscar, 350); });
     f.correo.addEventListener('blur', () => { const v = f.correo.value.trim(); if (v && !v.includes('@')) { f.correo.value = `${v}${dominio()}`; } buscar(); });
     f.proceso.addEventListener('change', () => { f.area.innerHTML = opcionesArea(f.proceso.value, ''); });
+    const invitadoSel = () => invitados().find((x) => x.id === f.invitado?.value) || null;
+    if (f.invitado) {
+      f.invitado.addEventListener('change', () => {
+        const inv = invitadoSel();
+        f.proceso.disabled = Boolean(inv);
+        f.area.disabled = Boolean(inv);
+        if (!inv) return;
+        f.nombre.value = inv.nombre;
+        f.proceso.innerHTML = opcionesProceso(inv.proceso);
+        f.area.innerHTML = opcionesArea(inv.proceso, inv.area);
+        f.correo.focus();
+      });
+    }
     form.querySelectorAll('[name="quien"]').forEach((r) => r.addEventListener('change', () => { form.querySelector('[data-otro]').hidden = f.quien.value !== 'otro'; }));
 
     form.addEventListener('submit', async (ev) => {
@@ -1870,7 +1899,15 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
       const suieCorreo = otro ? normalizarCorreo(f.suieCorreo.value) : correo;
       if (otro && (!f.suieNombre.value.trim() || !correoValido(suieCorreo))) faltan.push('el nombre y el correo institucional de quien cargará en el SUIE');
       if (!f.consentimiento.checked) faltan.push('la autorización de tratamiento de datos');
+      if (f.invitado && !f.invitado.value) faltan.unshift('su nombre en la lista de invitados');
       if (faltan.length) { toast({ tipo: 'warn', titulo: 'Faltan datos', mensaje: `Complete ${faltan.join(', ')}.` }); return; }
+      if (f.invitado && !(await correoDelInvitado(invitadoSel(), correo))) {
+        err.textContent = 'Este correo no corresponde al invitado elegido. Escriba su correo institucional.';
+        f.correo.setAttribute('aria-invalid', 'true');
+        f.correo.focus();
+        toast({ tipo: 'warn', titulo: 'El correo no coincide', mensaje: 'Verifique que eligió su nombre y que el correo es el institucional.' });
+        return;
+      }
       const boton = form.querySelector('[data-enviar]');
       boton.disabled = true;
       boton.innerHTML = '<span class="spinner" aria-hidden="true"></span>Registrando…';
@@ -1882,7 +1919,7 @@ async function registrarYDescargar({ ctx, origen = 'accion', forzarFormulario = 
           correo, nombre: f.nombre.value.trim(), cargo: f.cargo.value.trim(), dependencia: dep,
           dependenciaNombre: dependencia(dep)?.nombre || '', area: a ? a.id : '', areaNombre: a ? a.nombre : '', proceso: a ? a.proceso : '',
           responsableSuie: { nombre: otro ? f.suieNombre.value.trim() : f.nombre.value.trim(), correo: suieCorreo, mismo: !otro },
-          verificado: Boolean(persona)
+          verificado: Boolean(persona) || Boolean(f.invitado), invitado: f.invitado ? f.invitado.value : ''
         };
         let pase = estado.consolidado.pases.find((p) => p.e === correo) || null;
         if (!pase) {

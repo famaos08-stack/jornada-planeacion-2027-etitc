@@ -13,6 +13,7 @@ const VALIDADORES = {
   config: (d) => d && typeof d === 'object',
   directorio: (d) => Boolean(d && d.registros && d.sal),
   lectores: (d) => Array.isArray(d?.lectores),
+  invitados: (d) => Array.isArray(d?.invitados),
   dependencias: (d) => Array.isArray(d?.dependencias),
   areas: (d) => Array.isArray(d?.areas),
   agenda: (d) => Array.isArray(d?.dias),
@@ -21,7 +22,7 @@ const VALIDADORES = {
 };
 
 const VACIOS = {
-  config: {}, agenda: { dias: [], ruta: { fases: [] } }, directorio: { registros: {}, sal: '', iteraciones: 1 }, lectores: { lectores: [], sal: '' },
+  config: {}, agenda: { dias: [], ruta: { fases: [] } }, directorio: { registros: {}, sal: '', iteraciones: 1 }, lectores: { lectores: [], sal: '' }, invitados: { invitados: [], sal: '' },
   festivos: { festivos: [] }, riesgos: { riesgos: [], procesos: [], escalas: {} }
 };
 
