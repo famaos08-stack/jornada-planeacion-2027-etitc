@@ -1,5 +1,5 @@
 /*
- * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-11-03T19:14:46.416Z. No editar a mano.
+ * app.bundle.js — ARCHIVO GENERADO por tools/empaquetar.mjs el 2026-11-05T12:49:05.247Z. No editar a mano.
  * Contiene los 30 módulos de src/ como un script clásico para abrir la app con doble clic (file://).
  * Servida por HTTP, la aplicación usa directamente los módulos ES6 de src/ y este archivo no se carga.
  */
@@ -972,7 +972,7 @@ async function cronogramaAPdf({ agenda, evento, nombre = 'Cronograma_Jornada_Pla
     doc.setFontSize(7.5); doc.text(fechaLarga(dia.fecha, { conDia: false }).replace(/ de \d{4}$/, ''), M + 13, y + 10.8, { align: 'center' });
     doc.setTextColor(...tinta); doc.setFontSize(12.5); doc.text(dia.titulo, M + 31, y + 6.4);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...gris);
-    doc.text(fechaLarga(dia.fecha), M + 31, y + 11);
+    doc.text(`${fechaLarga(dia.fecha)}${dia.sede ? ` · ${dia.sede}` : ''}`, M + 31, y + 11);
     y += 18;
     (dia.bloques || []).forEach((b) => {
       const receso = b.tipo === 'receso';
@@ -1014,6 +1014,22 @@ async function cronogramaAPdf({ agenda, evento, nombre = 'Cronograma_Jornada_Pla
     }
     y += 4;
   });
+
+  // Responsables y su rol en la jornada
+  const roles = Object.entries(agenda.roles || {});
+  if (roles.length) {
+    saltoSi(12 + roles.length * 4.6);
+    doc.setTextColor(...tinta); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+    doc.text('Responsables y su rol', M, y + 4); y += 9;
+    roles.forEach(([nombre, rol]) => {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...tinta);
+      doc.text(nombre, M + 2, y + 3);
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(61, 89, 80);
+      doc.text(rol, M + 48, y + 3);
+      y += 4.6;
+    });
+    y += 6;
+  }
 
   // Ruta de planeación (antes, durante, después)
   const ruta = agenda.ruta;
@@ -1085,7 +1101,7 @@ function generarICS({ agenda, evento }) {
         `DTSTART;TZID=America/Bogota:${f}T${hora(b.inicio)}`,
         `DTEND;TZID=America/Bogota:${f}T${hora(b.fin)}`,
         `SUMMARY:${escIcs(`JP2027 · ${b.titulo}`)}`,
-        `LOCATION:${escIcs(agenda.sede || '')}`,
+        `LOCATION:${escIcs(dia.sede || agenda.sede || '')}`,
         `DESCRIPTION:${escIcs(desc)}`,
         `CATEGORIES:${escIcs(dia.titulo)}`,
         'STATUS:CONFIRMED', 'TRANSP:OPAQUE',
@@ -1980,8 +1996,10 @@ function tarjetaPase() {
   return `<a class="pase-cta" href="#accion">${icono('qr', 'icon-lg')}<span><strong>Obtenga su pase de ingreso</strong><small>Se entrega al descargar la Plantilla Plan de Acción 2027. Formúlela y cárguela en el SUIE: es su insumo de trabajo en la jornada.</small></span>${icono('derecha', 'icon-sm')}</a>`;
 }
 
+// Responsables con su rol (agenda.roles); el nombre solo se sigue usando para habilitar el lector QR.
+const conRol = (n) => { const r = (agenda().roles || {})[n]; return r ? `${n}, ${r}` : n; };
 const chipsResp = (b) => (b.responsables || []).length
-  ? `<span class="agenda-resp">${icono('persona', 'icon-sm')}<span>${(b.responsables || []).map((n) => esc(n)).join(', ')}</span></span>` : '';
+  ? `<span class="agenda-resp">${icono('persona', 'icon-sm')}<span>${(b.responsables || []).map((n) => esc(conRol(n))).join(' · ')}</span></span>` : '';
 
 function bloqueHtml(dia, b, ahora, esHoy) {
   const ini = instante(dia.fecha, b.inicio);
@@ -2028,7 +2046,7 @@ function pintarDia(animar = true) {
   raiz.querySelectorAll('[data-sel-dia]').forEach((b) => { const s = b.dataset.selDia === dia.id; b.setAttribute('aria-selected', String(s)); b.tabIndex = s ? 0 : -1; });
   cont.innerHTML = `<div class="dia-cabeza">
       <span class="dia-num">Día ${dia.numero}</span>
-      <div><h3 class="mb-0">${esc(dia.titulo)}</h3><span class="muted">${esc(diaCorto(dia.fecha))} · ${esc(dia.bloques[0]?.inicio || '')}–${esc(dia.bloques[dia.bloques.length - 1]?.fin || '')}</span></div>
+      <div><h3 class="mb-0">${esc(dia.titulo)}</h3><span class="muted">${esc(diaCorto(dia.fecha))} · ${esc(dia.bloques[0]?.inicio || '')}–${esc(dia.bloques[dia.bloques.length - 1]?.fin || '')}</span>${dia.sede ? `<span class="muted" style="display:flex;align-items:center;gap:4px">${icono('lugar', 'icon-sm')}${esc(dia.sede)}</span>` : ''}</div>
     </div>
     <ol class="agenda-lista">
       ${(() => {

@@ -68,8 +68,10 @@ function tarjetaPase() {
   return `<a class="pase-cta" href="#accion">${icono('qr', 'icon-lg')}<span><strong>Obtenga su pase de ingreso</strong><small>Se entrega al descargar la Plantilla Plan de Acción 2027. Formúlela y cárguela en el SUIE: es su insumo de trabajo en la jornada.</small></span>${icono('derecha', 'icon-sm')}</a>`;
 }
 
+// Responsables con su rol (agenda.roles); el nombre solo se sigue usando para habilitar el lector QR.
+const conRol = (n) => { const r = (agenda().roles || {})[n]; return r ? `${n}, ${r}` : n; };
 const chipsResp = (b) => (b.responsables || []).length
-  ? `<span class="agenda-resp">${icono('persona', 'icon-sm')}<span>${(b.responsables || []).map((n) => esc(n)).join(', ')}</span></span>` : '';
+  ? `<span class="agenda-resp">${icono('persona', 'icon-sm')}<span>${(b.responsables || []).map((n) => esc(conRol(n))).join(' · ')}</span></span>` : '';
 
 function bloqueHtml(dia, b, ahora, esHoy) {
   const ini = instante(dia.fecha, b.inicio);
@@ -116,7 +118,7 @@ function pintarDia(animar = true) {
   raiz.querySelectorAll('[data-sel-dia]').forEach((b) => { const s = b.dataset.selDia === dia.id; b.setAttribute('aria-selected', String(s)); b.tabIndex = s ? 0 : -1; });
   cont.innerHTML = `<div class="dia-cabeza">
       <span class="dia-num">Día ${dia.numero}</span>
-      <div><h3 class="mb-0">${esc(dia.titulo)}</h3><span class="muted">${esc(diaCorto(dia.fecha))} · ${esc(dia.bloques[0]?.inicio || '')}–${esc(dia.bloques[dia.bloques.length - 1]?.fin || '')}</span></div>
+      <div><h3 class="mb-0">${esc(dia.titulo)}</h3><span class="muted">${esc(diaCorto(dia.fecha))} · ${esc(dia.bloques[0]?.inicio || '')}–${esc(dia.bloques[dia.bloques.length - 1]?.fin || '')}</span>${dia.sede ? `<span class="muted" style="display:flex;align-items:center;gap:4px">${icono('lugar', 'icon-sm')}${esc(dia.sede)}</span>` : ''}</div>
     </div>
     <ol class="agenda-lista">
       ${(() => {

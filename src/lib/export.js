@@ -148,7 +148,7 @@ export async function cronogramaAPdf({ agenda, evento, nombre = 'Cronograma_Jorn
     doc.setFontSize(7.5); doc.text(fechaLarga(dia.fecha, { conDia: false }).replace(/ de \d{4}$/, ''), M + 13, y + 10.8, { align: 'center' });
     doc.setTextColor(...tinta); doc.setFontSize(12.5); doc.text(dia.titulo, M + 31, y + 6.4);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...gris);
-    doc.text(fechaLarga(dia.fecha), M + 31, y + 11);
+    doc.text(`${fechaLarga(dia.fecha)}${dia.sede ? ` · ${dia.sede}` : ''}`, M + 31, y + 11);
     y += 18;
     (dia.bloques || []).forEach((b) => {
       const receso = b.tipo === 'receso';
@@ -190,6 +190,22 @@ export async function cronogramaAPdf({ agenda, evento, nombre = 'Cronograma_Jorn
     }
     y += 4;
   });
+
+  // Responsables y su rol en la jornada
+  const roles = Object.entries(agenda.roles || {});
+  if (roles.length) {
+    saltoSi(12 + roles.length * 4.6);
+    doc.setTextColor(...tinta); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
+    doc.text('Responsables y su rol', M, y + 4); y += 9;
+    roles.forEach(([nombre, rol]) => {
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(8.5); doc.setTextColor(...tinta);
+      doc.text(nombre, M + 2, y + 3);
+      doc.setFont('helvetica', 'normal'); doc.setTextColor(61, 89, 80);
+      doc.text(rol, M + 48, y + 3);
+      y += 4.6;
+    });
+    y += 6;
+  }
 
   // Ruta de planeación (antes, durante, después)
   const ruta = agenda.ruta;
@@ -261,7 +277,7 @@ export function generarICS({ agenda, evento }) {
         `DTSTART;TZID=America/Bogota:${f}T${hora(b.inicio)}`,
         `DTEND;TZID=America/Bogota:${f}T${hora(b.fin)}`,
         `SUMMARY:${escIcs(`JP2027 · ${b.titulo}`)}`,
-        `LOCATION:${escIcs(agenda.sede || '')}`,
+        `LOCATION:${escIcs(dia.sede || agenda.sede || '')}`,
         `DESCRIPTION:${escIcs(desc)}`,
         `CATEGORIES:${escIcs(dia.titulo)}`,
         'STATUS:CONFIRMED', 'TRANSP:OPAQUE',
