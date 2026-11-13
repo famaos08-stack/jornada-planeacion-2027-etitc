@@ -1,10 +1,10 @@
 {
   "provisional": false,
-  "fuente": "Agenda de la Jornada de Planeación ajustada por la Oficina Asesora de Planeación el 5 de noviembre de 2026 (versión aprobada).",
-  "nota": "Agenda sujeta a ajustes de la Oficina Asesora de Planeación. La ruta de transporte a Guaymaral y Funza está sujeta a confirmación.",
+  "fuente": "Agenda de la Jornada de Planeación confirmada por la Oficina Asesora de Planeación el 13 de noviembre de 2026 (sedes, horarios de registro, inicio y cierre).",
+  "nota": "Agenda sujeta a ajustes de la Oficina Asesora de Planeación. Lleve un equipo de cómputo por proceso. Vehículo al Tintal: avise a administracionpolicampusUPK@itc.edu.co. Transporte Bogotá–Funza–Bogotá del día 3: solicítelo a planeacion@itc.edu.co.",
   "titulo": "Jornada de Planeación Institucional 2027",
   "lema": "Logros que nos transforman, decisiones que construyen futuro.",
-  "sede": "Sedes Tintal (Bogotá), Guaymaral y Funza",
+  "sede": "Multicampus Universitario Tintal (Bogotá) y Sede Funza",
   "zonaHoraria": "America/Bogota",
   "dias": [
     {
@@ -172,7 +172,7 @@
         {
           "id": "d1-10",
           "inicio": "15:15",
-          "fin": "17:00",
+          "fin": "17:30",
           "tipo": "taller",
           "titulo": "Taller: análisis de contexto, parte 2",
           "detalle": "Valoración de variables y conclusiones por proceso.",
@@ -189,7 +189,7 @@
           "insumo": ""
         }
       ],
-      "sede": "Teatro y aulas de la Sede Tintal, Bogotá"
+      "sede": "Teatro de la sede Multicampus Universitario Tintal, Calle 6C # 94A-25, barrio El Tintal, Kennedy, Bogotá"
     },
     {
       "id": "d2",
@@ -200,11 +200,11 @@
       "bloques": [
         {
           "id": "d2-01",
-          "inicio": "08:00",
-          "fin": "08:30",
+          "inicio": "07:30",
+          "fin": "08:00",
           "tipo": "llegada",
           "titulo": "Llegada y registro de asistencia",
-          "detalle": "Registro de ingreso con el pase QR. La ruta de transporte hacia Guaymaral está sujeta a confirmación.",
+          "detalle": "Registro de ingreso con el pase QR.",
           "responsables": [
             "Fabián Ospina",
             "Deisy Serrato"
@@ -215,7 +215,7 @@
         },
         {
           "id": "d2-02",
-          "inicio": "08:30",
+          "inicio": "08:00",
           "fin": "10:30",
           "tipo": "taller",
           "titulo": "Taller: acciones PDI y Plan de Necesidades 2027, parte 1",
@@ -323,7 +323,7 @@
         {
           "id": "d2-06",
           "inicio": "15:35",
-          "fin": "17:00",
+          "fin": "17:30",
           "tipo": "taller",
           "titulo": "Taller: indicadores 2027 y responsables de productos (KPI), parte 2",
           "detalle": "Validación de indicadores y responsables por área.",
@@ -340,7 +340,7 @@
           "insumo": ""
         }
       ],
-      "sede": "Sede Guaymaral (sede social y deportiva)"
+      "sede": "Teatro de la sede Multicampus Universitario Tintal, Calle 6C # 94A-25, barrio El Tintal, Kennedy, Bogotá"
     },
     {
       "id": "d3",
@@ -355,7 +355,7 @@
           "fin": "08:30",
           "tipo": "llegada",
           "titulo": "Llegada y registro de asistencia",
-          "detalle": "Registro de ingreso con el pase QR. La ruta de transporte hacia Funza está sujeta a confirmación.",
+          "detalle": "Registro de ingreso con el pase QR. Transporte Bogotá–Funza–Bogotá para quienes lo solicitaron a planeacion@itc.edu.co.",
           "responsables": [
             "Fabián Ospina",
             "Deisy Serrato"
@@ -458,9 +458,9 @@
         {
           "id": "d3-r2",
           "inicio": "13:00",
-          "fin": "15:00",
+          "fin": "14:00",
           "tipo": "receso",
-          "titulo": "Asado de integración y regreso en ruta (desde la 1:00 p. m., por confirmar)",
+          "titulo": "Asado de integración y regreso en ruta a Bogotá a las 2:00 p. m.",
           "detalle": "",
           "responsables": [],
           "responsable": "Todos los participantes",
@@ -468,7 +468,7 @@
           "insumo": ""
         }
       ],
-      "sede": "Sede Funza"
+      "sede": "Sede Funza, vereda El Hato, finca Sebastián Cáceres, Floridablanca, Funza"
     }
   ],
   "ruta": {
