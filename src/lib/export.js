@@ -132,24 +132,30 @@ export async function cronogramaAPdf({ agenda, evento, nombre = 'Cronograma_Jorn
   };
   const pie = () => {
     doc.setFontSize(7.5); doc.setTextColor(...gris); doc.setFont('helvetica', 'normal');
-    doc.text(`${evento.oficina} · ${evento.institucion}`, M, H - 8);
-    doc.text(`${agenda.nota || ''}`, M, H - 4.5);
-    doc.text(`Página ${pagina}`, W - M, H - 8, { align: 'right' });
+    doc.text(`${evento.oficina} · ${evento.institucion}`, M, H - 10);
+    doc.text(`Página ${pagina}`, W - M, H - 10, { align: 'right' });
+    // La nota (recomendaciones logísticas) se parte en máximo dos líneas para que no se corte en el borde.
+    doc.setFontSize(6.8);
+    doc.text(doc.splitTextToSize(`${agenda.nota || ''}`, W - 2 * M).slice(0, 2), M, H - 6.6);
   };
-  const saltoSi = (alto) => { if (y + alto > H - 16) { pie(); doc.addPage(); pagina += 1; encabezado(); } };
+  const saltoSi = (alto) => { if (y + alto > H - 18) { pie(); doc.addPage(); pagina += 1; encabezado(); } };
 
   encabezado();
   dias.forEach((dia) => {
     saltoSi(30);
-    doc.setFillColor(...suave); doc.roundedRect(M, y, W - 2 * M, 14, 2.5, 2.5, 'F');
-    doc.setFillColor(...verde7); doc.roundedRect(M, y, 26, 14, 2.5, 2.5, 'F');
+    // La sede con su dirección puede ocupar dos líneas: la franja del día crece para contenerla.
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5);
+    const lineaSede = doc.splitTextToSize(`${fechaLarga(dia.fecha)}${dia.sede ? ` · ${dia.sede}` : ''}`, W - 2 * M - 34).slice(0, 2);
+    const altoDia = 14 + (lineaSede.length - 1) * 3.6;
+    doc.setFillColor(...suave); doc.roundedRect(M, y, W - 2 * M, altoDia, 2.5, 2.5, 'F');
+    doc.setFillColor(...verde7); doc.roundedRect(M, y, 26, altoDia, 2.5, 2.5, 'F');
     doc.setTextColor(255, 255, 255); doc.setFont('helvetica', 'bold'); doc.setFontSize(11);
     doc.text(`Día ${dia.numero}`, M + 13, y + 6.2, { align: 'center' });
     doc.setFontSize(7.5); doc.text(fechaLarga(dia.fecha, { conDia: false }).replace(/ de \d{4}$/, ''), M + 13, y + 10.8, { align: 'center' });
     doc.setTextColor(...tinta); doc.setFontSize(12.5); doc.text(dia.titulo, M + 31, y + 6.4);
     doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor(...gris);
-    doc.text(`${fechaLarga(dia.fecha)}${dia.sede ? ` · ${dia.sede}` : ''}`, M + 31, y + 11);
-    y += 18;
+    doc.text(lineaSede, M + 31, y + 11);
+    y += altoDia + 4;
     (dia.bloques || []).forEach((b) => {
       const receso = b.tipo === 'receso';
       const ancho = W - 2 * M - 64;
